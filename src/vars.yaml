@@ -1,0 +1,8 @@
+# [START workflows_vars]
+- firstStep:
+    assign:
+      - SomeName: "Sherlock"
+      - AnotherName: "Ada"
+      - SomeIntegerNumber: 27
+      - SomeDoubleNumber: 4.1
+# [END workflows_vars]

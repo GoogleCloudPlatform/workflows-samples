@@ -1,0 +1,17 @@
+# [START workflows_subworkflow]
+main:
+   steps:
+       - first:
+           call: hello
+           args:
+               input: "Kristof"
+           result: someOutput
+       - second:
+           return: ${someOutput}
+
+hello:
+   params: [input]
+   steps:
+     - first:
+         return: ${"Hello "+input}
+# [END workflows_subworkflow]

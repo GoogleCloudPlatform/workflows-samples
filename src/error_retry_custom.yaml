@@ -1,0 +1,15 @@
+# [START workflows_error_retry_custom]
+- readItem:
+    try:
+       call: http.get
+       args:
+           url: https://example.com/someapi
+       result: apiResponse
+    retry:
+        predicate: ${http.default_retry_predicate}
+        max_retries: 5
+        backoff:
+            initial_delay: 2
+            max_delay: 60
+            multiplier: 2
+# [END workflows_error_retry_custom]

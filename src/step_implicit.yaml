@@ -1,0 +1,14 @@
+# [START workflows_step_implicit]
+- firstStep:
+    call: http.get
+    args:
+        url: https://www.example.com/callA
+- secondStep:
+    call: http.get
+    args:
+        url: https://www.example.com/callB
+- thirdStep:
+    call: http.get
+    args:
+        url: https://www.example.com/callC
+# [END workflows_step_implicit]
