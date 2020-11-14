@@ -1,0 +1,36 @@
+[
+  {
+    "firstStep": {
+      "assign": [
+        {
+          "myDictionary": {
+            "name": "Lila",
+            "lastName": "Barton",
+            "birthYear": 1990
+          }
+        },
+        {
+          "myArray1": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "myArray2": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "myArray3": [
+            "Grzegorz",
+            "Irina",
+            "Yufei"
+          ]
+        }
+      ]
+    }
+  }
+]

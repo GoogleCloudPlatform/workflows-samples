@@ -1,0 +1,41 @@
+[
+  {
+    "step1": {
+      "assign": [
+        {
+          "a": 1
+        }
+      ]
+    }
+  },
+  {
+    "step2": {
+      "switch": [
+        {
+          "condition": "${a==1}",
+          "steps": [
+            {
+              "stepA": {
+                "assign": [
+                  {
+                    "a": "${a+7}"
+                  }
+                ]
+              }
+            },
+            {
+              "stepB": {
+                "return": "${\"increase a to:\"+string(a)}"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "step3": {
+      "return": "${\"default a=\"+string(a)}"
+    }
+  }
+]

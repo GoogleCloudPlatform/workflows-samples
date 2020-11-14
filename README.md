@@ -30,3 +30,9 @@ EXE=$(basename $(
 python -m json.tool result.json > out.json
 cat out.json
 ```
+
+## How to create/edit a sample
+
+To create a create/edit a sample, create or modify a YAML file in the `src` directory.
+
+To generate the equivalent JSON file, run the `tojson.sh` script.

@@ -1,0 +1,14 @@
+[
+  {
+    "readItem": {
+      "try": {
+        "call": "http.get",
+        "args": {
+          "url": "https://example.com/someapi"
+        },
+        "result": "apiResponse"
+      },
+      "retry": "${http.default_retry}"
+    }
+  }
+]
