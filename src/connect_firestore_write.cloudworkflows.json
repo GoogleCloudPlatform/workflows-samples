@@ -1,0 +1,37 @@
+[
+  {
+    "initialize": {
+      "assign": [
+        {
+          "project": "myproject123"
+        },
+        {
+          "collection": "myEntries"
+        },
+        {
+          "document": "Visits"
+        }
+      ]
+    }
+  },
+  {
+    "writeItem": {
+      "call": "http.request",
+      "args": {
+        "url": "${\"https://firestore.googleapis.com/v1/projects/\"+project+\"/databases/(default)/documents/\"+collection+\"/\"+document}",
+        "auth": {
+          "type": "OAuth2"
+        },
+        "method": "PATCH",
+        "body": {
+          "name": "${\"projects/\"+project+\"/databases/(default)/documents/\"+collection+\"/\"+document}",
+          "fields": {
+            "Counter": {
+              "integerValue": 7
+            }
+          }
+        }
+      }
+    }
+  }
+]

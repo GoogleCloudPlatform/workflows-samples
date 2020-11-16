@@ -1,0 +1,31 @@
+[
+  {
+    "getMessage": {
+      "assign": [
+        {
+          "name": "Harsha"
+        },
+        {
+          "lastName": "Kapoor"
+        },
+        {
+          "fullName": "${name+\" \"+lastName}"
+        },
+        {
+          "temperatureC": 27
+        },
+        {
+          "temperatureF": "${temperatureC * 9/5 + 32}"
+        },
+        {
+          "temperatureMsg": "${\"Current temperature is \"+string(temperatureF)+\" F\"}"
+        }
+      ]
+    }
+  },
+  {
+    "returnValue": {
+      "return": "${temperatureMsg}"
+    }
+  }
+]

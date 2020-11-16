@@ -26,3 +26,11 @@ information on using pull requests.
 
 This project follows [Google's Open Source Community
 Guidelines](https://opensource.google/conduct/).
+
+## Generating JSON
+
+To generate JSON files from YAML, run the following script:
+
+```
+./tojson.sh
+```

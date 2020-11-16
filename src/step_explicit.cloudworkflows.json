@@ -1,0 +1,29 @@
+[
+  {
+    "firstStep": {
+      "call": "http.get",
+      "args": {
+        "url": "https://www.somewhere.com/callA"
+      },
+      "next": "secondStep"
+    }
+  },
+  {
+    "thirdStep": {
+      "call": "http.get",
+      "args": {
+        "url": "https://www.somewhere.com/callB"
+      },
+      "next": "end"
+    }
+  },
+  {
+    "secondStep": {
+      "call": "http.get",
+      "args": {
+        "url": "https://www.somewhere.com/callC"
+      },
+      "next": "thirdStep"
+    }
+  }
+]
