@@ -15,26 +15,26 @@
 # [START workflows_connect_firestore_read]
 - initialize:
     assign:
-      - project: "myproject123"
-      - collection: "myEntries"
-      - document: "Report"
+    - project: "myproject123"
+    - collection: "myEntries"
+    - document: "Report"
 - readItem:
     try:
-        call: http.get
-        args:
-            url: ${"https://firestore.googleapis.com/v1/projects/"+project+"/databases/(default)/documents/"+collection+"/"+document}
-            auth:
-                type: OAuth2
-        result: documentValue
+      call: http.get
+      args:
+        url: ${"https://firestore.googleapis.com/v1/projects/"+project+"/databases/(default)/documents/"+collection+"/"+document}
+        auth:
+          type: OAuth2
+      result: documentValue
     except:
-        as: e
-        steps:
-          - isTheKeyFound:
-               switch:
-                 - condition: ${e.code == 404}
-                   next: documentNotFound
-                 - condition: ${e.code == 403}
-                   next: authError
+      as: e
+      steps:
+      - isTheKeyFound:
+          switch:
+          - condition: ${e.code == 404}
+            next: documentNotFound
+          - condition: ${e.code == 403}
+            next: authError
     next: documentFound
 - documentNotFound:
     return: "Document not found."

@@ -12,15 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_http_post]
-- getMessage:
-    call: http.post
-    args:
-        url: https://www.example.com/endpoint
-        body:
-            someVal: "Hello World"
-            anotherVal: 123
-    result: theMessage
-- returnValue:
-    return: ${theMessage.body}
-# [END workflows_http_post]
+# [START workflows_subworkflow]
+main:
+  steps:
+    - first:
+        call: hello
+        args:
+          input: "Kristof"
+        result: someOutput
+    - second:
+        return: ${someOutput}
+
+hello:
+  params: [input]
+  steps:
+    - first:
+        return: ${"Hello "+input}
+# [END workflows_subworkflow]

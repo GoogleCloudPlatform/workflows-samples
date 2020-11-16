@@ -12,20 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_quickstart]
+# [START workflows_step_conditional_weekend]
 - getCurrentTime:
     call: http.get
     args:
-        url: https://us-central1-workflowsample.cloudfunctions.net/datetime
+      url: https://us-central1-workflowsample.cloudfunctions.net/datetime
     result: currentTime
-- readWikipedia:
-    call: http.get
-    args:
-        url: https://en.wikipedia.org/w/api.php
-        query:
-            action: opensearch
-            search: ${currentTime.body.dayOfTheWeek}
-    result: wikiResult
-- returnResult:
-    return: ${wikiResult.body[1]}
-# [END workflows_quickstart]
+- conditionalSwitch:
+    switch:
+      - condition: ${currentTime.body.dayOfTheWeek == "Friday"}
+        next: friday
+      - condition: ${currentTime.body.dayOfTheWeek == "Saturday" OR currentTime.body.dayOfTheWeek == "Sunday"}
+        next: weekend
+    next: workWeek
+- friday:
+    return: "It's Friday! Almost the weekend!"
+- weekend:
+    return: "It's the weekend!"
+- workWeek:
+    return: "It's the work week."
+# [END workflows_step_conditional_weekend]

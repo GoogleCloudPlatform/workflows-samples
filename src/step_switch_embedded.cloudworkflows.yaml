@@ -12,17 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_step_implicit]
-- firstStep:
-    call: http.get
-    args:
-        url: https://www.example.com/callA
-- secondStep:
-    call: http.get
-    args:
-        url: https://www.example.com/callB
-- thirdStep:
-    call: http.get
-    args:
-        url: https://www.example.com/callC
-# [END workflows_step_implicit]
+# [START workflows_step_switch_embedded]
+- step1:
+    assign:
+      - a: 1
+- step2:
+    switch:
+      - condition: ${a==1}
+        steps:
+          - stepA:
+              assign:
+                - a: ${a+7}
+          - stepB:
+              return: ${"increase a to:"+string(a)}
+- step3:
+    return: ${"default a="+string(a)}
+# [END workflows_step_switch_embedded]

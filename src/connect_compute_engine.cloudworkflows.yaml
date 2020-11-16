@@ -12,19 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_step_switch_embedded]
-- step1:
+# [START workflows_connect_compute_engine]
+- initialize:
     assign:
-      - a: 1
-- step2:
-    switch:
-      - condition: ${a==1}
-        steps:
-            - stepA:
-                assign:
-                  - a: ${a+7}
-            - stepB:
-                return: ${"increase a to:"+string(a)}
-- step3:
-    return: ${"default a="+string(a)}
-# [END workflows_step_switch_embedded]
+    - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_NUMBER")}
+    - zone: "us-central1-a"
+    - vmToStop: "examplevm"
+- stopInstance:
+    call: http.post
+    args:
+      url: ${"https://compute.googleapis.com/compute/v1/projects/"+project+"/zones/"+zone+"/instances/"+vmToStop+"/stop"}
+      auth:
+        type: OAuth2
+    result: stopResult
+# [END workflows_connect_compute_engine]

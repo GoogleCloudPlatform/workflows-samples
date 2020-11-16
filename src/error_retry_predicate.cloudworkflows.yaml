@@ -12,12 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_error_rety]
-- readItem:
-    try:
-        call: http.get
-        args:
+# [START workflows_error_retry_predicate]
+main:
+  steps:
+    - readItem:
+        try:
+          call: http.get
+          args:
             url: https://example.com/someapi
-        result: apiResponse
-    retry: ${http.default_retry}
-# [END workflows_error_rety]
+          result: apiResponse
+        retry:
+          predicate: ${myOwnPredicate}
+          max_retries: 5
+          backoff:
+            initial_delay: 2
+            max_delay: 60
+            multiplier: 2
+    - LastStep:
+        return: "OK"
+
+myOwnPredicate:
+  params: [e]
+  steps:
+    - whatToRepeat:
+        switch:
+          - condition: "df"
+            return: True
+    - otherwise:
+        return: False
+# [END workflows_error_retry_predicate]

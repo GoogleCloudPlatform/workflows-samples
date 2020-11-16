@@ -12,13 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_error_catch_retry]
-- STEP_NAME:
-   try:
-       call: http.get
-       # ...
-   except:
-       as: error_dictionary
-       steps:
-          # ...
-# [END workflows_error_catch_retry]
+# [START workflows_step_implicit]
+- firstStep:
+    call: http.get
+    args:
+      url: https://www.example.com/callA
+- secondStep:
+    call: http.get
+    args:
+      url: https://www.example.com/callB
+- thirdStep:
+    call: http.get
+    args:
+      url: https://www.example.com/callC
+# [END workflows_step_implicit]

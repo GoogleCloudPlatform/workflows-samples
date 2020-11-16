@@ -16,7 +16,7 @@
 - firstStep:
     call: http.get
     args:
-        url: https://www.example.com/callA
+      url: https://www.example.com/callA
     result: firstResult
 - whereToJump:
     switch:
@@ -28,16 +28,16 @@
 - small:
     call: http.get
     args:
-        url: https://www.example.com/SmallFunc
+      url: https://www.example.com/SmallFunc
     next: end
 - medium:
     call: http.get
     args:
-        url: https://www.example.com/MediumFunc
+      url: https://www.example.com/MediumFunc
     next: end
 - large:
     call: http.get
     args:
-        url: https://www.example.com/LargeFunc
+      url: https://www.example.com/LargeFunc
     next: end
 # [END workflows_step_conditional_jump]

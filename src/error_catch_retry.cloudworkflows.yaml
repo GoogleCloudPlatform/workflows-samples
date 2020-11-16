@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_vars]
-- firstStep:
-    assign:
-      - SomeName: "Sherlock"
-      - AnotherName: "Ada"
-      - SomeIntegerNumber: 27
-      - SomeDoubleNumber: 4.1
-# [END workflows_vars]
+# [START workflows_error_catch_retry]
+- STEP_NAME:
+    try:
+      call: http.get
+      # ...
+    except:
+      as: error_dictionary
+      steps:
+        # ...
+# [END workflows_error_catch_retry]

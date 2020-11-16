@@ -12,20 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_subworkflow]
-main:
-   steps:
-       - first:
-           call: hello
-           args:
-               input: "Kristof"
-           result: someOutput
-       - second:
-           return: ${someOutput}
-
-hello:
-   params: [input]
-   steps:
-     - first:
-         return: ${"Hello "+input}
-# [END workflows_subworkflow]
+# [START workflows_dictionary]
+- firstStep:
+    assign:
+      - myDictionary:
+          name: Lila
+          lastName: Barton
+          birthYear: 1990
+      - myArray1: [1, 2, 3]
+      - myArray2:
+          - 1
+          - 2
+          - 3
+      - myArray3: ["Grzegorz", "Irina", "Yufei"]
+# [END workflows_dictionary]

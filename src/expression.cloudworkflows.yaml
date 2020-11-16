@@ -12,18 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_error_retry_custom]
-- readItem:
-    try:
-       call: http.get
-       args:
-           url: https://example.com/someapi
-       result: apiResponse
-    retry:
-        predicate: ${http.default_retry_predicate}
-        max_retries: 5
-        backoff:
-            initial_delay: 2
-            max_delay: 60
-            multiplier: 2
-# [END workflows_error_retry_custom]
+# [START workflows_expression]
+- getMessage:
+    assign:
+      - name: "Harsha"
+      - lastName: "Kapoor"
+      - fullName: ${name+" "+lastName}
+      - temperatureC: 27
+      - temperatureF: ${temperatureC * 9/5 + 32}
+      - temperatureMsg: ${"Current temperature is "+string(temperatureF)+" F"}
+- returnValue:
+    return: ${temperatureMsg}
+# [END workflows_expression]

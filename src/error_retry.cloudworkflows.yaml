@@ -12,15 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_expression]
-- getMessage:
-    assign:
-      - name: "Harsha"
-      - lastName: "Kapoor"
-      - fullName: ${name+" "+lastName}
-      - temperatureC: 27
-      - temperatureF: ${temperatureC * 9/5 + 32}
-      - temperatureMsg: ${"Current temperature is "+string(temperatureF)+" F"}
-- returnValue:
-    return: ${temperatureMsg}
-# [END workflows_expression]
+# [START workflows_error_rety]
+- readItem:
+    try:
+      call: http.get
+      args:
+        url: https://example.com/someapi
+      result: apiResponse
+    retry: ${http.default_retry}
+# [END workflows_error_rety]

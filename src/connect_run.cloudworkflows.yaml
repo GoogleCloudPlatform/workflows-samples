@@ -12,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_connect_functions]
+# [START workflows_connect_run]
 - callMyFunction:
-    call: http.post
+    call: http.get
     args:
-        url: https://us-central1-myproject123.cloudfunctions.net/myfunc1
-        auth:
-            type: OIDC
-        body:
-            someVal: "Hello World"
-            anotherVal: 123
+      url: https://example-12345-ew.a.run.app
+      auth:
+        type: OIDC
+      query:
+        someVal: "Hello World"
+        anotherVal: 123
     result: theMessage
 - returnValue:
     return: ${theMessage.body}
-# [END workflows_connect_functions]
+# [END workflows_connect_run]
