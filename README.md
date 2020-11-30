@@ -31,6 +31,21 @@ python -m json.tool result.json > out.json
 cat out.json
 ```
 
+## How to provide autocompletion to your workflow file
+
+To provide autocompletion to your workflow file, in an IDE that supports JSON schema (like VS Code), name your file with one of these patterns:
+
+- `workflows.json`
+- `workflows.yaml`
+- `workflows.yml`
+- `*.workflows.json`
+- `*.workflows.yaml`
+- `*.workflows.yml`
+
+The autocompletion uses the schema located at https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/workflows.json
+
+If there are issues with the schema, please file an issue in this repo.
+
 ## How to create/edit a sample
 
 To create a create/edit a sample, create or modify a YAML file in the `src` directory.
