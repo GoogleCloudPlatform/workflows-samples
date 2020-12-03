@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_error_rety]
+# [START workflows_error_retry]
 - readItem:
     try:
       call: http.get
@@ -20,4 +20,4 @@
         url: https://example.com/someapi
       result: apiResponse
     retry: ${http.default_retry}
-# [END workflows_error_rety]
+# [END workflows_error_retry]
