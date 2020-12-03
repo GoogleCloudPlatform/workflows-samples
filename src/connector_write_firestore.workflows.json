@@ -1,0 +1,73 @@
+[
+  {
+    "initVariables": {
+      "assign": [
+        {
+          "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "collection": "peopleDatabase"
+        },
+        {
+          "document": "smith.j"
+        },
+        {
+          "valuesToWrite": {
+            "FirstName": {
+              "stringValue": "John"
+            },
+            "LastName": {
+              "stringValue": "Smith"
+            },
+            "Age": {
+              "integerValue": 32
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "writeToFirestore": {
+      "try": {
+        "call": "googleapis.firestore.v1.projects.databases.documents.patch",
+        "args": {
+          "name": "${\"projects/\"+project+\"/databases/(default)/documents/\"+collection+\"/\"+document}",
+          "body": {
+            "fields": "${valuesToWrite}"
+          }
+        },
+        "result": "writeResult"
+      },
+      "except": {
+        "as": "e",
+        "steps": [
+          {
+            "handleFirestoreWriteError": {
+              "switch": [
+                {
+                  "condition": "${e.code == 404}",
+                  "raise": "Firestore database or document not found"
+                },
+                {
+                  "condition": "${e.code == 403}",
+                  "raise": "Error authenticating to Firestore"
+                }
+              ]
+            }
+          },
+          {
+            "unhandledException": {
+              "raise": "${e}"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "last": {
+      "return": "${writeResult.body}"
+    }
+  }
+]
