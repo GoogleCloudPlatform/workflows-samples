@@ -4,7 +4,7 @@
       "call": "http.get",
       "args": {
         "url": "https://www.example.com/endpoint",
-        "header": {
+        "headers": {
           "Content-Type": "text/plain"
         },
         "query": {
