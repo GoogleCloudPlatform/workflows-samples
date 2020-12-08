@@ -37,7 +37,7 @@ custom_predicate:
       - what_to_repeat:
           switch:
           - condition: ${e.code == 500}
-              return: True
+            return: True
       - otherwise:
           return: False
 # [END workflows_error_retry_500]
