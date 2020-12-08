@@ -37,7 +37,8 @@
         "what_to_repeat": {
           "switch": [
             {
-              "condition": "${e.code == 500}\nreturn: True"
+              "condition": "${e.code == 500}",
+              "return": true
             }
           ]
         }
