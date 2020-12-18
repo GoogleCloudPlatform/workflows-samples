@@ -4,34 +4,62 @@ This repository contains samples for [Cloud Workflows](https://cloud.google.com/
 
 ## How to use these samples
 
+All workflow samples are in the `src/` directory with the file format `*.workflows.{yaml/json}`.
+
+The JSON and YAML files have equivalent behavior and functionality. Using JSON vs YAML is a matter of personal preference.
+
+(The `.json` workflow files are generated from the YAML files.)
+
 ### Deploy a Workflow
 
-To create a workflow, 
+To upload a workflow to Google Cloud, deploy the workflow,
+replacing the `WORKFLOW` value with an ID of a workflow seen in the `src/` directory.
+
+Example:
 
 ```sh
-gcloud beta workflows deploy myWorkflow.yaml
+WORKFLOW=myFirstWorkflow
+gcloud beta workflows deploy $WORKFLOW --source src/$WORKFLOW.workflows.yaml
+```
+
+You can also deploy the JSON workflow similarly:
+
+```sh
+WORKFLOW=myFirstWorkflow
+gcloud beta workflows deploy $WORKFLOW --source src/$WORKFLOW.workflows.json
 ```
 
 ### Run a Workflow
 
-To run a workflow, use the `workflows execute` command with your workflow like `myWorkflow`:
+After deploying a workflow, to run a workflow, use the `workflows execute` command with your workflow name like `myFirstWorkflow`:
 
 ```sh
-gcloud beta workflows execute myWorkflow
+gcloud beta workflows execute myFirstWorkflow
 ```
 
-To run a workflow and imediately view the results, run a script like this, replacing `myWorkflow` with your workflow name:
+To see the results from the execution, run the command printed after executing the workflow. Example format:
 
 ```sh
+gcloud beta workflows executions describe 7d8985dc-some-id-3e51d24f2576 --workflow myFirstWorkflow
+```
+
+#### Quickly Edit and Run Workflow
+
+To run a workflow and imediately view the results, run a script like this, replacing `myFirstWorkflow` with your workflow name:
+
+```sh
+WORKFLOW=myFirstWorkflow
+gcloud beta workflows deploy $WORKFLOW --source src/$WORKFLOW.workflows.yaml
+
 EXE=$(basename $(
-  gcloud beta workflows execute myWorkflow --format='value(name)')
+  gcloud beta workflows execute $WORKFLOW --format='value(name)')
 ) &&
-  gcloud beta workflows executions describe $EXE --workflow myWorkflow --format='value(result)' > result.json
-python -m json.tool result.json > out.json
-cat out.json
+  gcloud beta workflows executions describe $EXE --workflow $WORKFLOW --format='value(result)' > result.json
+python -m json.tool result.json
+rm result.json
 ```
 
-## How to provide autocompletion to your workflow file
+## (Experimental) How to provide autocompletion to your workflow file
 
 To provide autocompletion to your workflow file, in an IDE that supports JSON schema (like VS Code), name your file with one of these patterns:
 
@@ -48,6 +76,6 @@ If there are issues with the schema, please file an issue in this repo.
 
 ## How to create/edit a sample
 
-To create a create/edit a sample, create or modify a YAML file in the `src` directory.
+To create a create/edit a sample, create or modify a **YAML** file in the `src/` directory.
 
-To generate the equivalent JSON file, run the `tojson.sh` script.
+Then, to generate the equivalent JSON file, run the `tojson.sh` script.
