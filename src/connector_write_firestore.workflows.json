@@ -67,7 +67,7 @@
   },
   {
     "last": {
-      "return": "${writeResult.body}"
+      "return": "${writeResult.name}"
     }
   }
 ]
