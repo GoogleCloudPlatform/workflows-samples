@@ -31,5 +31,5 @@
         - unhandledException:
             raise: ${e}
 - last:
-    return: ${writeResult.body}
+    return: ${writeResult.name}
 # [END workflows_connector_write_firestore]
