@@ -51,7 +51,10 @@ To provide autocompletion to your workflow file, in an IDE that supports JSON sc
 - `*.workflows.yaml`
 - `*.workflows.yml`
 
-The autocompletion uses the schema located at https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/workflows.json
+The autocompletion uses the schema from Schema Store:
+
+- Hosted Schema: https://json.schemastore.org/workflows
+- GitHub Source: https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/workflows.json
 
 If there are issues with the schema, please file an issue in this repo.
 
