@@ -1,16 +1,24 @@
 {
     "files.exclude": {
-        "**/.git": true,
+        <<
+        << << < Updated upstream "**/.git": true,
         "**/.svn": true,
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "terraform/.terraform": true,
-        "**/.terraform": true,
-        "terraform/*.*": true,
-        ".terraform": true,
+        "terraform/.terraform": false,
+        "**/.terraform": false,
+        "terraform/*.*": false,
+        ".terraform": false,
         "**/.vscode": true,
-        ".vscode": true
+        ".vscode": true ===
+            === =
+            "**/.git": false,
+        "**/.svn": false,
+        "**/.hg": false,
+        "**/CVS": false,
+        "**/.DS_Store": false >>>
+            >>> > Stashed changes
     },
     "explorerExclude.backup": null
 }
