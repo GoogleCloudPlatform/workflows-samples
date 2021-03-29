@@ -1,0 +1,14 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "terraform/.terraform": true,
+        "**/.terraform": true,
+        "terraform/*.*": true,
+        ".terraform": true
+    },
+    "explorerExclude.backup": null
+}
