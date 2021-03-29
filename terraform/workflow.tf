@@ -7,6 +7,7 @@ resource "google_workflows_workflow" "example" {
   project         = var.gcp_project
   source_contents = <<-EOF
   # Sample workflow. Note the double $ sign within the expressions. This will be deployed as a single $ sign
+  # Sample input: {"resource":{"machineType":"projects/uri-test/zones/us-central1-a/machineTypes/e2-medium","name":"instance-500","disks":[{"boot":true,"initializeParams":{"sourceImage":"projects/debian-cloud/global/images/debian-10-buster-v20210217","diskType":"projects/uri-test/zones/us-central1-a/diskTypes/pd-balanced","diskSizeGb":10}}],"networkInterfaces":[{"subnetwork":"projects/uri-test/regions/us-central1/subnetworks/default"}],"serviceAccounts":[{"email":"960394617171-compute@developer.gserviceaccount.com","scopes":["https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring.write","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append"]}]}}
   main:
     params: [args]
     steps:
