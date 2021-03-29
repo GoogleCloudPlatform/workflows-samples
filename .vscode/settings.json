@@ -8,7 +8,9 @@
         "terraform/.terraform": true,
         "**/.terraform": true,
         "terraform/*.*": true,
-        ".terraform": true
+        ".terraform": true,
+        "**/.vscode": true,
+        ".vscode": true
     },
     "explorerExclude.backup": null
 }
