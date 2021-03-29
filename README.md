@@ -63,3 +63,7 @@ If there are issues with the schema, please file an issue in this repo.
 To create a create/edit a sample, create or modify a **YAML** file in the `src/` directory.
 
 Then, to generate the equivalent JSON file, run the `tojson.sh` script.
+
+## Terraform support
+
+See the README file in `terraform/` directory.
