@@ -1,0 +1,55 @@
+{
+    "project": "uri-test",
+    "bucket": "uri-test-dlp",
+    "filename": "keep.txt",
+    "inspectJob": {
+        "inspectConfig": {
+            "infoTypes": [
+                {
+                    "name": "PERSON_NAME"
+                },
+                {
+                    "name": "ORGANIZATION_NAME"
+                },
+                {
+                    "name": "LAST_NAME"
+                },
+                {
+                    "name": "URL"
+                },
+                {
+                    "name": "CREDIT_CARD_NUMBER"
+                },
+                {
+                    "name": "DOMAIN_NAME"
+                },
+                {
+                    "name": "EMAIL_ADDRESS"
+                },
+                {
+                    "name": "ETHNIC_GROUP"
+                },
+                {
+                    "name": "FIRST_NAME"
+                },
+                {
+                    "name": "LAST_NAME"
+                },
+                {
+                    "name": "GCP_CREDENTIALS"
+                },
+                {
+                    "name": "PHONE_NUMBER"
+                }
+            ],
+            "minLikelihood": "LIKELIHOOD_UNSPECIFIED"
+        },
+        "storageConfig": {
+            "cloudStorageOptions": {
+                "fileSet": {
+                    "url": "gs://uri-test-dlp/keep.txt"
+                }
+            }
+        }
+    }
+}

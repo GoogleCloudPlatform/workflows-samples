@@ -1,1 +1,5 @@
 result.json
+samples/run-dlp/LocalTestingFunctions/get_dlp_job_status.py
+samples/run-dlp/LocalTestingFunctions/inspect_gcs_file.py
+samples/run-dlp/LocalTestingFunctions/trigger-dlp-workflow.py
+samples/run-dlp/.DS_Store
