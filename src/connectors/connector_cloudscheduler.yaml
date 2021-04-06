@@ -1,0 +1,76 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START connector_cloudscheduler]
+# This workflow demonstrates how to use the Cloud Scheduler connector.
+# This workflow creates a Pubsub topic, a subscription to the topic, which will be used by Cloud Scheduler
+# as a notification method. The workflow then creates a scheduler job, waits for the job to finish, and pulls the notification from
+# the subscription. It then deletes all resources.
+# On success, it returns "SUCCESS".
+
+- init:
+    assign:
+    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+    - location_id: "us-central1"
+    - job_id: "dummy-job-id"
+    - topic_id: "dummy-topic-id"  # Pubsub topic used by Cloud Scheduler as a notification target.
+    - subscription: "dummy-subscription-id"
+- create_topic:
+    call: googleapis.pubsub.v1.projects.topics.create
+    args:
+      name: ${"projects/" + project_id + "/topics/" + topic}
+- create_subscription_to_topic:
+    call: googleapis.pubsub.v1.projects.subscriptions.create
+    args:
+      name: ${"projects/" + project_id + "/subscriptions/" + subscription}
+      body:
+        name: ${"projects/" + project_id + "/subscriptions/" + subscription}
+        topic: ${"projects/" + project_id + "/topics/" + topic}
+- create_job:
+    call: googleapis.cloudscheduler.v1.projects.locations.jobs.create
+    args:
+      parent: ${"projects/" + project_id + "/locations/" + location_id}
+      body:
+        name: ${"projects/" + project_id + "/locations/" + location_id + "/jobs/" + job_id}
+        description: "A dummy job created by connector_cloudscheduler.yaml workflow to test the Cloud Scheduler connector."
+        schedule: "* * * * *"  # Run job every minute, see https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules.
+        pubsubTarget:
+          topicName: ${"projects/" + project_id + "/topics/" + topic}
+          attributes:
+            job: "finished!"
+- sleep:
+    call: sys.sleep
+    args:
+      seconds: 100
+- pull_message:
+    call: googleapis.pubsub.v1.projects.subscriptions.pull
+    args:
+      subscription: ${"projects/" + project_id + "/subscriptions/" + subscription}
+      body:
+        maxMessages: 1
+- delete_job:
+    call: googleapis.cloudscheduler.v1.projects.locations.jobs.delete
+    args:
+      name: ${"projects/" + project_id + "/locations/" + location_id + "/jobs/" + job_id}
+- delete_subscription:
+    call: googleapis.pubsub.v1.projects.subscriptions.delete
+    args:
+      subscription: ${"projects/" + project_id + "/subscriptions/" + subscription}
+- delete_topic:
+    call: googleapis.pubsub.v1.projects.topics.delete
+    args:
+      topic: ${"projects/" + project_id + "/topics/" + topic}
+- the_end:
+    return: "SUCCESS"
+# [END connector_cloudscheduler]
