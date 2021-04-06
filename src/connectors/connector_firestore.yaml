@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_connector_read_firestore]
+# [START connector_firestore]
 
 # This workflow demonstrates how to use the firestore connector.
 # The workflow creates a new dataset and then issues a simple query to insert a table with
@@ -69,3 +69,4 @@
       datasetId: ${dataset_id}
 - the_end:
     return: 'SUCCESS'
+# [END connector_firestore]
