@@ -27,9 +27,9 @@
     - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
     - dataset_id: "dummy_dataset_id"
     - table_id: "dummy_table_id"
-    - query: 'SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 5000;'
-    - create_disposition: 'CREATE_IF_NEEDED'  # Create a new one if the table doesn't exist.
-    - write_disposition: 'WRITE_TRUNCATE'  # Truncate it if the table already exists.
+    - query: "SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 5000;"
+    - create_disposition: "CREATE_IF_NEEDED"  # Create a new one if the table doesn't exist.
+    - write_disposition: "WRITE_TRUNCATE"  # Truncate it if the table already exists.
 - create_dataset:
     call: googleapis.bigquery.v2.datasets.insert
     args:
@@ -68,5 +68,5 @@
       projectId: ${project_id}
       datasetId: ${dataset_id}
 - the_end:
-    return: 'SUCCESS'
+    return: "SUCCESS"
 # [END connector_firestore]
