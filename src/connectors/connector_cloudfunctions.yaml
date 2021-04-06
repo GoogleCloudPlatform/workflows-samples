@@ -13,7 +13,6 @@
 # limitations under the License.
 
 # [START connector_cloudfunctions]
-
 # This workflow demonstrates how to use the Cloud Functions connector.
 # This workflow creates a function from a zip archive containing the source code stored in a Google Storage bucket:
 # gs://your-bucket/cloud-function-source.zip.
@@ -73,7 +72,7 @@ main:
       args:
         name: ${"projects/" + project + "/locations/" + location + "/functions/" + name}
   - the_end:
-      return: 'SUCCESS'
+      return: "SUCCESS"
 
 assert_response:
   params: [expected_response, got_response]
