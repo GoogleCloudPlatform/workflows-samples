@@ -1,0 +1,62 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START connector_cloudtasks]
+# This workflow demonstrates how to use the Cloud Tasks connector.
+# The workflow creates a Cloud Tasks queue, creates a task in that queue then delete the task and
+# the queue.
+# Expected successful output: "SUCCESS"
+
+- init:
+    assign:
+    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+    - location_id: "us-central1"
+    - queue_id: "dummy-queue-id"
+    - task_id: "dummy-task-id"
+    - schedule_time: "[fill this in]"  # The time when the task is scheduled to be attempted or retried. Must be in RFC3339 UTC "Zulu" format, examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
+    - cloud_function_url: "[fill this in]"  # The Cloud Function to be triggered by the task.
+- create_queue:
+    call: googleapis.cloudtasks.v2.projects.locations.queues.create
+    args:
+      parent: ${"projects/" + project_id + "/locations/" + location_id}
+      body:
+        name: ${"projects/" + project_id + "/locations/" + location_id + "/queues/" + queue_id}
+    result: queue
+- create_task:
+    call: googleapis.cloudtasks.v2.projects.locations.queues.tasks.create
+    args:
+      parent: ${queue.name}
+      body:
+        task:
+          name: ${queue.name + "/tasks/" + task_id}
+          scheduleTime: ${schedule_time}
+          httpRequest:
+            url: ${cloud_function_url}
+            httpMethod: "GET"
+    result: task
+- get_task:
+    call: googleapis.cloudtasks.v2.projects.locations.queues.tasks.get
+    args:
+      name: ${task.name}
+- delete_task:
+    call: googleapis.cloudtasks.v2.projects.locations.queues.tasks.delete
+    args:
+      name: ${task.name}
+- delete_queue:
+    call: googleapis.cloudtasks.v2.projects.locations.queues.delete
+    args:
+      name: ${queue.name}
+- the_end:
+    return: "SUCCESS"
+# [END connector_cloudtasks]
