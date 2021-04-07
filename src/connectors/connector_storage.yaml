@@ -1,0 +1,41 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START connector_storage]
+# This workflow demonstrates how to use the Cloud Storage connector.
+# The workflow creates a Cloud Storage bucket and then deletes it.
+# Expected successful output: "SUCCESS"
+
+- init:
+    assign:
+    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+    - bucket_name: "dummy-bucket"
+- create_bucket:
+    call: googleapis.storage.v1.buckets.insert
+    args:
+      query:
+        project: ${project_id}
+      body:
+        name: ${bucket_name}
+- get_bucket:
+    call: googleapis.storage.v1.buckets.get
+    args:
+      bucket: ${bucket_name}
+- delete_bucket:
+    call: googleapis.storage.v1.buckets.delete
+    args:
+      bucket: ${bucket_name}
+- the_end:
+    return: "SUCCESS"
+# [END connector_storage]
