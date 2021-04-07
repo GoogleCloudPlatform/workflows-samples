@@ -53,8 +53,7 @@ main:
         projectId: ${project_id}
         zone: ${cluster_zone}
         clusterId: ${cluster_id}
-        query:
-          name: ${cluster_full_name}
+        name: ${cluster_full_name}
   - the_end:
       return: "SUCCESS"
 
@@ -67,8 +66,7 @@ assert_cluster_status:
         projectId: ${project_id}
         zone: ${cluster_zone}
         clusterId: ${cluster_id}
-        query:
-          name: ${cluster_full_name}
+        name: ${cluster_full_name}
       result: cluster
   - compare:
       switch:
