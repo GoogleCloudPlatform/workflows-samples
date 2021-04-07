@@ -1,0 +1,77 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START connector_dataflow]
+# This workflow demonstrates how to use the Cloud Dataflow connector.
+# The workflow creates a word count job using a public job template from
+# Dataflow and uses Cloud Storage bucket as a temperory storage for temp files.
+# The bucket resource will be deleted after the job is complete.
+# Expected successful output: "SUCCESS"
+
+- init:
+    assign:
+    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+    - location: "us-central1"
+    - zone: "us-central1-a"
+    - bucket_name: "[fill in a bucket name]"
+    - job_name: "[fill in a job name]"
+    - input_file: "gs://dataflow-samples/shakespeare/kinglear.txt"
+    - output_storage_file_prefix: ${"gs://" + args.bucketName + "/counts"}
+    - temp_location: ${"gs://" + bucket_name + "/counts"}
+    - template_path: "gs://dataflow-templates-us-central1/latest/Word_Count"
+- create_bucket:
+    call: googleapis.storage.v1.buckets.insert
+    args:
+      query:
+        project: ${project_id}
+      body:
+        name: ${bucket_name}
+- create_job:
+    call: googleapis.dataflow.v1b3.projects.locations.templates.create
+    args:
+      projectId: ${project_id}
+      location: ${location}
+      body:
+        jobName: ${job_name}
+        parameters:
+          inputFile: ${input_file}
+          output: ${output_storage_file_prefix}
+        environment:
+          numWorkers: 1
+          maxWorkers: 2
+          zone: ${zone}
+          tempLocation: ${temp_location}
+        gcsPath: ${template_path}
+- delete_bucket_object1:
+    call: googleapis.storage.v1.objects.delete
+    args:
+      bucket: ${bucket_name}
+      object: ${"counts-00000-of-00003"}
+- delete_bucket_object2:
+    call: googleapis.storage.v1.objects.delete
+    args:
+      bucket: ${bucket_name}
+      object: ${"counts-00001-of-00003"}
+- delete_bucket_object3:
+    call: googleapis.storage.v1.objects.delete
+    args:
+      bucket: ${bucket_name}
+      object: ${"counts-00002-of-00003"}
+- delete_bucket:
+    call: googleapis.storage.v1.buckets.delete
+    args:
+      bucket: ${bucket_name}
+- the_end:
+    return: "SUCCESS"
+# [END connector_dataflow]
