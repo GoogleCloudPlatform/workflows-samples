@@ -1,0 +1,71 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START connector_dataflow]
+# This workflow demonstrates how to use the Cloud Storage Transfer connector.
+# The workflow creates a storage transfer job that transfers data between two buckets, 
+# runs the job, and deletes the job.
+# Expected successful output: "SUCCESS"
+
+- init:
+    assign:
+    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+    - transferjob_name: "transferJobs/dummy-transfer-job"
+    - src_bucket_name: "[fill in with the source bucket name]"
+    - sink_bucket_name: "[fill in with the destination bucket name]"
+- create_transferjob:
+    call: googleapis.storagetransfer.v1.transferJobs.create
+    args:
+      body:
+        name: ${transferjob_name}
+        description: "A job that transfers data between src and sink buckets."
+        projectId: ${project_id}
+        transferSpec:
+          gcsDataSink:
+            bucketName: ${sink_bucket_name}
+            path: ""
+          gcsDataSource:
+            bucketName: ${src_bucket_name}
+            path: ""
+        status: "DISABLED"
+- enable_transferjob:
+    call: googleapis.storagetransfer.v1.transferJobs.patch
+    args:
+      jobName: ${transferjob_name}
+      body:
+        projectId: ${project_id}
+        transferJob:
+          status: "ENABLED"
+- run_job:
+    call: googleapis.storagetransfer.v1.transferJobs.run
+    args:
+      jobName: ${transferjob_name}
+      body:
+        projectId: ${project_id}
+    result: r
+- delete_transferjob:
+    # After a transfer job is set to this state, the job and all
+    # the transfer executions are subject to garbage collection.
+    # Transfer jobs become eligible for garbage collection 30 days
+    # after their status is set to DELETED.
+    call: googleapis.storagetransfer.v1.transferJobs.patch
+    args:
+      jobName: ${transferjob_name}
+      body:
+        projectId: ${project_id}
+        transferJob:
+          status: "DELETED"
+- the_end:
+    return: "SUCCESS"# then deletes the job.
+# [END connector_storagetransfer]
