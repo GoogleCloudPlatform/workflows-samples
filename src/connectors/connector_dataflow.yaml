@@ -33,8 +33,7 @@
 - create_bucket:
     call: googleapis.storage.v1.buckets.insert
     args:
-      query:
-        project: ${project_id}
+      project: ${project_id}
       body:
         name: ${bucket_name}
 - create_job:
