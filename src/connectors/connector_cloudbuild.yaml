@@ -31,8 +31,7 @@
     call: googleapis.cloudbuild.v1.projects.builds.create
     args:
       projectId: ${project_id}
-      query:
-        parent: ${"projects/" + project_id + "/locations/" + location_id}
+      parent: ${"projects/" + project_id + "/locations/" + location_id}
       body:
         source:
           storageSource:
