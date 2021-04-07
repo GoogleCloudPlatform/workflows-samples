@@ -1,0 +1,45 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START connector_workflows]
+# This workflow demonstrates how to use the Cloud Workflows connector.
+# The workflow creates/gets/deletes a workflow.
+# Expected successful output: "SUCCESS"
+
+- init:
+    assign:
+    - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+    - location: "us-central1"
+    - workflow: "dummy-workflow"
+- create_workflow:
+    call: googleapis.workflows.v1.projects.locations.workflows.create
+    args:
+      parent: ${"projects/" + project + "/locations/" + location}
+      query:
+        workflowId: ${workflow}
+      body:
+        name: ${"projects/" + project + "/locations/" + location + "/workflows/" + workflow}
+        description: "A dummy workflow to be created and deleted."
+        sourceContents: "- step:\n    next: end"
+- get_workflow:
+    call: googleapis.workflows.v1.projects.locations.workflows.get
+    args:
+      name: ${"projects/" + project + "/locations/" + location + "/workflows/" + workflow}
+- delete_workflow:
+    call: googleapis.workflows.v1.projects.locations.workflows.delete
+    args:
+      name: ${"projects/" + project + "/locations/" + location + "/workflows/" + workflow}
+- the_end:
+    return: "SUCCESS"
+# [END connector_workflows]
