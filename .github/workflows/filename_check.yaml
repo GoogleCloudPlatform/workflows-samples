@@ -11,6 +11,4 @@ jobs:
       with:
         node-version: '12'
     - name: Run toJSON script
-      run: ./tojson.sh
-    - name: Ensure there is no diff
-      run: git diff --exit-code .
+      run: ./validateFilenames.sh
