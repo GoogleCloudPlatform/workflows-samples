@@ -17,7 +17,7 @@
 # This workflow creates a Pubsub topic, a subscription to the topic, which will be used by Cloud Scheduler
 # as a notification method. The workflow then creates a scheduler job, waits for the job to finish, and pulls the notification from
 # the subscription. It then deletes all resources.
-# On success, it returns "SUCCESS".
+# Expected successful output: "SUCCESS"
 
 - init:
     assign:
