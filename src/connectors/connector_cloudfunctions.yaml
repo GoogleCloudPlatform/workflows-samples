@@ -18,7 +18,7 @@
 # gs://your-bucket/cloud-function-source.zip.
 # Please make sure cloud-function-source.zip contains properly structured Cloud Function source code and the funcion returns
 # "success" when triggered.
-# On success, it returns "SUCCESS".
+# Expected successful output: "SUCCESS"
 
 main:
   params: []
