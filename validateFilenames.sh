@@ -15,4 +15,4 @@ for path in $(find . -name '*.yaml'); do
 done
 
 # Fail CI if a path doesn't match.
-if [[ $FAILED ]]; then exit 1;
+if [[ $FAILED ]]; then exit 1; fi
