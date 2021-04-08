@@ -1,0 +1,56 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "location_id": "global"
+        },
+        {
+          "repo": "${project_id + \"-docker-repo\"}"
+        },
+        {
+          "image_path": "${\"us-central1-docker.pkg.dev/\" + project_id + \"/\" + repo + \"/quickstart-image:tag1\"}"
+        }
+      ]
+    }
+  },
+  {
+    "create_build": {
+      "call": "googleapis.cloudbuild.v1.projects.builds.create",
+      "args": {
+        "projectId": "${project_id}",
+        "parent": "${\"projects/\" + project_id + \"/locations/\" + location_id}",
+        "body": {
+          "source": {
+            "storageSource": {
+              "bucket": "${project_id + \"_cloudbuild\"}",
+              "object": "source/dummy_src.tgz"
+            }
+          },
+          "steps": [
+            {
+              "name": "gcr.io/cloud-builders/docker",
+              "args": [
+                "build",
+                "-t",
+                "${image_path}",
+                "."
+              ]
+            }
+          ],
+          "images": [
+            "${image_path}"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]

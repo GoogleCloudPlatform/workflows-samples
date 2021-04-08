@@ -1,0 +1,30 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "location": "us-central1"
+        },
+        {
+          "workflow": "[fill in the workflow to execute]"
+        }
+      ]
+    }
+  },
+  {
+    "create_execution": {
+      "call": "googleapis.workflowexecutions.v1.projects.locations.workflows.executions.create",
+      "args": {
+        "parent": "${\"projects/\" + project + \"/locations/\" + location + \"/workflows/\" + workflow}"
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]

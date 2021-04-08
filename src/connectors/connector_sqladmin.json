@@ -1,0 +1,92 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "instance": "[fill in an instance name]"
+        },
+        {
+          "tier": "db-n1-standard-1"
+        },
+        {
+          "database_name": "[fill in an instance name]"
+        }
+      ]
+    }
+  },
+  {
+    "create_instance": {
+      "call": "googleapis.sqladmin.v1beta4.instances.insert",
+      "args": {
+        "project": "${project}",
+        "body": {
+          "kind": "sql#database",
+          "settings": {
+            "tier": "${tier}"
+          },
+          "project": "${project}",
+          "backendType": "SECOND_GEN",
+          "name": "${instance}"
+        }
+      }
+    }
+  },
+  {
+    "create_database": {
+      "call": "googleapis.sqladmin.v1beta4.databases.insert",
+      "args": {
+        "project": "${project}",
+        "instance": "${instance}",
+        "body": {
+          "kind": "sql#database",
+          "charset": "utf8",
+          "collation": "utf8_general_ci",
+          "name": "${database_name}",
+          "instance": "${instance}",
+          "project": "${project}",
+          "sqlserverDatabaseDetails": {
+            "compatibilityLevel": 5,
+            "recoveryModel": "Simple"
+          }
+        }
+      }
+    }
+  },
+  {
+    "get_database": {
+      "call": "googleapis.sqladmin.v1beta4.databases.get",
+      "args": {
+        "project": "${project}",
+        "instance": "${instance}",
+        "database": "${database_name}"
+      }
+    }
+  },
+  {
+    "delete_database": {
+      "call": "googleapis.sqladmin.v1beta4.databases.delete",
+      "args": {
+        "project": "${project}",
+        "instance": "${instance}",
+        "database": "${database_name}"
+      }
+    }
+  },
+  {
+    "delete_instance": {
+      "call": "googleapis.sqladmin.v1beta4.instances.delete",
+      "args": {
+        "project": "${project}",
+        "instance": "${instance}"
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]

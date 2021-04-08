@@ -1,0 +1,77 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "location_id": "us-central1"
+        },
+        {
+          "glossary_id": "dummy-glossary-id"
+        }
+      ]
+    }
+  },
+  {
+    "list_supported_translation": {
+      "call": "googleapis.translate.v2.languages.list",
+      "args": {
+        "target": "fr"
+      }
+    }
+  },
+  {
+    "basic_translate": {
+      "call": "googleapis.translate.v2.translations.translate",
+      "args": {
+        "q": "hello world",
+        "target": "fr",
+        "format": "text",
+        "source": "en"
+      }
+    }
+  },
+  {
+    "create_glossary": {
+      "call": "googleapis.translate.v3.projects.locations.glossaries.create",
+      "args": {
+        "parent": "${\"projects/\" + project_id + \"/locations/\" + location_id}",
+        "body": {
+          "name": "${\"projects/\" + project_id + \"/locations/\" + location_id + \"/glossaries/\" + glossary_id}",
+          "inputConfig": {
+            "gcsSource": {
+              "inputUri": "gs://translate-glossary-source/glossary.csv"
+            }
+          },
+          "languagePair": {
+            "sourceLanguageCode": "en-US",
+            "targetLanguageCode": "zh-CN"
+          }
+        }
+      }
+    }
+  },
+  {
+    "list_glossaries": {
+      "call": "googleapis.translate.v3.projects.locations.glossaries.list",
+      "args": {
+        "parent": "${\"projects/\" + project_id + \"/locations/\" + location_id}"
+      }
+    }
+  },
+  {
+    "delete_glossary": {
+      "call": "googleapis.translate.v3.projects.locations.glossaries.delete",
+      "args": {
+        "name": "${\"projects/\" + project_id + \"/locations/\" + location_id + \"/glossaries/\" + glossary_id}"
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]
