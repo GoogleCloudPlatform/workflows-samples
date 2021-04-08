@@ -1,5 +1,6 @@
 #/bin/bash
 
+echo "Validating filenames..."
 workflowsFilePattern="*.workflows.yaml";
 
 cd src
