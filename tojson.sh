@@ -15,11 +15,10 @@ then
 fi
 
 # Loop through all yaml files, convert to json
-rm -rf src/*.json
+rm -rf **/*.json
 cd src
-for path in *.yaml; do
-  jsonname="${path##*/}"
-  yaml2json $jsonname --save --pretty
+for path in $(find . -name '*.yaml'); do
+  yaml2json $path --save --pretty
 done
 cd ..
 echo 'Done!'

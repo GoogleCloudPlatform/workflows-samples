@@ -1,0 +1,109 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "location": "us-central1"
+        },
+        {
+          "zone": "us-central1-a"
+        },
+        {
+          "bucket_name": "[fill in a bucket name]"
+        },
+        {
+          "job_name": "[fill in a job name]"
+        },
+        {
+          "input_file": "gs://dataflow-samples/shakespeare/kinglear.txt"
+        },
+        {
+          "output_storage_file_prefix": "${\"gs://\" + args.bucketName + \"/counts\"}"
+        },
+        {
+          "temp_location": "${\"gs://\" + bucket_name + \"/counts\"}"
+        },
+        {
+          "template_path": "gs://dataflow-templates-us-central1/latest/Word_Count"
+        }
+      ]
+    }
+  },
+  {
+    "create_bucket": {
+      "call": "googleapis.storage.v1.buckets.insert",
+      "args": {
+        "project": "${project_id}",
+        "body": {
+          "name": "${bucket_name}"
+        }
+      }
+    }
+  },
+  {
+    "create_job": {
+      "call": "googleapis.dataflow.v1b3.projects.locations.templates.create",
+      "args": {
+        "projectId": "${project_id}",
+        "location": "${location}",
+        "body": {
+          "jobName": "${job_name}",
+          "parameters": {
+            "inputFile": "${input_file}",
+            "output": "${output_storage_file_prefix}"
+          },
+          "environment": {
+            "numWorkers": 1,
+            "maxWorkers": 2,
+            "zone": "${zone}",
+            "tempLocation": "${temp_location}"
+          },
+          "gcsPath": "${template_path}"
+        }
+      }
+    }
+  },
+  {
+    "delete_bucket_object1": {
+      "call": "googleapis.storage.v1.objects.delete",
+      "args": {
+        "bucket": "${bucket_name}",
+        "object": "${\"counts-00000-of-00003\"}"
+      }
+    }
+  },
+  {
+    "delete_bucket_object2": {
+      "call": "googleapis.storage.v1.objects.delete",
+      "args": {
+        "bucket": "${bucket_name}",
+        "object": "${\"counts-00001-of-00003\"}"
+      }
+    }
+  },
+  {
+    "delete_bucket_object3": {
+      "call": "googleapis.storage.v1.objects.delete",
+      "args": {
+        "bucket": "${bucket_name}",
+        "object": "${\"counts-00002-of-00003\"}"
+      }
+    }
+  },
+  {
+    "delete_bucket": {
+      "call": "googleapis.storage.v1.buckets.delete",
+      "args": {
+        "bucket": "${bucket_name}"
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]

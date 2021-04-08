@@ -1,0 +1,46 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "docType": "PLAIN_TEXT"
+        }
+      ]
+    }
+  },
+  {
+    "analyze_entities": {
+      "call": "googleapis.language.v1.documents.analyzeEntities",
+      "args": {
+        "body": {
+          "document": {
+            "type": "${docType}",
+            "language": "en",
+            "content": "Eiffel Tower"
+          },
+          "encodingType": "UTF8"
+        }
+      }
+    }
+  },
+  {
+    "classify_text": {
+      "call": "googleapis.language.v1.documents.analyzeSentiment",
+      "args": {
+        "body": {
+          "document": {
+            "type": "${docType}",
+            "language": "en",
+            "content": "I love workflows!"
+          },
+          "encodingType": "UTF8"
+        }
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]

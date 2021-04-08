@@ -1,0 +1,86 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "location_id": "us-central1"
+        },
+        {
+          "queue_id": "dummy-queue-id"
+        },
+        {
+          "task_id": "dummy-task-id"
+        },
+        {
+          "schedule_time": "[fill this in]"
+        },
+        {
+          "cloud_function_url": "[fill this in]"
+        }
+      ]
+    }
+  },
+  {
+    "create_queue": {
+      "call": "googleapis.cloudtasks.v2.projects.locations.queues.create",
+      "args": {
+        "parent": "${\"projects/\" + project_id + \"/locations/\" + location_id}",
+        "body": {
+          "name": "${\"projects/\" + project_id + \"/locations/\" + location_id + \"/queues/\" + queue_id}"
+        }
+      },
+      "result": "queue"
+    }
+  },
+  {
+    "create_task": {
+      "call": "googleapis.cloudtasks.v2.projects.locations.queues.tasks.create",
+      "args": {
+        "parent": "${queue.name}",
+        "body": {
+          "task": {
+            "name": "${queue.name + \"/tasks/\" + task_id}",
+            "scheduleTime": "${schedule_time}",
+            "httpRequest": {
+              "url": "${cloud_function_url}",
+              "httpMethod": "GET"
+            }
+          }
+        }
+      },
+      "result": "task"
+    }
+  },
+  {
+    "get_task": {
+      "call": "googleapis.cloudtasks.v2.projects.locations.queues.tasks.get",
+      "args": {
+        "name": "${task.name}"
+      }
+    }
+  },
+  {
+    "delete_task": {
+      "call": "googleapis.cloudtasks.v2.projects.locations.queues.tasks.delete",
+      "args": {
+        "name": "${task.name}"
+      }
+    }
+  },
+  {
+    "delete_queue": {
+      "call": "googleapis.cloudtasks.v2.projects.locations.queues.delete",
+      "args": {
+        "name": "${queue.name}"
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]

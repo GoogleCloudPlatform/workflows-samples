@@ -1,0 +1,46 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "bucket_name": "dummy-bucket"
+        }
+      ]
+    }
+  },
+  {
+    "create_bucket": {
+      "call": "googleapis.storage.v1.buckets.insert",
+      "args": {
+        "project": "${project_id}",
+        "body": {
+          "name": "${bucket_name}"
+        }
+      }
+    }
+  },
+  {
+    "get_bucket": {
+      "call": "googleapis.storage.v1.buckets.get",
+      "args": {
+        "bucket": "${bucket_name}"
+      }
+    }
+  },
+  {
+    "delete_bucket": {
+      "call": "googleapis.storage.v1.buckets.delete",
+      "args": {
+        "bucket": "${bucket_name}"
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]

@@ -1,0 +1,88 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "transferjob_name": "transferJobs/dummy-transfer-job"
+        },
+        {
+          "src_bucket_name": "[fill in with the source bucket name]"
+        },
+        {
+          "sink_bucket_name": "[fill in with the destination bucket name]"
+        }
+      ]
+    }
+  },
+  {
+    "create_transferjob": {
+      "call": "googleapis.storagetransfer.v1.transferJobs.create",
+      "args": {
+        "body": {
+          "name": "${transferjob_name}",
+          "description": "A job that transfers data between src and sink buckets.",
+          "projectId": "${project_id}",
+          "transferSpec": {
+            "gcsDataSink": {
+              "bucketName": "${sink_bucket_name}",
+              "path": ""
+            },
+            "gcsDataSource": {
+              "bucketName": "${src_bucket_name}",
+              "path": ""
+            }
+          },
+          "status": "DISABLED"
+        }
+      }
+    }
+  },
+  {
+    "enable_transferjob": {
+      "call": "googleapis.storagetransfer.v1.transferJobs.patch",
+      "args": {
+        "jobName": "${transferjob_name}",
+        "body": {
+          "projectId": "${project_id}",
+          "transferJob": {
+            "status": "ENABLED"
+          }
+        }
+      }
+    }
+  },
+  {
+    "run_job": {
+      "call": "googleapis.storagetransfer.v1.transferJobs.run",
+      "args": {
+        "jobName": "${transferjob_name}",
+        "body": {
+          "projectId": "${project_id}"
+        }
+      },
+      "result": "r"
+    }
+  },
+  {
+    "delete_transferjob": {
+      "call": "googleapis.storagetransfer.v1.transferJobs.patch",
+      "args": {
+        "jobName": "${transferjob_name}",
+        "body": {
+          "projectId": "${project_id}",
+          "transferJob": {
+            "status": "DELETED"
+          }
+        }
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]
