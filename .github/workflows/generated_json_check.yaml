@@ -10,7 +10,9 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '12'
-    - name: Run Validate JSON Schema Script
+    - name: install yamljs CLI
+      run: npm install -g yamljs
+    - name: Run toJSON script
       run: ./tojson.sh
     - name: Ensure there is no diff
       run: git diff --exit-code .
