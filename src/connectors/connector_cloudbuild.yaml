@@ -19,7 +19,7 @@
 # exists in a Storage Bucket: gs://your-project-id_cloudbuild/source/dummy_src.tgz and a repository "your-project-id-docker-repo" 
 # already exists in Artifact Registry where the image will be stored.
 # The new table and dataset will both be deleted in the following steps.
-# On success, it returns "SUCCESS".
+# Expected successful output: "SUCCESS"
 
 - init:
     assign:
