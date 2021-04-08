@@ -19,7 +19,7 @@
 # if it doesn't exist and overwritten if already existing. By default, the number of rows to be
 # copied is 5000.
 # The new table and dataset will both be deleted in the following steps.
-# On success, it returns "SUCCESS".
+# Expected successful output: "SUCCESS"
 
 - init:
     assign:
