@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_cloudtasks]
+# [START workflows_connector_cloudtasks]
 # This workflow demonstrates how to use the Cloud Tasks connector.
 # The workflow creates a Cloud Tasks queue, creates a task in that queue then delete the task and
 # the queue.
@@ -59,4 +59,4 @@
       name: ${queue.name}
 - the_end:
     return: "SUCCESS"
-# [END connector_cloudtasks]
+# [END workflows_connector_cloudtasks]

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_translate]
+# [START workflows_connector_translate]
 # This workflow demonstrates how to use the Cloud Translate connector.
 # The workflow translates some texts and then creates/deletes a glossary.
 # Expected successful output: "SUCCESS"
@@ -55,4 +55,4 @@
       name: ${"projects/" + project_id + "/locations/" + location_id + "/glossaries/" + glossary_id}
 - the_end:
     return: "SUCCESS"
-# [END connector_translate]
+# [END workflows_connector_translate]

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_cloudbuild]
+# [START workflows_connector_cloudbuild]
 # This workflow demonstrates how to use the Cloud Build connector.
 # The workflow creates a simple build and the image will be stored to a repo in Artifact Registery. 
 # The workflow assumes a properly defined source tgz file already
@@ -43,4 +43,4 @@
         images: [${image_path}]
 - the_end:
     return: "SUCCESS"
-# [END connector_cloudbuild]
+# [END workflows_connector_cloudbuild]

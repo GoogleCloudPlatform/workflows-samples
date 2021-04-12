@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_workflows]
+# [START workflows_connector_workflows]
 # This workflow demonstrates how to use the Cloud Workflows connector.
 # The workflow creates/gets/deletes a workflow.
 # Expected successful output: "SUCCESS"
@@ -41,4 +41,4 @@
       name: ${"projects/" + project + "/locations/" + location + "/workflows/" + workflow}
 - the_end:
     return: "SUCCESS"
-# [END connector_workflows]
+# [END workflows_connector_workflows]

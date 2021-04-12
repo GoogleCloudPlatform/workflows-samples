@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_pubsub]
+# [START workflows_connector_pubsub]
 # This workflow demonstrates how to use the Cloud Pubsub connector.
 # The workflow creates a Pubsub topic, a new subscription to that new topic, publishes a new message to
 # the topic, pulls the message from the subscription, and then deletes both
@@ -66,4 +66,4 @@
     return: "SUCCESS"
 - failed:
     raise: ${"got data:" + m.receivedMessages[0].message.data + " want data:" + base64Data}
-# [END connector_pubsub]
+# [END workflows_connector_pubsub]

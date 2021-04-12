@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_gce]
+# [START workflows_connector_gce]
 # This workflow demonstrates how to use the Cloud Compute Engine connector.
 # The workflow creates and starts a Compute Engine VM instance. Then it stops and deletes
 # the VM instance.
@@ -95,4 +95,4 @@ assert_machine_status:
         next: end
   - fail:
       raise: ${"Expected VM status is " + expected_status + ". Got " + instance.status + " instead."}
-# [END connector_gce]
+# [END workflows_connector_gce]

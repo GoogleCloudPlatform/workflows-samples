@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_cloudfunctions]
+# [START workflows_connector_cloudfunctions]
 # This workflow demonstrates how to use the Cloud Functions connector.
 # This workflow creates a function from a zip archive containing the source code stored in a Google Storage bucket:
 # gs://your-bucket/cloud-function-source.zip.
@@ -83,4 +83,4 @@ assert_response:
         next: end
   - fail:
       raise: ${"Expected response is " + expected_response + ". Got " + got_response + " instead."}
-# [END connector_cloudfunctions]
+# [END workflows_connector_cloudfunctions]

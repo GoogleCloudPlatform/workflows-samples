@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_firestore]
+# [START workflows_connector_firestore]
 # This workflow demonstrates how to use the Firestore connector.
 # The workflow creates a new dataset and then issues a simple query to insert a table with
 # some data from bigquery-public-data.usa_names.usa_1910_2013. The table will be created
@@ -68,4 +68,4 @@
       datasetId: ${dataset_id}
 - the_end:
     return: "SUCCESS"
-# [END connector_firestore]
+# [END workflows_connector_firestore]

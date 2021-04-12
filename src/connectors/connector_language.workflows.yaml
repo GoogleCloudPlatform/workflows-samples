@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_language]
+# [START workflows_connector_language]
 # This workflow demonstrates how to use the Cloud Language connector.
 # The workflow analyzes some texts and returns "SUCCESS".
 # Expected successful output: "SUCCESS"
@@ -39,4 +39,4 @@
         encodingType: "UTF8"
 - the_end:
     return: "SUCCESS"
-# [END connector_language]
+# [END workflows_connector_language]

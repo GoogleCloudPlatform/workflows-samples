@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_workflowexecutions]
+# [START workflows_connector_workflowexecutions]
 # This workflow demonstrates how to use the Cloud Workflow Executions connector.
 # The workflow creates an execution for a workflow. Please make sure the workflow 
 # already exists in your project.
@@ -29,4 +29,4 @@
       parent: ${"projects/" + project + "/locations/" + location + "/workflows/" + workflow}
 - the_end:
     return: "SUCCESS"
-# [END connector_workflowexecutions]
+# [END workflows_connector_workflowexecutions]

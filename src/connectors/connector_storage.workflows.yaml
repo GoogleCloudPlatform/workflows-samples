@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START connector_storage]
+# [START workflows_connector_storage]
 # This workflow demonstrates how to use the Cloud Storage connector.
 # The workflow creates a Cloud Storage bucket and then deletes it.
 # Expected successful output: "SUCCESS"
@@ -37,4 +37,4 @@
       bucket: ${bucket_name}
 - the_end:
     return: "SUCCESS"
-# [END connector_storage]
+# [END workflows_connector_storage]
