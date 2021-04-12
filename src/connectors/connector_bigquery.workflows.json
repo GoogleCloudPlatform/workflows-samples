@@ -1,0 +1,90 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "dataset_id": "dummy_dataset"
+        },
+        {
+          "table_id": "dummy_table"
+        },
+        {
+          "query": "SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 5000;"
+        },
+        {
+          "create_disposition": "CREATE_IF_NEEDED"
+        },
+        {
+          "write_disposition": "WRITE_TRUNCATE"
+        }
+      ]
+    }
+  },
+  {
+    "create_dataset": {
+      "call": "googleapis.bigquery.v2.datasets.insert",
+      "args": {
+        "projectId": "${project_id}",
+        "body": {
+          "datasetReference": {
+            "datasetId": "${dataset_id}",
+            "projectId": "${project_id}"
+          },
+          "access[].role": "roles/bigquery.dataViewer",
+          "access[].specialGroup": "projectReaders"
+        }
+      }
+    }
+  },
+  {
+    "insert_table_into_dataset": {
+      "call": "googleapis.bigquery.v2.jobs.insert",
+      "args": {
+        "projectId": "${project_id}",
+        "body": {
+          "configuration": {
+            "query": {
+              "query": "${query}",
+              "destinationTable": {
+                "projectId": "${project_id}",
+                "datasetId": "${dataset_id}",
+                "tableId": "${table_id}"
+              },
+              "create_disposition": "${create_disposition}",
+              "write_disposition": "${write_disposition}",
+              "allowLargeResults": true,
+              "useLegacySql": false
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "delete_table_from_dataset": {
+      "call": "googleapis.bigquery.v2.tables.delete",
+      "args": {
+        "projectId": "${project_id}",
+        "datasetId": "${dataset_id}",
+        "tableId": "${table_id}"
+      }
+    }
+  },
+  {
+    "delete_dataset": {
+      "call": "googleapis.bigquery.v2.datasets.delete",
+      "args": {
+        "projectId": "${project_id}",
+        "datasetId": "${dataset_id}"
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]
