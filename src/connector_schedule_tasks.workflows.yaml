@@ -32,8 +32,7 @@
               body: ${base64.encode(text.encode(body))}
               httpMethod: ${method}
               url: ${taskURL}
-            scheduleTime:
-              seconds: int(sys.now() + 60*60*24)
+            scheduleTime: "2021-06-01T07:20:50.52Z"
       result: taskResult
     except:
       as: e
