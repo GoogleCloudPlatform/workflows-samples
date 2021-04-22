@@ -19,24 +19,12 @@
       - instance: "myinstance1"
       - zone: "us-central1-a"
 - stopVM:
-    try:
-      call: googleapis.compute.v1.instances.stop
-      args:
-        project: ${project}
-        instance: ${instance}
-        zone: ${zone}
-      result: stopVMResult
-    except:
-      as: e
-      steps:
-        - handleComputeEngineError:
-            switch:
-              - condition: ${e.code == 404}
-                raise: "Compute Engine instance not found"
-              - condition: ${e.code == 403}
-                raise: "Error authenticating to Compute Engine"
-        - unhandledException:
-            raise: ${e}
+    call: googleapis.compute.v1.instances.stop
+    args:
+      project: ${project}
+      instance: ${instance}
+      zone: ${zone}
+    result: stopVMResult
 - last:
     return: ${stopVMResult}
 # [END workflows_connector_stop_compute_engine]

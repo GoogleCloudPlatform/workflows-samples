@@ -16,37 +16,11 @@
   },
   {
     "readFromFirestore": {
-      "try": {
-        "call": "googleapis.firestore.v1.projects.databases.documents.get",
-        "args": {
-          "name": "${\"projects/\"+project+\"/databases/(default)/documents/\"+collection+\"/\"+document}"
-        },
-        "result": "readResult"
+      "call": "googleapis.firestore.v1.projects.databases.documents.get",
+      "args": {
+        "name": "${\"projects/\"+project+\"/databases/(default)/documents/\"+collection+\"/\"+document}"
       },
-      "except": {
-        "as": "e",
-        "steps": [
-          {
-            "handleFirestoreReadError": {
-              "switch": [
-                {
-                  "condition": "${e.code == 404}",
-                  "raise": "Firestore database or document not found"
-                },
-                {
-                  "condition": "${e.code == 403}",
-                  "raise": "Error authenticating to Firestore"
-                }
-              ]
-            }
-          },
-          {
-            "unhandledException": {
-              "raise": "${e}"
-            }
-          }
-        ]
-      }
+      "result": "readResult"
     }
   },
   {

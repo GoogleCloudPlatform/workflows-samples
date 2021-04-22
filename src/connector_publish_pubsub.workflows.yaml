@@ -19,25 +19,13 @@
       - topic: "mytopic1"
       - message: "Hello world!"
 - publish:
-    try:
-      call: googleapis.pubsub.v1.projects.topics.publish
-      args:
-        topic: ${"projects/" + project + "/topics/" + topic}
-        body:
-          messages:
-            - data: ${base64.encode(text.encode(message))}
-      result: publishResult
-    except:
-      as: e
-      steps:
-        - handlePubSubError:
-            switch:
-              - condition: ${e.code == 404}
-                raise: "PubSub Topic not found"
-              - condition: ${e.code == 403}
-                raise: "Error authenticating to PubSub"
-        - unhandledException:
-            raise: ${e}
+    call: googleapis.pubsub.v1.projects.topics.publish
+    args:
+      topic: ${"projects/" + project + "/topics/" + topic}
+      body:
+        messages:
+          - data: ${base64.encode(text.encode(message))}
+    result: publishResult
 - last:
     return: ${publishResult}
 # [END workflows_connector_publish_pubsub]

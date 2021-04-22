@@ -19,24 +19,12 @@
       - instance: "myinstance1"
       - zone: "us-central1-a"
 - startVM:
-    try:
-      call: googleapis.compute.v1.instances.start
-      args:
-        project: ${project}
-        instance: ${instance}
-        zone: ${zone}
-      result: startVMResult
-    except:
-      as: e
-      steps:
-        - handleComputeEngineError:
-            switch:
-              - condition: ${e.code == 404}
-                raise: "Compute Engine instance not found"
-              - condition: ${e.code == 403}
-                raise: "Error authenticating to Compute Engine"
-        - unhandledException:
-            raise: ${e}
+    call: googleapis.compute.v1.instances.start
+    args:
+      project: ${project}
+      instance: ${instance}
+      zone: ${zone}
+    result: startVMResult
 - last:
     return: ${startVMResult}
 # [END workflows_connector_start_compute_engine]

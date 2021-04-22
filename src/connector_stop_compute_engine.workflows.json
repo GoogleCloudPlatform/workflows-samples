@@ -16,39 +16,13 @@
   },
   {
     "stopVM": {
-      "try": {
-        "call": "googleapis.compute.v1.instances.stop",
-        "args": {
-          "project": "${project}",
-          "instance": "${instance}",
-          "zone": "${zone}"
-        },
-        "result": "stopVMResult"
+      "call": "googleapis.compute.v1.instances.stop",
+      "args": {
+        "project": "${project}",
+        "instance": "${instance}",
+        "zone": "${zone}"
       },
-      "except": {
-        "as": "e",
-        "steps": [
-          {
-            "handleComputeEngineError": {
-              "switch": [
-                {
-                  "condition": "${e.code == 404}",
-                  "raise": "Compute Engine instance not found"
-                },
-                {
-                  "condition": "${e.code == 403}",
-                  "raise": "Error authenticating to Compute Engine"
-                }
-              ]
-            }
-          },
-          {
-            "unhandledException": {
-              "raise": "${e}"
-            }
-          }
-        ]
-      }
+      "result": "stopVMResult"
     }
   },
   {
