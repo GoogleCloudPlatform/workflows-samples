@@ -25,47 +25,21 @@
   },
   {
     "startTask": {
-      "try": {
-        "call": "googleapis.cloudtasks.v2.projects.locations.queues.tasks.create",
-        "args": {
-          "parent": "${\"projects/\" + project + \"/locations/\" + location + \"/queues/\" + queue}",
-          "body": {
-            "task": {
-              "httpRequest": {
-                "body": "${base64.encode(text.encode(body))}",
-                "httpMethod": "${method}",
-                "url": "${taskURL}"
-              },
-              "scheduleTime": "2021-06-01T07:20:50.52Z"
-            }
+      "call": "googleapis.cloudtasks.v2.projects.locations.queues.tasks.create",
+      "args": {
+        "parent": "${\"projects/\" + project + \"/locations/\" + location + \"/queues/\" + queue}",
+        "body": {
+          "task": {
+            "httpRequest": {
+              "body": "${base64.encode(text.encode(body))}",
+              "httpMethod": "${method}",
+              "url": "${taskURL}"
+            },
+            "scheduleTime": "2021-06-01T07:20:50.52Z"
           }
-        },
-        "result": "taskResult"
+        }
       },
-      "except": {
-        "as": "e",
-        "steps": [
-          {
-            "handleTasksError": {
-              "switch": [
-                {
-                  "condition": "${e.code == 404}",
-                  "raise": "Tasks queue not found"
-                },
-                {
-                  "condition": "${e.code == 403}",
-                  "raise": "Error authenticating to Cloud Tasks"
-                }
-              ]
-            }
-          },
-          {
-            "unhandledException": {
-              "raise": "${e}"
-            }
-          }
-        ]
-      }
+      "result": "taskResult"
     }
   },
   {
