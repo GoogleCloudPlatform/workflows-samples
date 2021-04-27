@@ -6,57 +6,30 @@
           "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
         },
         {
-          "dataset_id": "dummy_dataset_id"
+          "collection": "a-dummy-collection"
         },
         {
-          "table_id": "dummy_table_id"
-        },
-        {
-          "query": "SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 5000;"
-        },
-        {
-          "create_disposition": "CREATE_IF_NEEDED"
-        },
-        {
-          "write_disposition": "WRITE_TRUNCATE"
+          "document": "a-dummy-document"
         }
       ]
     }
   },
   {
-    "create_dataset": {
-      "call": "googleapis.bigquery.v2.datasets.insert",
+    "create_document": {
+      "call": "googleapis.firestore.v1.projects.databases.documents.createDocument",
       "args": {
-        "projectId": "${project_id}",
+        "collectionId": "${collection}",
+        "parent": "${\"projects/\" + project_id + \"/databases/(default)/documents\"}",
+        "query": {
+          "documentId": "${document}"
+        },
         "body": {
-          "datasetReference": {
-            "datasetId": "${dataset_id}",
-            "projectId": "${project_id}"
-          },
-          "access[].role": "roles/bigquery.dataViewer",
-          "access[].specialGroup": "projectReaders"
-        }
-      }
-    }
-  },
-  {
-    "insert_table_into_dataset": {
-      "call": "googleapis.bigquery.v2.jobs.insert",
-      "args": {
-        "projectId": "${project_id}",
-        "body": {
-          "configuration": {
-            "query": {
-              "query": "${query}",
-              "destinationTable": {
-                "projectId": "${project_id}",
-                "datasetId": "${dataset_id}",
-                "tableId": "${table_id}"
-              },
-              "create_disposition": "${create_disposition}",
-              "write_disposition": "${write_disposition}",
-              "allowLargeResults": true,
-              "useLegacySql": false
+          "fields": {
+            "fieldA": {
+              "stringValue": "abc"
+            },
+            "fieldB": {
+              "integerValue": 123
             }
           }
         }
@@ -64,21 +37,48 @@
     }
   },
   {
-    "delete_table_from_dataset": {
-      "call": "googleapis.bigquery.v2.tables.delete",
+    "get_document": {
+      "call": "googleapis.firestore.v1.projects.databases.documents.get",
       "args": {
-        "projectId": "${project_id}",
-        "datasetId": "${dataset_id}",
-        "tableId": "${table_id}"
+        "name": "${\"projects/\" + project_id + \"/databases/(default)/documents/\" + collection + \"/\" + document}"
+      },
+      "result": "got"
+    }
+  },
+  {
+    "check": {
+      "switch": [
+        {
+          "condition": "${got.fields.fieldA.stringValue == \"abc\" AND int(got.fields.fieldB.integerValue) == 123}",
+          "next": "export"
+        }
+      ]
+    }
+  },
+  {
+    "failed": {
+      "raise": "${\"got unexpected document\" + \"fieldA:\" + got.fields.fieldA.stringValue + \" fieldB:\" + string(got.fields.fieldB.integerValue)}"
+    }
+  },
+  {
+    "export": {
+      "call": "googleapis.firestore.v1.projects.databases.exportDocuments",
+      "args": {
+        "name": "${\"projects/\" + project_id + \"/databases/(default)\"}",
+        "body": {
+          "outputUriPrefix": "gs://a_dummy_bucket",
+          "collectionIds": [
+            "${collection}"
+          ]
+        }
       }
     }
   },
   {
-    "delete_dataset": {
-      "call": "googleapis.bigquery.v2.datasets.delete",
+    "drop": {
+      "call": "googleapis.firestore.v1.projects.databases.documents.delete",
       "args": {
-        "projectId": "${project_id}",
-        "datasetId": "${dataset_id}"
+        "name": "${\"projects/\" + project_id + \"/databases/(default)/documents/\" + collection + \"/\" + document}"
       }
     }
   },

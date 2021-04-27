@@ -14,58 +14,52 @@
 
 # [START workflows_connector_firestore]
 # This workflow demonstrates how to use the Firestore connector.
-# The workflow creates a new dataset and then issues a simple query to insert a table with
-# some data from bigquery-public-data.usa_names.usa_1910_2013. The table will be created
-# if it doesn't exist and overwritten if already existing. By default, the number of rows to be
-# copied is 5000.
-# The new table and dataset will both be deleted in the following steps.
+# The workflow first creates a Firestore document, then retrieves the document,
+# and exports the document to a Google Cloud Storage bucket,
+# The document will be deleted eventually.
 # Expected successful output: "SUCCESS"
 
 - init:
     assign:
     - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - dataset_id: "dummy_dataset_id"
-    - table_id: "dummy_table_id"
-    - query: "SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 5000;"
-    - create_disposition: "CREATE_IF_NEEDED"  # Create a new one if the table doesn't exist.
-    - write_disposition: "WRITE_TRUNCATE"  # Truncate it if the table already exists.
-- create_dataset:
-    call: googleapis.bigquery.v2.datasets.insert
+    - collection: "a-dummy-collection"
+    - document: "a-dummy-document"
+- create_document:
+      call: googleapis.firestore.v1.projects.databases.documents.createDocument
+      args:
+        collectionId: ${collection}
+        parent: ${"projects/" + project_id + "/databases/(default)/documents"}
+        query:
+          documentId: ${document}
+        body:
+          fields:
+            fieldA:
+              stringValue: abc
+            fieldB:
+              integerValue: 123
+- get_document:
+    call: googleapis.firestore.v1.projects.databases.documents.get
     args:
-      projectId: ${project_id}
+      name: ${"projects/" + project_id + "/databases/(default)/documents/" + collection + "/" + document}
+    result: got
+- check:
+    switch:
+    - condition: ${got.fields.fieldA.stringValue == "abc" AND int(got.fields.fieldB.integerValue) == 123}
+      next: export
+- failed:
+    raise: ${"got unexpected document" + "fieldA:" + got.fields.fieldA.stringValue + " fieldB:" + string(got.fields.fieldB.integerValue)}
+- export:
+    call: googleapis.firestore.v1.projects.databases.exportDocuments
+    args:
+      name: ${"projects/" + project_id + "/databases/(default)"}
       body:
-        datasetReference:
-          datasetId: ${dataset_id}
-          projectId: ${project_id}
-        access[].role: "roles/bigquery.dataViewer"
-        access[].specialGroup: "projectReaders"
-- insert_table_into_dataset:
-    call: googleapis.bigquery.v2.jobs.insert
+        outputUriPrefix: "gs://a_dummy_bucket"  # Make sure this bucket exists.
+        collectionIds:
+        - ${collection}
+- drop:
+    call: googleapis.firestore.v1.projects.databases.documents.delete
     args:
-      projectId: ${project_id}
-      body:
-        configuration:
-          query:
-            query: ${query}
-            destinationTable:
-              projectId: ${project_id}
-              datasetId: ${dataset_id}
-              tableId: ${table_id}
-            create_disposition: ${create_disposition}
-            write_disposition: ${write_disposition}
-            allowLargeResults: true
-            useLegacySql: false
-- delete_table_from_dataset:
-    call: googleapis.bigquery.v2.tables.delete
-    args:
-      projectId: ${project_id}
-      datasetId: ${dataset_id}
-      tableId: ${table_id}
-- delete_dataset:
-    call: googleapis.bigquery.v2.datasets.delete
-    args:
-      projectId: ${project_id}
-      datasetId: ${dataset_id}
+      name: ${"projects/" + project_id + "/databases/(default)/documents/" + collection + "/" + document}
 - the_end:
     return: "SUCCESS"
 # [END workflows_connector_firestore]
