@@ -1,31 +1,31 @@
 [
   {
-    "getMessage": {
+    "get_message": {
       "assign": [
         {
           "name": "Harsha"
         },
         {
-          "lastName": "Kapoor"
+          "last_name": "Kapoor"
         },
         {
-          "fullName": "${name+\" \"+lastName}"
+          "full_name": "${name+\" \"+last_name}"
         },
         {
-          "temperatureC": 27
+          "temperature_C": 27
         },
         {
-          "temperatureF": "${temperatureC * 9/5 + 32}"
+          "temperature_F": "${temperature_C * 9/5 + 32}"
         },
         {
-          "temperatureMsg": "${\"Current temperature is \"+string(temperatureF)+\" F\"}"
+          "temperature_msg": "${\"Current temperature is \"+string(temperature_F)+\" F\"}"
         }
       ]
     }
   },
   {
-    "returnValue": {
-      "return": "${temperatureMsg}"
+    "return_value": {
+      "return": "${temperature_msg}"
     }
   }
 ]

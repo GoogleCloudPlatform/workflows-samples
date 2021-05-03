@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START workflows_error_retry]
-- readItem:
+- read_item:
     try:
       call: http.get
       args:

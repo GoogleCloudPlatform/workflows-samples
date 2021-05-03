@@ -1,22 +1,22 @@
 [
   {
-    "firstStep": {
+    "first_step": {
       "call": "http.get",
       "args": {
         "url": "https://www.example.com/callA"
       },
-      "result": "firstResult"
+      "result": "first_result"
     }
   },
   {
-    "whereToJump": {
+    "where_to_jump": {
       "switch": [
         {
-          "condition": "${firstResult.body.SomeField < 10}",
+          "condition": "${first_result.body.SomeField < 10}",
           "next": "small"
         },
         {
-          "condition": "${firstResult.body.SomeField < 100}",
+          "condition": "${first_result.body.SomeField < 100}",
           "next": "medium"
         }
       ],

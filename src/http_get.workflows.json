@@ -1,6 +1,6 @@
 [
   {
-    "getMessage": {
+    "get_message": {
       "call": "http.get",
       "args": {
         "url": "https://www.example.com/endpoint",
@@ -8,16 +8,16 @@
           "Content-Type": "text/plain"
         },
         "query": {
-          "someVal": "Hello World",
-          "anotherVal": 123
+          "some_val": "Hello World",
+          "another_val": 123
         }
       },
-      "result": "theMessage"
+      "result": "the_message"
     }
   },
   {
-    "returnValue": {
-      "return": "${theMessage.body}"
+    "return_value": {
+      "return": "${the_message.body}"
     }
   }
 ]

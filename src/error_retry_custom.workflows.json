@@ -1,12 +1,12 @@
 [
   {
-    "readItem": {
+    "read_item": {
       "try": {
         "call": "http.get",
         "args": {
           "url": "https://example.com/someapi"
         },
-        "result": "apiResponse"
+        "result": "api_response"
       },
       "retry": {
         "predicate": "${http.default_retry_predicate}",

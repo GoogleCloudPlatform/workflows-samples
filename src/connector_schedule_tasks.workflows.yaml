@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START workflows_connector_schedule_tasks]
-- initVariables:
+- init_variables:
     assign:
       - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
       - location: ${sys.get_env("GOOGLE_CLOUD_LOCATION")}
@@ -21,7 +21,7 @@
       - taskURL: "https://somewhere.com/apiendpoint"
       - method: "POST"
       - body: "Hello world!"
-- startTask:
+- start_task:
     call: googleapis.cloudtasks.v2.projects.locations.queues.tasks.create
     args:
       parent: ${"projects/" + project + "/locations/" + location + "/queues/" + queue}
@@ -32,7 +32,7 @@
             httpMethod: ${method}
             url: ${taskURL}
           scheduleTime: "2021-06-01T07:20:50.52Z"
-    result: taskResult
+    result: task_result
 - last:
-    return: ${taskResult.body}
+    return: ${task_result.body}
 # [END workflows_connector_schedule_tasks]

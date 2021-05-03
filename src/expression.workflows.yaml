@@ -13,14 +13,14 @@
 # limitations under the License.
 
 # [START workflows_expression]
-- getMessage:
+- get_message:
     assign:
       - name: "Harsha"
-      - lastName: "Kapoor"
-      - fullName: ${name+" "+lastName}
-      - temperatureC: 27
-      - temperatureF: ${temperatureC * 9/5 + 32}
-      - temperatureMsg: ${"Current temperature is "+string(temperatureF)+" F"}
-- returnValue:
-    return: ${temperatureMsg}
+      - last_name: "Kapoor"
+      - full_name: ${name+" "+last_name}
+      - temperature_C: 27
+      - temperature_F: ${temperature_C * 9/5 + 32}
+      - temperature_msg: ${"Current temperature is "+string(temperature_F)+" F"}
+- return_value:
+    return: ${temperature_msg}
 # [END workflows_expression]

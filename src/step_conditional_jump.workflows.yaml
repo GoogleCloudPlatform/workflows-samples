@@ -13,16 +13,16 @@
 # limitations under the License.
 
 # [START workflows_step_conditional_jump]
-- firstStep:
+- first_step:
     call: http.get
     args:
       url: https://www.example.com/callA
-    result: firstResult
-- whereToJump:
+    result: first_result
+- where_to_jump:
     switch:
-      - condition: ${firstResult.body.SomeField < 10}
+      - condition: ${first_result.body.SomeField < 10}
         next: small
-      - condition: ${firstResult.body.SomeField < 100}
+      - condition: ${first_result.body.SomeField < 100}
         next: medium
     next: large
 - small:

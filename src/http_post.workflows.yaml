@@ -13,14 +13,14 @@
 # limitations under the License.
 
 # [START workflows_http_post]
-- getMessage:
+- get_vessage:
     call: http.post
     args:
       url: https://www.example.com/endpoint
       body:
-        someVal: "Hello World"
-        anotherVal: 123
-    result: theMessage
-- returnValue:
-    return: ${theMessage.body}
+        some_val: "Hello World"
+        another_val: 123
+    result: the_message
+- return_value:
+    return: ${the_message.body}
 # [END workflows_http_post]

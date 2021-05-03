@@ -1,15 +1,15 @@
 [
   {
-    "firstStep": {
+    "first_step": {
       "call": "http.get",
       "args": {
         "url": "https://www.somewhere.com/callA"
       },
-      "next": "secondStep"
+      "next": "second_step"
     }
   },
   {
-    "thirdStep": {
+    "third_step": {
       "call": "http.get",
       "args": {
         "url": "https://www.somewhere.com/callB"
@@ -18,12 +18,12 @@
     }
   },
   {
-    "secondStep": {
+    "second_step": {
       "call": "http.get",
       "args": {
         "url": "https://www.somewhere.com/callC"
       },
-      "next": "thirdStep"
+      "next": "third_step"
     }
   }
 ]

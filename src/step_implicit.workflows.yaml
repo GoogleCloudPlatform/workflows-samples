@@ -13,15 +13,15 @@
 # limitations under the License.
 
 # [START workflows_step_implicit]
-- firstStep:
+- first_step:
     call: http.get
     args:
       url: https://www.example.com/callA
-- secondStep:
+- second_step:
     call: http.get
     args:
       url: https://www.example.com/callB
-- thirdStep:
+- third_step:
     call: http.get
     args:
       url: https://www.example.com/callC

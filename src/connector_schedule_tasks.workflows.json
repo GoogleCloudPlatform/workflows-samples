@@ -1,6 +1,6 @@
 [
   {
-    "initVariables": {
+    "init_variables": {
       "assign": [
         {
           "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
@@ -24,7 +24,7 @@
     }
   },
   {
-    "startTask": {
+    "start_task": {
       "call": "googleapis.cloudtasks.v2.projects.locations.queues.tasks.create",
       "args": {
         "parent": "${\"projects/\" + project + \"/locations/\" + location + \"/queues/\" + queue}",
@@ -39,12 +39,12 @@
           }
         }
       },
-      "result": "taskResult"
+      "result": "task_result"
     }
   },
   {
     "last": {
-      "return": "${taskResult.body}"
+      "return": "${task_result.body}"
     }
   }
 ]

@@ -13,19 +13,19 @@
 # limitations under the License.
 
 # [START workflows_step_explicit]
-- firstStep:
+- first_step:
     call: http.get
     args:
       url: https://www.somewhere.com/callA
-    next: secondStep
-- thirdStep:
+    next: second_step
+- third_step:
     call: http.get
     args:
       url: https://www.somewhere.com/callB
     next: end
-- secondStep:
+- second_step:
     call: http.get
     args:
       url: https://www.somewhere.com/callC
-    next: thirdStep
+    next: third_step
 # [END workflows_step_explicit]

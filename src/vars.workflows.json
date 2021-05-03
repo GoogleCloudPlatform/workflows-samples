@@ -1,6 +1,6 @@
 [
   {
-    "firstStep": {
+    "first_step": {
       "assign": [
         {
           "SomeName": "Sherlock"

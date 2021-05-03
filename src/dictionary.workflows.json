@@ -1,30 +1,30 @@
 [
   {
-    "firstStep": {
+    "first_step": {
       "assign": [
         {
-          "myDictionary": {
+          "my_dictionary": {
             "name": "Lila",
-            "lastName": "Barton",
+            "last_name": "Barton",
             "birthYear": 1990
           }
         },
         {
-          "myArray1": [
+          "my_array1": [
             1,
             2,
             3
           ]
         },
         {
-          "myArray2": [
+          "my_array2": [
             1,
             2,
             3
           ]
         },
         {
-          "myArray3": [
+          "my_array3": [
             "Grzegorz",
             "Irina",
             "Yufei"

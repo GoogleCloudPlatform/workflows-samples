@@ -18,7 +18,7 @@
     - project: "myproject123"
     - collection: "myEntries"
     - document: "Visits"
-- writeItem:
+- write_item:
     call: http.request
     args:
       url: ${"https://firestore.googleapis.com/v1/projects/"+project+"/databases/(default)/documents/"+collection+"/"+document}

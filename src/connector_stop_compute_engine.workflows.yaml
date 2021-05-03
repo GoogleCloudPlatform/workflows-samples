@@ -13,18 +13,18 @@
 # limitations under the License.
 
 # [START workflows_connector_stop_compute_engine]
-- initVariables:
+- init_variables:
     assign:
       - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
       - instance: "myinstance1"
       - zone: "us-central1-a"
-- stopVM:
+- stop_VM:
     call: googleapis.compute.v1.instances.stop
     args:
       project: ${project}
       instance: ${instance}
       zone: ${zone}
-    result: stopVMResult
+    result: stop_VM_result
 - last:
-    return: ${stopVMResult}
+    return: ${stop_VM_result}
 # [END workflows_connector_stop_compute_engine]

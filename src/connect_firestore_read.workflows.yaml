@@ -18,28 +18,28 @@
     - project: "myproject123"
     - collection: "myEntries"
     - document: "Report"
-- readItem:
+- read_item:
     try:
       call: http.get
       args:
         url: ${"https://firestore.googleapis.com/v1/projects/"+project+"/databases/(default)/documents/"+collection+"/"+document}
         auth:
           type: OAuth2
-      result: documentValue
+      result: document_value
     except:
       as: e
       steps:
-      - isTheKeyFound:
+      - is_the_key_found:
           switch:
           - condition: ${e.code == 404}
-            next: documentNotFound
+            next: document_not_found
           - condition: ${e.code == 403}
-            next: authError
-    next: documentFound
-- documentNotFound:
+            next: auth_error
+    next: document_found
+- document_not_found:
     return: "Document not found."
-- authError:
+- auth_error:
     return: "Authentication error."
-- documentFound:
+- document_found:
     return: ${documentValue.body.fields.LastName.stringValue}
 # [END workflows_connect_firestore_read]

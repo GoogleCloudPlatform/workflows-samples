@@ -9,21 +9,21 @@
           "zone": "us-central1-a"
         },
         {
-          "vmToStop": "examplevm"
+          "vm_to_stop": "examplevm"
         }
       ]
     }
   },
   {
-    "stopInstance": {
+    "stop_instance": {
       "call": "http.post",
       "args": {
-        "url": "${\"https://compute.googleapis.com/compute/v1/projects/\"+project+\"/zones/\"+zone+\"/instances/\"+vmToStop+\"/stop\"}",
+        "url": "${\"https://compute.googleapis.com/compute/v1/projects/\"+project+\"/zones/\"+zone+\"/instances/\"+vm_to_stop+\"/stop\"}",
         "auth": {
           "type": "OAuth2"
         }
       },
-      "result": "stopResult"
+      "result": "stop_result"
     }
   }
 ]

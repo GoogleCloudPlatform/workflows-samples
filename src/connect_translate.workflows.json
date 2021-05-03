@@ -5,7 +5,7 @@
     ],
     "steps": [
       {
-        "newTranslation": {
+        "new_translation": {
           "call": "http.post",
           "args": {
             "url": "${\"https://translation.googleapis.com/v3/projects/\"+sys.get_env(\"GOOGLE_CLOUD_PROJECT_NUMBER\")+\":translateText\"}",
@@ -18,21 +18,21 @@
               "targetLanguageCode": "ru-RU"
             }
           },
-          "result": "translateResponse"
+          "result": "translate_response"
         }
       },
       {
-        "assignTranslation": {
+        "assign_translation": {
           "assign": [
             {
-              "translationResult": "${translateResponse.body.translations[0].translatedText}"
+              "translation_result": "${translate_response.body.translations[0].translatedText}"
             }
           ]
         }
       },
       {
-        "returnResult": {
-          "return": "${translationResult}"
+        "return_result": {
+          "return": "${translation_result}"
         }
       }
     ]

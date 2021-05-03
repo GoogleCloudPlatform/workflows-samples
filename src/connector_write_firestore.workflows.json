@@ -1,6 +1,6 @@
 [
   {
-    "initVariables": {
+    "init_variables": {
       "assign": [
         {
           "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
@@ -12,7 +12,7 @@
           "document": "smith.j"
         },
         {
-          "valuesToWrite": {
+          "values_to_write": {
             "FirstName": {
               "stringValue": "John"
             },
@@ -28,20 +28,20 @@
     }
   },
   {
-    "writeToFirestore": {
+    "write_to_firestore": {
       "call": "googleapis.firestore.v1.projects.databases.documents.patch",
       "args": {
         "name": "${\"projects/\"+project+\"/databases/(default)/documents/\"+collection+\"/\"+document}",
         "body": {
-          "fields": "${valuesToWrite}"
+          "fields": "${values_to_write}"
         }
       },
-      "result": "writeResult"
+      "result": "write_result"
     }
   },
   {
     "last": {
-      "return": "${writeResult.name}"
+      "return": "${write_result.name}"
     }
   }
 ]

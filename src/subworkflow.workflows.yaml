@@ -19,9 +19,9 @@ main:
         call: hello
         args:
           input: "Kristof"
-        result: someOutput
+        result: some_output
     - second:
-        return: ${someOutput}
+        return: ${some_output}
 
 hello:
   params: [input]

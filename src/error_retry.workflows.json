@@ -1,6 +1,6 @@
 [
   {
-    "readItem": {
+    "read_item": {
       "try": {
         "call": "http.get",
         "args": {

@@ -13,33 +13,33 @@
 # limitations under the License.
 
 # [START workflows_error_catch]
-- readItem:
+- read_item:
     try:
       call: http.get
       args:
         url: https://example.com/someapi
         auth:
           type: OIDC
-      result: APIResponse
+      result: API_response
     except:
       as: e
       steps:
-        - knownErrors:
+        - known_errors:
             switch:
               - condition: ${not("HttpError" in e.tags)}
-                next: connectionProblem
+                next: connection_problem
               - condition: ${e.code == 404}
-                next: urlNotFound
+                next: url_not_found
               - condition: ${e.code == 403}
-                next: authProblem
-        - UnhandledException:
+                next: auth_problem
+        - unhandled_exception:
             raise: ${e}
-- urlFound:
-    return: ${APIResponse.body}
-- connectionProblem:
+- url_found:
+    return: ${API_response.body}
+- connection_problem:
     return: "Connection problem; check URL"
-- urlNotFound:
+- url_not_found:
     return: "Sorry, URL wasn't found"
-- authProblem:
+- auth_problem:
     return: "Authentication error"
 # [END workflows_error_catch]

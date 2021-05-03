@@ -1,6 +1,6 @@
 [
   {
-    "initVariables": {
+    "init_variables": {
       "assign": [
         {
           "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
@@ -15,17 +15,17 @@
     }
   },
   {
-    "readFromFirestore": {
+    "read_from_firestore": {
       "call": "googleapis.firestore.v1.projects.databases.documents.get",
       "args": {
         "name": "${\"projects/\"+project+\"/databases/(default)/documents/\"+collection+\"/\"+document}"
       },
-      "result": "readResult"
+      "result": "read_result"
     }
   },
   {
     "last": {
-      "return": "${readResult.fields}"
+      "return": "${read_result.fields}"
     }
   }
 ]

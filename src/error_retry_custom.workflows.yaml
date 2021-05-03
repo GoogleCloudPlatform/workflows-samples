@@ -13,12 +13,12 @@
 # limitations under the License.
 
 # [START workflows_error_retry_custom]
-- readItem:
+- read_item:
     try:
       call: http.get
       args:
         url: https://example.com/someapi
-      result: apiResponse
+      result: api_response
     retry:
       predicate: ${http.default_retry_predicate}
       max_retries: 5

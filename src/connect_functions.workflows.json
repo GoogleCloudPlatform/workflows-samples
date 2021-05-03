@@ -1,6 +1,6 @@
 [
   {
-    "callMyFunction": {
+    "call_my_function": {
       "call": "http.post",
       "args": {
         "url": "https://us-central1-myproject123.cloudfunctions.net/myfunc1",
@@ -8,16 +8,16 @@
           "type": "OIDC"
         },
         "body": {
-          "someVal": "Hello World",
-          "anotherVal": 123
+          "some_val": "Hello World",
+          "another_val": 123
         }
       },
-      "result": "theMessage"
+      "result": "the_message"
     }
   },
   {
-    "returnValue": {
-      "return": "${theMessage.body}"
+    "return_value": {
+      "return": "${the_message.body}"
     }
   }
 ]

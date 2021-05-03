@@ -1,6 +1,6 @@
 [
   {
-    "initVariables": {
+    "init_variables": {
       "assign": [
         {
           "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
@@ -15,19 +15,19 @@
     }
   },
   {
-    "stopVM": {
+    "stop_VM": {
       "call": "googleapis.compute.v1.instances.stop",
       "args": {
         "project": "${project}",
         "instance": "${instance}",
         "zone": "${zone}"
       },
-      "result": "stopVMResult"
+      "result": "stop_VM_result"
     }
   },
   {
     "last": {
-      "return": "${stopVMResult}"
+      "return": "${stop_VM_result}"
     }
   }
 ]

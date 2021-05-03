@@ -2,16 +2,16 @@
   "main": {
     "steps": [
       {
-        "readItem": {
+        "read_item": {
           "try": {
             "call": "http.get",
             "args": {
               "url": "https://example.com/someapi"
             },
-            "result": "apiResponse"
+            "result": "api_response"
           },
           "retry": {
-            "predicate": "${myOwnPredicate}",
+            "predicate": "${my_own_predicate}",
             "max_retries": 5,
             "backoff": {
               "initial_delay": 2,
@@ -22,19 +22,19 @@
         }
       },
       {
-        "LastStep": {
+        "last_step": {
           "return": "OK"
         }
       }
     ]
   },
-  "myOwnPredicate": {
+  "my_own_predicate": {
     "params": [
       "e"
     ],
     "steps": [
       {
-        "whatToRepeat": {
+        "what_to_repeat": {
           "switch": [
             {
               "condition": "df",
