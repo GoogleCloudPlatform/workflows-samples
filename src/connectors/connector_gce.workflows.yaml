@@ -16,7 +16,7 @@
 # This workflow demonstrates how to use the Cloud Compute Engine connector.
 # The workflow creates and starts a Compute Engine VM instance. Then it stops and deletes
 # the VM instance.
-# Each of these steps blocks until the long-running operation of stopping or starting the VM
+# Each of these steps waits until the long-running operation of stopping or starting the VM
 # is completed. After each step, an assertion about current status of the machine is made.
 # Expected successful output: "SUCCESS"
 
