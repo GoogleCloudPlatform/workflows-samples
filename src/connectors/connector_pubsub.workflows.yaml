@@ -13,8 +13,8 @@
 # limitations under the License.
 
 # [START workflows_connector_pubsub]
-# This workflow demonstrates how to use the Cloud Pubsub connector.
-# The workflow creates a Pubsub topic, a new subscription to that new topic, publishes a new message to
+# This workflow demonstrates how to use the Cloud Pub/Sub connector.
+# The workflow creates a Pub/Sub topic, a new subscription to that new topic, publishes a new message to
 # the topic, pulls the message from the subscription, and then deletes both
 # the subscription and the topic.
 # Expected successful output: "SUCCESS"
