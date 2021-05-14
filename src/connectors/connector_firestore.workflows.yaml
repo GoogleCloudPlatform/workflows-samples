@@ -15,8 +15,8 @@
 # [START workflows_connector_firestore]
 # This workflow demonstrates how to use the Firestore connector.
 # The workflow first creates a Firestore document, then retrieves the document,
-# and exports the document to a Google Cloud Storage bucket,
-# The document will be deleted eventually.
+# and exports the document to a Google Cloud Storage bucket.
+# The document is deleted eventually.
 # Expected successful output: "SUCCESS"
 
 - init:

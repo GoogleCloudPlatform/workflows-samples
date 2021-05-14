@@ -16,7 +16,7 @@
 # This workflow demonstrates how to use the BigQuery connector.
 # The workflow creates a new dataset and then issues a simple query to insert a table with
 # some data from bigquery-public-data.usa_names.usa_1910_2013.
-# The new table and dataset will be both deleted in the following steps.
+# The new table and dataset are both deleted in the following steps.
 # Expected successful output: "SUCCESS"
 
 - init:

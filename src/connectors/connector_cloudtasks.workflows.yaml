@@ -14,8 +14,8 @@
 
 # [START workflows_connector_cloudtasks]
 # This workflow demonstrates how to use the Cloud Tasks connector.
-# The workflow creates a Cloud Tasks queue, creates a task in that queue then delete the task and
-# the queue.
+# The workflow creates a Cloud Tasks queue, creates a task in that queue,
+# and then deletes the task and the queue.
 # Expected successful output: "SUCCESS"
 
 - init:
