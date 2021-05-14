@@ -15,8 +15,8 @@
 # [START workflows_connector_sqladmin]
 # This workflow demonstrates how to use the Cloud SQL connector.
 # The workflow creates an SQL instance and an SQL database in the SQL instance. 
-# Then it deletes the database and the instance. Each of these steps blocks
-# until the long-running operation of creating or deleting the SQL database is completed.
+# Then it deletes the database and the instance. Each of these steps waits
+# until the long-running operation of creating or deleting the SQL database completes.
 # Expected successful output: "SUCCESS"
 
 - init:
