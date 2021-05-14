@@ -14,9 +14,9 @@
 
 # [START workflows_connector_dataflow]
 # This workflow demonstrates how to use the Cloud Dataflow connector.
-# The workflow creates a word count job using a public job template from
-# Dataflow and uses Cloud Storage bucket as a temperory storage for temp files.
-# The bucket resource will be deleted after the job is complete.
+# The workflow creates a word count job using a Dataflow public job template 
+# and uses a Cloud Storage bucket as temporary storage for temp files.
+# The bucket resource is deleted after the job completes.
 # Expected successful output: "SUCCESS"
 
 - init:
