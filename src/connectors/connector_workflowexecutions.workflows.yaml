@@ -14,7 +14,7 @@
 
 # [START workflows_connector_workflowexecutions]
 # This workflow demonstrates how to use the Cloud Workflow Executions connector.
-# The workflow creates an execution for a workflow. Please make sure the workflow 
+# The workflow creates an execution for a workflow. Make sure the workflow 
 # already exists in your project.
 # Expected successful output: "SUCCESS"
 
