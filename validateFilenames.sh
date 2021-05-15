@@ -7,9 +7,9 @@ workflowsFilePattern="*.workflows.yaml";
 cd src
 for path in $(find . -name '*.yaml'); do
   if [[ $path == $workflowsFilePattern ]]; then
-    echo "$path is fine!"
+    echo "✓ $path"
   else
-    echo "$path doesn't match *.workflows.yaml"
+    echo "✗ $path – doesn't match *.workflows.yaml"
     FAILED=true
   fi
 done
