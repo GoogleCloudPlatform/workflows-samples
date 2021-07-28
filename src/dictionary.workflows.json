@@ -3,32 +3,11 @@
     "first_step": {
       "assign": [
         {
-          "my_dictionary": {
+          "my_map": {
             "name": "Lila",
             "last_name": "Barton",
             "birthYear": 1990
           }
-        },
-        {
-          "my_array1": [
-            1,
-            2,
-            3
-          ]
-        },
-        {
-          "my_array2": [
-            1,
-            2,
-            3
-          ]
-        },
-        {
-          "my_array3": [
-            "Grzegorz",
-            "Irina",
-            "Yufei"
-          ]
         }
       ]
     }
