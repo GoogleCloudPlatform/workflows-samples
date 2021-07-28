@@ -1,0 +1,29 @@
+[
+  {
+    "first_step": {
+      "assign": [
+        {
+          "my_list1": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "my_list2": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "my_list3": [
+            "Grzegorz",
+            "Irina",
+            "Yufei"
+          ]
+        }
+      ]
+    }
+  }
+]
