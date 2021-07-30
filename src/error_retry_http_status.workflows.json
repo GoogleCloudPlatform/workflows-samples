@@ -1,0 +1,53 @@
+{
+  "main": {
+    "steps": [
+      {
+        "read_item": {
+          "try": {
+            "call": "http.get",
+            "args": {
+              "url": "https://host.com/api"
+            },
+            "result": "api_response"
+          },
+          "retry": {
+            "predicate": "${custom_predicate}",
+            "max_retries": 5,
+            "backoff": {
+              "initial_delay": 2,
+              "max_delay": 60,
+              "multiplier": 2
+            }
+          }
+        }
+      },
+      {
+        "last_step": {
+          "return": "OK"
+        }
+      }
+    ]
+  },
+  "custom_predicate": {
+    "params": [
+      "e"
+    ],
+    "steps": [
+      {
+        "what_to_repeat": {
+          "switch": [
+            {
+              "condition": "${e.code == 500}",
+              "return": true
+            }
+          ]
+        }
+      },
+      {
+        "otherwise": {
+          "return": false
+        }
+      }
+    ]
+  }
+}
