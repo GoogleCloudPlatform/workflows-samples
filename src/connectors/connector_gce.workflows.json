@@ -79,17 +79,6 @@
         }
       },
       {
-        "assert_terminated": {
-          "call": "assert_machine_status",
-          "args": {
-            "expected_status": "TERMINATED",
-            "project": "${project}",
-            "zone": "${zone}",
-            "instance": "${instance}"
-          }
-        }
-      },
-      {
         "delete_machine": {
           "call": "googleapis.compute.v1.instances.delete",
           "args": {

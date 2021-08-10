@@ -27,7 +27,7 @@
           "source": {
             "storageSource": {
               "bucket": "${project_id + \"_cloudbuild\"}",
-              "object": "source/dummy_src.tgz"
+              "object": "source/placeholder_src.tgz"
             }
           },
           "steps": [

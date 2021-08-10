@@ -16,7 +16,7 @@
 # This workflow demonstrates how to use the Cloud Build connector.
 # The workflow creates a simple build and the image is stored to an Artifact Registery repo. 
 # The workflow assumes a properly defined source tgz file already
-# exists in a Cloud Storage bucket: gs://your-project-id_cloudbuild/source/dummy_src.tgz 
+# exists in a Cloud Storage bucket: gs://your-project-id_cloudbuild/source/placeholder_src.tgz 
 # and a repository "your-project-id-docker-repo" already
 # exists in Artifact Registry where the image will be stored.
 # The new table and dataset are both deleted in the following steps.
@@ -37,7 +37,7 @@
         source:
           storageSource:
             bucket: ${project_id + "_cloudbuild"}
-            object: "source/dummy_src.tgz"
+            object: "source/placeholder_src.tgz"
         steps:
         - name: "gcr.io/cloud-builders/docker"
           args: ["build", "-t", ${image_path}, "."]
