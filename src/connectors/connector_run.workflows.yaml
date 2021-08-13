@@ -20,7 +20,7 @@
 - init:
     assign:
     - service_name: "test-service"
-    - project: "cloudworkflows-test-dev"
+    - project: "your-project-id"
 - create_service:
     call: googleapis.run.v1.namespaces.services.create
     args:

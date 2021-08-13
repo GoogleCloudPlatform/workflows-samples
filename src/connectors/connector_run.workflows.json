@@ -6,7 +6,7 @@
           "service_name": "test-service"
         },
         {
-          "project": "cloudworkflows-test-dev"
+          "project": "your-project-id"
         }
       ]
     }
