@@ -1,0 +1,77 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "service_name": "test-service"
+        },
+        {
+          "project": "cloudworkflows-test-dev"
+        }
+      ]
+    }
+  },
+  {
+    "create_service": {
+      "call": "googleapis.run.v1.namespaces.services.create",
+      "args": {
+        "location": "us-central1",
+        "parent": "${\"namespaces/\" + project}",
+        "body": {
+          "apiVersion": "serving.knative.dev/v1",
+          "kind": "Service",
+          "metadata": {
+            "name": "${service_name}",
+            "namespace": "${project}"
+          },
+          "spec": {
+            "traffic": {
+              "latest_revision": true,
+              "percent": 100
+            },
+            "template": {
+              "metadata": {
+                "labels": {
+                  "serving.knative.dev/type": "container"
+                }
+              },
+              "spec": {
+                "containers": [
+                  {
+                    "image": "gcr.io/january2018-193321/quickstart-hello-with-vars:latest"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "result": "create_rsp"
+    }
+  },
+  {
+    "get_service": {
+      "call": "googleapis.run.v1.namespaces.services.get",
+      "args": {
+        "name": "${\"namespaces/cloudworkflows-test-dev/services/\" + service_name}",
+        "location": "us-central1"
+      },
+      "result": "get_resp"
+    }
+  },
+  {
+    "delete_service": {
+      "call": "googleapis.run.v1.namespaces.services.delete",
+      "args": {
+        "location": "us-central1",
+        "name": "${\"namespaces/\" + project + \"/services/\" + service_name}"
+      },
+      "result": "delete_rsp"
+    }
+  },
+  {
+    "return": {
+      "return": "${delete_rsp}"
+    }
+  }
+]
