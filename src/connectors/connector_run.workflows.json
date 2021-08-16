@@ -53,7 +53,7 @@
     "get_service": {
       "call": "googleapis.run.v1.namespaces.services.get",
       "args": {
-        "name": "${\"namespaces/cloudworkflows-test-dev/services/\" + service_name}",
+        "name": "${\"namespaces/\" + project + \"/services/\" + service_name}",
         "location": "us-central1"
       },
       "result": "get_resp"
