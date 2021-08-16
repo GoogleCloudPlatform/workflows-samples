@@ -10,21 +10,47 @@
         },
         {
           "workflow": "[fill in the workflow to execute]"
+        },
+        {
+          "arguments": {
+            "hello": "world",
+            "integer": 100,
+            "boolean": true
+          }
         }
       ]
+    }
+  },
+  {
+    "run_execution": {
+      "call": "googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run",
+      "args": {
+        "workflow_id": "${workflow}",
+        "location": "${location}",
+        "project_id": "${project}",
+        "argument": "${arguments}"
+      },
+      "result": "r1"
     }
   },
   {
     "create_execution": {
       "call": "googleapis.workflowexecutions.v1.projects.locations.workflows.executions.create",
       "args": {
-        "parent": "${\"projects/\" + project + \"/locations/\" + location + \"/workflows/\" + workflow}"
-      }
+        "parent": "${\"projects/\" + project + \"/locations/\" + location + \"/workflows/\" + workflow}",
+        "body": {
+          "argument": "${json.encode_to_string(arguments)}"
+        }
+      },
+      "result": "r2"
     }
   },
   {
     "the_end": {
-      "return": "SUCCESS"
+      "return": [
+        "${r1}",
+        "${r2}"
+      ]
     }
   }
 ]
