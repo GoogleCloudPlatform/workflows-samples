@@ -27,8 +27,8 @@
         hello: world
         integer: 100
         boolean: true
-# The run helper method is the preferred way to execute a workflow as it
-# doesn't require the workflow arguments in json format string. To compare
+# The run helper method is the preferred way to execute a workflow as it doesn't require 
+# encoding the workflow arguments in a JSON-formatted string. To compare
 # the usage, we list two demo steps:
 - run_execution:
     call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
@@ -36,7 +36,7 @@
       workflow_id: ${workflow}
       location: ${location}
       project_id: ${project}
-      argument: ${arguments}  # Arguments could be inlined here as well.
+      argument: ${arguments}  # Arguments could be specified inline as a map instead.
     result: r1
 - create_execution:
     call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.create
