@@ -1,6 +1,6 @@
 # datetime
 
-A simple Cloud Function that returns the day of the week.
+A simple Cloud Function used in Workflow samples that returns the day of the week.
 
 ## Deploy
 
