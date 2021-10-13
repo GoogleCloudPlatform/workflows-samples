@@ -12,7 +12,12 @@
           "subscription": "[fill in a Pubsub subscription name]"
         },
         {
-          "base64Data": "aGVsbG8="
+          "message": {
+            "hello": "world"
+          }
+        },
+        {
+          "base64Msg": "${base64.encode(json.encode(message))}"
         }
       ]
     }
@@ -45,7 +50,7 @@
         "body": {
           "messages": [
             {
-              "data": "${base64Data}"
+              "data": "${base64msg}"
             }
           ]
         }
@@ -68,7 +73,7 @@
     "check_message": {
       "switch": [
         {
-          "condition": "${m.receivedMessages[0].message.data != base64Data}",
+          "condition": "${m.receivedMessages[0].message.data != base64msg}",
           "next": "failed"
         }
       ]
@@ -97,7 +102,7 @@
   },
   {
     "failed": {
-      "raise": "${\"got data:\" + m.receivedMessages[0].message.data + \" want data:\" + base64Data}"
+      "raise": "${\"got data:\" + m.receivedMessages[0].message.data + \" want data:\" + base64msg}"
     }
   }
 ]

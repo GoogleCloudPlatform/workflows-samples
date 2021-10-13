@@ -24,7 +24,8 @@
     - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
     - topic: "[fill in a Pubsub topic name]"
     - subscription: "[fill in a Pubsub subscription name]"
-    - base64Data: "aGVsbG8="  # Some random base64 data.
+    - message: {"hello": "world"}  # An object used as a secret.
+    - base64Msg: ${base64.encode(json.encode(message))}
 - create_topic:
     call: googleapis.pubsub.v1.projects.topics.create
     args:
@@ -42,7 +43,7 @@
       topic: ${"projects/" + project + "/topics/" + topic}
       body:
         messages:
-        - data: ${base64Data}
+        - data: ${base64msg}
 - pull_message:
     call: googleapis.pubsub.v1.projects.subscriptions.pull
     args:
@@ -52,7 +53,7 @@
     result: m
 - check_message:
     switch:
-    - condition: ${m.receivedMessages[0].message.data != base64Data}
+    - condition: ${m.receivedMessages[0].message.data != base64msg}
       next: failed
 - delete_subscription:
     call: googleapis.pubsub.v1.projects.subscriptions.delete
@@ -65,5 +66,5 @@
 - the_end:
     return: "SUCCESS"
 - failed:
-    raise: ${"got data:" + m.receivedMessages[0].message.data + " want data:" + base64Data}
+    raise: ${"got data:" + m.receivedMessages[0].message.data + " want data:" + base64msg}
 # [END workflows_connector_pubsub]
