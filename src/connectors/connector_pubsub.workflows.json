@@ -17,7 +17,7 @@
           }
         },
         {
-          "base64Msg": "${base64.encode(json.encode(message))}"
+          "base64msg": "${base64.encode(json.encode(message))}"
         }
       ]
     }
