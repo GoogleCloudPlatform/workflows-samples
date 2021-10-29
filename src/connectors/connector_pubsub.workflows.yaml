@@ -25,7 +25,7 @@
     - topic: "[fill in a Pubsub topic name]"
     - subscription: "[fill in a Pubsub subscription name]"
     - message: {"hello": "world"}  # An object used as a secret.
-    - base64Msg: ${base64.encode(json.encode(message))}
+    - base64msg: ${base64.encode(json.encode(message))}
 - create_topic:
     call: googleapis.pubsub.v1.projects.topics.create
     args:
