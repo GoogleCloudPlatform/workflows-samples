@@ -43,7 +43,7 @@
       topic: ${"projects/" + project + "/topics/" + topic}
       body:
         messages:
-        - data: ${base64msg}
+        - data: ${base64Msg}
 - pull_message:
     call: googleapis.pubsub.v1.projects.subscriptions.pull
     args:
@@ -53,7 +53,7 @@
     result: m
 - check_message:
     switch:
-    - condition: ${m.receivedMessages[0].message.data != base64msg}
+    - condition: ${m.receivedMessages[0].message.data != base64Msg}
       next: failed
 - delete_subscription:
     call: googleapis.pubsub.v1.projects.subscriptions.delete
@@ -66,5 +66,5 @@
 - the_end:
     return: "SUCCESS"
 - failed:
-    raise: ${"got data:" + m.receivedMessages[0].message.data + " want data:" + base64msg}
+    raise: ${"got data:" + m.receivedMessages[0].message.data + " want data:" + base64Msg}
 # [END workflows_connector_pubsub]

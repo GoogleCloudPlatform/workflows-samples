@@ -50,7 +50,7 @@
         "body": {
           "messages": [
             {
-              "data": "${base64msg}"
+              "data": "${base64Msg}"
             }
           ]
         }
@@ -73,7 +73,7 @@
     "check_message": {
       "switch": [
         {
-          "condition": "${m.receivedMessages[0].message.data != base64msg}",
+          "condition": "${m.receivedMessages[0].message.data != base64Msg}",
           "next": "failed"
         }
       ]
@@ -102,7 +102,7 @@
   },
   {
     "failed": {
-      "raise": "${\"got data:\" + m.receivedMessages[0].message.data + \" want data:\" + base64msg}"
+      "raise": "${\"got data:\" + m.receivedMessages[0].message.data + \" want data:\" + base64Msg}"
     }
   }
 ]
