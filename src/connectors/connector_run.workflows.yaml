@@ -42,7 +42,7 @@
                 serving.knative.dev/type: "container"
             spec:
               containers:
-              - image: "gcr.io/january2018-193321/quickstart-hello-with-vars:latest"
+              - image: "us-docker.pkg.dev/cloudrun/container/hello:latest"
     result: create_rsp
 - get_service:
     call: googleapis.run.v1.namespaces.services.get
