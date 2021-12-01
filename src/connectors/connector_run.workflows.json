@@ -38,7 +38,7 @@
               "spec": {
                 "containers": [
                   {
-                    "image": "us-docker.pkg.dev/cloudrun/container/hello:latest"
+                    "image": "gcr.io/january2018-193321/quickstart-hello-with-vars:latest"
                   }
                 ]
               }
