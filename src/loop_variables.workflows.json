@@ -1,0 +1,72 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "workflowScope": "foo"
+        }
+      ]
+    }
+  },
+  {
+    "outerLoop": {
+      "for": {
+        "value": "outerLoopValue",
+        "in": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "steps": [
+          {
+            "outerLoopAssign": {
+              "assign": [
+                {
+                  "outerLoopScope": "${workflowScope}"
+                }
+              ]
+            }
+          },
+          {
+            "innerLoop": {
+              "for": {
+                "value": "innerLoopValue",
+                "in": [
+                  5,
+                  6,
+                  7,
+                  8
+                ],
+                "steps": [
+                  {
+                    "innerLoopAssign": {
+                      "assign": [
+                        {
+                          "workflowScope": "${innerLoopValue}"
+                        },
+                        {
+                          "innerLoopScope": "${outerLoopScope}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "final": {
+      "return": [
+        "${workflowScope}",
+        "${outerLoopScope}",
+        "${innerLoopScope}",
+        "${outerLoopValue}"
+      ]
+    }
+  }
+]
