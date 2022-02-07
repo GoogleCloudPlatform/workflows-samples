@@ -13,10 +13,16 @@
 # limitations under the License.
 
 # [START workflows_dictionary]
-- first_step:
-    assign:
-      - my_map:
-          name: Lila
-          last_name: Barton
-          birthYear: 1990
+- createMap:
+      assign:
+        - dynamicKey: "MiddleName"
+        - myMap:
+            FirstName: "John"
+            ${dynamicKey}: "Apple"
+            LastName: "Smith"
+            Age: 26
+            Address:
+                Street: "Flower Road 12"
+                City: "Superville"
+                Country: "Atlantis"
 # [END workflows_dictionary]
