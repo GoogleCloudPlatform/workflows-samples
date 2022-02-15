@@ -19,7 +19,7 @@
 - outerLoop:
     for:
         value: outerLoopValue # outerLoopValue does not exist outside of outerLoop step
-        in: [1,2,3,4]
+        in: [1, 2, 3, 4]
         steps:
             - outerLoopAssign:
                 assign:
@@ -27,7 +27,7 @@
             - innerLoop:
                 for:
                     value: innerLoopValue # innerLoopValue does not exist outside of innerLoop step
-                    in: [5,6,7,8]
+                    in: [5, 6, 7, 8]
                     steps:
                         - innerLoopAssign:
                             assign:
