@@ -10,4 +10,4 @@ jobs:
     - name: Install yamllint
       run: python -m pip install yamllint
     - name: Lint
-      run: yamllint .
+      run: yamllint . --format github
