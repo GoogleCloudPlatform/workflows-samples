@@ -18,3 +18,6 @@ rules:
   document-start: disable
   line-length: disable
   truthy: disable
+
+  # Needed for region tags.
+  comments-indentation: disable
