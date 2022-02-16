@@ -16,7 +16,9 @@ extends: default
 
 rules:
   document-start: disable
+  indent-sequences: false
   line-length: disable
+  spaces: 2
   truthy: disable
 
   # Needed for region tags.
