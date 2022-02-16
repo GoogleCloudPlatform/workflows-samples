@@ -21,11 +21,11 @@
 
 - init:
     assign:
-    - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - topic: "[fill in a Pubsub topic name]"
-    - subscription: "[fill in a Pubsub subscription name]"
-    - message: {"hello": "world"}  # An object used as a secret.
-    - base64Msg: ${base64.encode(json.encode(message))}
+      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - topic: "[fill in a Pubsub topic name]"
+      - subscription: "[fill in a Pubsub subscription name]"
+      - message: {"hello": "world"}  # An object used as a secret.
+      - base64Msg: ${base64.encode(json.encode(message))}
 - create_topic:
     call: googleapis.pubsub.v1.projects.topics.create
     args:
@@ -43,7 +43,7 @@
       topic: ${"projects/" + project + "/topics/" + topic}
       body:
         messages:
-        - data: ${base64Msg}
+          - data: ${base64Msg}
 - pull_message:
     call: googleapis.pubsub.v1.projects.subscriptions.pull
     args:
@@ -53,8 +53,8 @@
     result: m
 - check_message:
     switch:
-    - condition: ${m.receivedMessages[0].message.data != base64Msg}
-      next: failed
+      - condition: ${m.receivedMessages[0].message.data != base64Msg}
+        next: failed
 - delete_subscription:
     call: googleapis.pubsub.v1.projects.subscriptions.delete
     args:

@@ -25,11 +25,11 @@ main:
   steps:
   - init:
       assign:
-      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - location: "us-central1"
-      - name: "dummy-function"
-      - sourceArchiveUrl: "gs://your-bucket/cloud-function-source.zip"
-      - service_account: "[Replace with App Engine service account]"  # Use App Engine default SA.
+        - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+        - location: "us-central1"
+        - name: "dummy-function"
+        - sourceArchiveUrl: "gs://your-bucket/cloud-function-source.zip"
+        - service_account: "[Replace with App Engine service account]"  # Use App Engine default SA.
   - create_function:
       call: googleapis.cloudfunctions.v1.projects.locations.functions.create
       args:
@@ -55,8 +55,8 @@ main:
         body:
           policy:
             bindings:
-            - members: ["allUsers"]
-              role: "roles/cloudfunctions.invoker"
+              - members: ["allUsers"]
+                role: "roles/cloudfunctions.invoker"
   - call_function:
       call: http.get
       args:
@@ -77,10 +77,10 @@ main:
 assert_response:
   params: [expected_response, got_response]
   steps:
-  - compare:
-      switch:
-      - condition: ${expected_response == got_response}
-        next: end
-  - fail:
-      raise: ${"Expected response is " + expected_response + ". Got " + got_response + " instead."}
+    - compare:
+        switch:
+          - condition: ${expected_response == got_response}
+            next: end
+    - fail:
+        raise: ${"Expected response is " + expected_response + ". Got " + got_response + " instead."}
 # [END workflows_connector_cloudfunctions]
