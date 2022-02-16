@@ -1,15 +1,15 @@
-name: JSON Sample PR
+name: JSON Samples
 on: [push, pull_request]
 jobs:
   create:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '16'
       - name: install yamljs CLI
         run: npm install -g yamljs
       - name: Run toJSON script
