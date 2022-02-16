@@ -1,0 +1,20 @@
+[
+  {
+    "first_step": {
+      "assign": [
+        {
+          "SomeName": "Sherlock"
+        },
+        {
+          "AnotherName": "Ada"
+        },
+        {
+          "SomeIntegerNumber": 27
+        },
+        {
+          "SomeDoubleNumber": 4.1
+        }
+      ]
+    }
+  }
+]
