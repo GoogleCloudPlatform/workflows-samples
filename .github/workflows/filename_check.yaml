@@ -1,7 +1,7 @@
 name: Validate Filename
 on: [push, pull_request]
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
     steps:
     - name: Check out repo
