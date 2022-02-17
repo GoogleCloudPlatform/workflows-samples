@@ -40,8 +40,13 @@
             object: "source/placeholder_src.tgz"
         steps:
         - name: "gcr.io/cloud-builders/docker"
-          args: ["build", "-t", ${image_path}, "."]
-        images: [${image_path}]
+          args:
+          - "build"
+          - "-t"
+          - ${image_path}
+          - "."
+        images:
+        - ${image_path}
 - the_end:
     return: "SUCCESS"
 # [END workflows_connector_cloudbuild]

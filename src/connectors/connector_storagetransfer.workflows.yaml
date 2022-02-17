@@ -67,5 +67,5 @@
         transferJob:
           status: "DELETED"
 - the_end:
-    return: "SUCCESS"# then deletes the job.
+    return: "SUCCESS"
 # [END workflows_connector_storagetransfer]

@@ -25,18 +25,18 @@
     - collection: "a-dummy-collection"
     - document: "a-dummy-document"
 - create_document:
-      call: googleapis.firestore.v1.projects.databases.documents.createDocument
-      args:
-        collectionId: ${collection}
-        parent: ${"projects/" + project_id + "/databases/(default)/documents"}
-        query:
-          documentId: ${document}
-        body:
-          fields:
-            fieldA:
-              stringValue: abc
-            fieldB:
-              integerValue: 123
+    call: googleapis.firestore.v1.projects.databases.documents.createDocument
+    args:
+      collectionId: ${collection}
+      parent: ${"projects/" + project_id + "/databases/(default)/documents"}
+      query:
+        documentId: ${document}
+      body:
+        fields:
+          fieldA:
+            stringValue: abc
+          fieldB:
+            integerValue: 123
 - get_document:
     call: googleapis.firestore.v1.projects.databases.documents.get
     args:
