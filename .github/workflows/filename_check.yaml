@@ -4,7 +4,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repo
-        uses: actions/checkout@v2
-      - name: Validate Filenames
-        run: ./validateFilenames.sh
+    - name: Check out repo
+      uses: actions/checkout@v2
+    - name: Validate Filenames
+      run: ./validateFilenames.sh
