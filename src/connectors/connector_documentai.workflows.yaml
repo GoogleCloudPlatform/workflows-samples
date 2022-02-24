@@ -48,7 +48,7 @@
         documentOutputConfig:
           gcsOutputConfig:
             gcsUri: "gs://connector-demo/documents/"
-    result: bach_process_resp
+    result: batch_process_resp
 - return:
-    return: ${bach_process_resp}
+    return: ${batch_process_resp}
 # [END workflows_connector_documentai]
