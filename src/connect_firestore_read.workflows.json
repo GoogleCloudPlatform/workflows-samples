@@ -60,7 +60,8 @@
   },
   {
     "document_found": {
-      "return": "${documentValue.body.fields.LastName.stringValue}"
+      "return": "${document_value.body.fields.LastName.stringValue}"
     }
   }
 ]
+
