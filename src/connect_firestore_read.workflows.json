@@ -1,67 +1,66 @@
 [
-    {
-        "initialize": {
-            "assign": [
-                {
-                    "project": "myproject123"
-                },
-                {
-                    "collection": "myEntries"
-                },
-                {
-                    "document": "Report"
-                }
-            ]
+  {
+    "initialize": {
+      "assign": [
+        {
+          "project": "myproject123"
+        },
+        {
+          "collection": "myEntries"
+        },
+        {
+          "document": "Report"
         }
-    },
-    {
-        "read_item": {
-            "try": {
-                "call": "http.get",
-                "args": {
-                    "url": "${\"https://firestore.googleapis.com/v1/projects/\"+project+\"/databases/(default)/documents/\"+collection+\"/\"+document}",
-                    "auth": {
-                        "type": "OAuth2"
-                    }
-                },
-                "result": "document_value"
-            },
-            "except": {
-                "as": "e",
-                "steps": [
-                    {
-                        "is_the_key_found": {
-                            "switch": [
-                                {
-                                    "condition": "${e.code == 404}",
-                                    "next": "document_not_found"
-                                },
-                                {
-                                    "condition": "${e.code == 403}",
-                                    "next": "auth_error"
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },
-            "next": "document_found"
-        }
-    },
-    {
-        "document_not_found": {
-            "return": "Document not found."
-        }
-    },
-    {
-        "auth_error": {
-            "return": "Authentication error."
-        }
-    },
-    {
-        "document_found": {
-            "return": "${document_value.body.fields.LastName.stringValue}"
-        }
+      ]
     }
+  },
+  {
+    "read_item": {
+      "try": {
+        "call": "http.get",
+        "args": {
+          "url": "${\"https://firestore.googleapis.com/v1/projects/\"+project+\"/databases/(default)/documents/\"+collection+\"/\"+document}",
+          "auth": {
+            "type": "OAuth2"
+          }
+        },
+        "result": "document_value"
+      },
+      "except": {
+        "as": "e",
+        "steps": [
+          {
+            "is_the_key_found": {
+              "switch": [
+                {
+                  "condition": "${e.code == 404}",
+                  "next": "document_not_found"
+                },
+                {
+                  "condition": "${e.code == 403}",
+                  "next": "auth_error"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "next": "document_found"
+    }
+  },
+  {
+    "document_not_found": {
+      "return": "Document not found."
+    }
+  },
+  {
+    "auth_error": {
+      "return": "Authentication error."
+    }
+  },
+  {
+    "document_found": {
+      "return": "${document_value.body.fields.LastName.stringValue}"
+    }
+  }
 ]
-
