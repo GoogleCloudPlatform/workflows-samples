@@ -3,8 +3,12 @@ on:
   push: 
     branches: [main]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  build:
+  generate:
     runs-on: ubuntu-latest
     steps:
     - name: Check out repo
@@ -13,28 +17,28 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '16'
+
     - name: Install yamljs CLI
       run: npm install -g yamljs
+
     - name: Run toJSON script
       run: ./tojson.sh
-    - name: Commit and create PR if needed
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        # If there is a non-zero diff after running generator
-        if [[ `git status --porcelain` ]]; then
-          git config --global user.email "yoshi-code-bot@google.com"
-          git config --global user.name "Google Bot"
-          git checkout -b "pr_bot-$GITHUB_RUN_ID"
-          git add -A
-          NOW=$(date +"%m-%d-%Y")
-          git commit --message "fix: generate JSON (${NOW})"
-          git push origin "pr_bot-$GITHUB_RUN_ID"
-          echo "Created commit: $(git rev-parse HEAD)"
-          gh pr create \
-            --title "fix: generate JSON (${NOW})" \
-            --body "AUTOMATED PR! This PR was created to regen/fix the JSON payloads."
-        else
-          # No changes after running generator
-          echo "No PR to create."
-        fi
+
+    - name: Check for diff
+      run: git diff --exit-code 
+
+    - name: Create pull request for changes
+      uses: 'peter-evans/create-pull-request@dcd5fd746d53dd8de555c0f10bca6c35628be47a'
+      if: ${{ failure() }}
+      with:
+        token: '${{ secrets.GITHUB_TOKEN }}'
+        committer: 'yoshi-code-bot <yoshi-code-bot@google.com>'
+        author: 'yoshi-code-bot <yoshi-code-bot@google.com>'
+        signoff: 'yoshi-code-bot <yoshi-code-bot@google.com>'
+        commit-message: 'chore: generate JSON'
+        title: 'chore: generate JSON'
+        body: 'AUTOMATED PR! This PR was created to regen/fix the JSON payloads.'
+        base: 'main'
+        branch: 'actions/build'
+        add-paths: 'src/'
+        delete-branch: true
