@@ -16,6 +16,11 @@
 main:
     params: [input]
     steps:
+    - checkInputExists:
+        switch:
+            - condition: ${input != null}
+              next: checkSearchTermInInput
+        next: getCurrentTime  
     - checkSearchTermInInput:
         switch:
             - condition: ${"searchTerm" in input}
