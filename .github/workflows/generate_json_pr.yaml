@@ -41,4 +41,5 @@ jobs:
         base: 'main'
         branch: 'actions/build'
         add-paths: 'src/'
+        push-to-fork: 'yoshi-code-bot/workflows-samples'
         delete-branch: true
