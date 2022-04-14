@@ -28,7 +28,7 @@ jobs:
       run: git diff --exit-code 
 
     - name: Create pull request for changes
-      uses: 'peter-evans/create-pull-request@dcd5fd746d53dd8de555c0f10bca6c35628be47a'
+      uses: peter-evans/create-pull-request@97872c48431b7ab039b31e504f8e0f73b5005127
       if: ${{ failure() }}
       with:
         token: '${{ secrets.GITHUB_TOKEN }}'
