@@ -3,10 +3,6 @@ on:
   push: 
     branches: [main]
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -25,20 +21,22 @@ jobs:
       run: ./tojson.sh
 
     - name: Check for diff
-      run: git diff --exit-code 
-
+      run: git diff --exit-code
+  
     - name: Create pull request for changes
-      uses: peter-evans/create-pull-request@97872c48431b7ab039b31e504f8e0f73b5005127
-      if: ${{ failure() }}
+      uses: googleapis/code-suggester@v2 # takes the changes from git directory
+      if: ${{ failure() }} # run if diff exists
+      env:
+        ACCESS_TOKEN: ${{ secrets.YOSHI_CODE_BOT_TOKEN }} # manually created and added as repo secret
       with:
-        token: '${{ secrets.GITHUB_TOKEN }}'
-        committer: 'yoshi-code-bot <yoshi-code-bot@google.com>'
-        author: 'yoshi-code-bot <yoshi-code-bot@google.com>'
-        signoff: 'yoshi-code-bot <yoshi-code-bot@google.com>'
-        commit-message: 'chore: generate JSON'
-        title: 'chore: generate JSON'
-        body: 'AUTOMATED PR! This PR was created to regen/fix the JSON payloads.'
-        base: 'main'
-        branch: 'actions/build'
-        add-paths: 'src/'
-        delete-branch: true
+        command: pr
+        upstream_owner: ${{ github.repository_owner }}
+        upstream_repo: ${{ github.repository }}
+        description: 'Generated in GitHub action: https://github.com/${{ github.repository_owner }}/${{ github.repository }}/actions/workflows/generate_json_pr.yaml'
+        title: 'chore: Regenerate JSON'
+        message: 'chore: Regenerate JSON'
+        branch: 'regenerate-json'
+        git_dir: 'src/'
+        primary: main
+        force: true
+        fork: true # action automatically forks repo
