@@ -35,8 +35,8 @@ jobs:
         description: 'Generated in GitHub action: https://github.com/${{ github.repository }}/actions/workflows/generate_json_pr.yaml'
         title: 'chore: Regenerate JSON'
         message: 'chore: Regenerate JSON'
-        branch: 'regenerate-json'
+        branch: 'main'
         git_dir: 'src/'
-        primary: main
+        primary: 'main'
         force: true
         fork: true # action automatically forks repo
