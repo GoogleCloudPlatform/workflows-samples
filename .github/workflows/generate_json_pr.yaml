@@ -31,8 +31,8 @@ jobs:
       with:
         command: pr
         upstream_owner: ${{ github.repository_owner }}
-        upstream_repo: ${{ github.repository }}
-        description: 'Generated in GitHub action: https://github.com/${{ github.repository_owner }}/${{ github.repository }}/actions/workflows/generate_json_pr.yaml'
+        upstream_repo: 'workflows-samples'
+        description: 'Generated in GitHub action: https://github.com/${{ github.repository }}/actions/workflows/generate_json_pr.yaml'
         title: 'chore: Regenerate JSON'
         message: 'chore: Regenerate JSON'
         branch: 'regenerate-json'
