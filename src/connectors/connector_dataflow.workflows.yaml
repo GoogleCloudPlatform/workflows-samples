@@ -14,22 +14,22 @@
 
 # [START workflows_connector_dataflow]
 # This workflow demonstrates how to use the Cloud Dataflow connector.
-# The workflow creates a word count job using a Dataflow public job template 
+# The workflow creates a word count job using a Dataflow public job template
 # and uses a Cloud Storage bucket as temporary storage for temp files.
 # The bucket resource is deleted after the job completes.
 # Expected successful output: "SUCCESS"
 
 - init:
     assign:
-    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - location: "us-central1"
-    - zone: "us-central1-a"
-    - bucket_name: "[fill in a bucket name]"
-    - job_name: "[fill in a job name]"
-    - input_file: "gs://dataflow-samples/shakespeare/kinglear.txt"
-    - output_storage_file_prefix: ${"gs://" + args.bucketName + "/counts"}
-    - temp_location: ${"gs://" + bucket_name + "/counts"}
-    - template_path: "gs://dataflow-templates-us-central1/latest/Word_Count"
+      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - location: "us-central1"
+      - zone: "us-central1-a"
+      - bucket_name: "[fill in a bucket name]"
+      - job_name: "[fill in a job name]"
+      - input_file: "gs://dataflow-samples/shakespeare/kinglear.txt"
+      - output_storage_file_prefix: ${"gs://" + args.bucketName + "/counts"}
+      - temp_location: ${"gs://" + bucket_name + "/counts"}
+      - template_path: "gs://dataflow-templates-us-central1/latest/Word_Count"
 - create_bucket:
     call: googleapis.storage.v1.buckets.insert
     args:

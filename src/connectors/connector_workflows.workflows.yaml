@@ -19,9 +19,9 @@
 
 - init:
     assign:
-    - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - location: "us-central1"
-    - workflow: "dummy-workflow"
+      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - location: "us-central1"
+      - workflow: "dummy-workflow"
 - create_workflow:
     call: googleapis.workflows.v1.projects.locations.workflows.create
     args:

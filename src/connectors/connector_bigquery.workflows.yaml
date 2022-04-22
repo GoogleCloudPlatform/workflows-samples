@@ -21,12 +21,12 @@
 
 - init:
     assign:
-    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - dataset_id: "dummy_dataset"
-    - table_id: "dummy_table"
-    - query: "SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 5000;"
-    - create_disposition: "CREATE_IF_NEEDED"  # create a new one if table doesn't exist
-    - write_disposition: "WRITE_TRUNCATE"  # truncate it if the table already exists
+      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - dataset_id: "dummy_dataset"
+      - table_id: "dummy_table"
+      - query: "SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 5000;"
+      - create_disposition: "CREATE_IF_NEEDED"  # create a new one if table doesn't exist
+      - write_disposition: "WRITE_TRUNCATE"  # truncate it if the table already exists
 - create_dataset:
     call: googleapis.bigquery.v2.datasets.insert
     args:

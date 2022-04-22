@@ -20,12 +20,12 @@
 
 - init:
     assign:
-    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - location_id: "us-central1"
-    - queue_id: "dummy-queue-id"
-    - task_id: "dummy-task-id"
-    - schedule_time: "[fill this in]"  # The time when the task is scheduled to be attempted or retried. Must be in RFC3339 UTC "Zulu" format, examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
-    - cloud_function_url: "[fill this in]"  # The Cloud Function to be triggered by the task.
+      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - location_id: "us-central1"
+      - queue_id: "dummy-queue-id"
+      - task_id: "dummy-task-id"
+      - schedule_time: "[fill this in]"  # The time when the task is scheduled to be attempted or retried. Must be in RFC3339 UTC "Zulu" format, examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
+      - cloud_function_url: "[fill this in]"  # The Cloud Function to be triggered by the task.
 - create_queue:
     call: googleapis.cloudtasks.v2.projects.locations.queues.create
     args:

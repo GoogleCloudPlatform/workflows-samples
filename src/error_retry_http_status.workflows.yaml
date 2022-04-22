@@ -32,12 +32,12 @@ main:
         return: "OK"
 
 custom_predicate:
-    params: [e]
-    steps:
-      - what_to_repeat:
-          switch:
+  params: [e]
+  steps:
+    - what_to_repeat:
+        switch:
           - condition: ${e.code == 500}
-            return: True
-      - otherwise:
-          return: False
+            return: true
+    - otherwise:
+        return: false
 # [END workflows_error_retry_http_status]

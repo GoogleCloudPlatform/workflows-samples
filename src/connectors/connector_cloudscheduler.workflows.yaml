@@ -21,11 +21,11 @@
 
 - init:
     assign:
-    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - location_id: "us-central1"
-    - job_id: "dummy-job-id"
-    - topic_id: "dummy-topic-id"  # Pubsub topic used by Cloud Scheduler as a notification target.
-    - subscription: "dummy-subscription-id"
+      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - location_id: "us-central1"
+      - job_id: "dummy-job-id"
+      - topic_id: "dummy-topic-id"  # Pubsub topic used by Cloud Scheduler as a notification target.
+      - subscription: "dummy-subscription-id"
 - create_topic:
     call: googleapis.pubsub.v1.projects.topics.create
     args:

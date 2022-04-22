@@ -21,13 +21,13 @@
 main:
   params: [args]
   steps:
-  - init:
-      assign:
-      - project_number: ${args.projectNumber}
-  - get_project:
-      call: googleapis.cloudresourcemanager.v3.projects.get
-      args:
-        name: ${"projects/" + project_number}
-  - the_end:
-      return: "SUCCESS"
+    - init:
+        assign:
+          - project_number: ${args.projectNumber}
+    - get_project:
+        call: googleapis.cloudresourcemanager.v3.projects.get
+        args:
+          name: ${"projects/" + project_number}
+    - the_end:
+        return: "SUCCESS"
 # [END workflows_connector_cloudresourcemanager]

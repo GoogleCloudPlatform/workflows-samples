@@ -21,22 +21,22 @@
 
 - init:
     assign:
-    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - collection: "a-dummy-collection"
-    - document: "a-dummy-document"
+      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - collection: "a-dummy-collection"
+      - document: "a-dummy-document"
 - create_document:
-      call: googleapis.firestore.v1.projects.databases.documents.createDocument
-      args:
-        collectionId: ${collection}
-        parent: ${"projects/" + project_id + "/databases/(default)/documents"}
-        query:
-          documentId: ${document}
-        body:
-          fields:
-            fieldA:
-              stringValue: abc
-            fieldB:
-              integerValue: 123
+    call: googleapis.firestore.v1.projects.databases.documents.createDocument
+    args:
+      collectionId: ${collection}
+      parent: ${"projects/" + project_id + "/databases/(default)/documents"}
+      query:
+        documentId: ${document}
+      body:
+        fields:
+          fieldA:
+            stringValue: abc
+          fieldB:
+            integerValue: 123
 - get_document:
     call: googleapis.firestore.v1.projects.databases.documents.get
     args:
@@ -44,8 +44,8 @@
     result: got
 - check:
     switch:
-    - condition: ${got.fields.fieldA.stringValue == "abc" AND int(got.fields.fieldB.integerValue) == 123}
-      next: export
+      - condition: ${got.fields.fieldA.stringValue == "abc" AND int(got.fields.fieldB.integerValue) == 123}
+        next: export
 - failed:
     raise: ${"got unexpected document" + "fieldA:" + got.fields.fieldA.stringValue + " fieldB:" + string(got.fields.fieldB.integerValue)}
 - export:
@@ -55,7 +55,7 @@
       body:
         outputUriPrefix: "gs://a_dummy_bucket"  # Make sure this bucket exists.
         collectionIds:
-        - ${collection}
+          - ${collection}
 - drop:
     call: googleapis.firestore.v1.projects.databases.documents.delete
     args:

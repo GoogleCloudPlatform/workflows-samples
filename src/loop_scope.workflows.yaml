@@ -15,28 +15,28 @@
 # [START workflows_loop_scope]
 - init:
     assign:
-        - workflowScope: foo
+      - workflowScope: foo
 - outerLoop:
     for:
-        value: outerLoopValue # outerLoopValue does not exist outside of outerLoop step
-        in: [1,2,3,4]
-        steps:
-            - outerLoopAssign:
-                assign:
-                    - outerLoopScope: ${workflowScope} # outerLoopScope is a new variable and does not exist outside of outerLoop step
-            - innerLoop:
-                for:
-                    value: innerLoopValue # innerLoopValue does not exist outside of innerLoop step
-                    in: [5,6,7,8]
-                    steps:
-                        - innerLoopAssign:
-                            assign:
-                                - workflowScope: ${innerLoopValue}
-                                - innerLoopScope: ${outerLoopScope} # innerLoopScope is a new variable and does not exist outside of innerLoop step
+      value: outerLoopValue  # outerLoopValue does not exist outside of outerLoop step
+      in: [1, 2, 3, 4]
+      steps:
+        - outerLoopAssign:
+            assign:
+              - outerLoopScope: ${workflowScope}  # outerLoopScope is a new variable and does not exist outside of outerLoop step
+        - innerLoop:
+            for:
+              value: innerLoopValue  # innerLoopValue does not exist outside of innerLoop step
+              in: [5, 6, 7, 8]
+              steps:
+                - innerLoopAssign:
+                    assign:
+                      - workflowScope: ${innerLoopValue}
+                      - innerLoopScope: ${outerLoopScope}  # innerLoopScope is a new variable and does not exist outside of innerLoop step
 - final:
     return:
-        - ${workflowScope} # allowed
-        - ${outerLoopScope} # not allowed
-        - ${innerLoopScope} # not allowed
-        - ${outerLoopValue} # not allowed
+      - ${workflowScope}  # allowed
+      - ${outerLoopScope}  # not allowed
+      - ${innerLoopScope}  # not allowed
+      - ${outerLoopValue}  # not allowed
 # [END workflows_loop_scope]
