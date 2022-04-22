@@ -17,4 +17,5 @@ jobs:
       run: pip install yamllint
 
     - name: Lint YAML files
+      working-directory: src
       run: yamllint .
