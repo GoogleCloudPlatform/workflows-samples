@@ -37,7 +37,7 @@ main:
             cluster:
               name: ${cluster_id}
               initial_node_count: 1
-            parent: ${"projects/" + project_id + "/locations/" + args.clusterZone}
+            parent: ${"projects/" + project_id + "/locations/" + args.zone}
     - assert_running:
         call: assert_cluster_status
         args:
