@@ -14,17 +14,17 @@
 
 # [START workflows_connector_sqladmin]
 # This workflow demonstrates how to use the Cloud SQL connector.
-# The workflow creates an SQL instance and an SQL database in the SQL instance. 
+# The workflow creates an SQL instance and an SQL database in the SQL instance.
 # Then it deletes the database and the instance. Each of these steps waits
 # until the long-running operation of creating or deleting the SQL database completes.
 # Expected successful output: "SUCCESS"
 
 - init:
     assign:
-    - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - instance: "[fill in an instance name]"
-    - tier: "db-n1-standard-1"
-    - database_name: "[fill in an instance name]"
+      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - instance: "[fill in an instance name]"
+      - tier: "db-n1-standard-1"
+      - database_name: "[fill in an instance name]"
 - create_instance:
     call: googleapis.sqladmin.v1beta4.instances.insert
     args:

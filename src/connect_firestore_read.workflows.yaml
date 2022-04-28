@@ -15,9 +15,9 @@
 # [START workflows_connect_firestore_read]
 - initialize:
     assign:
-    - project: "myproject123"
-    - collection: "myEntries"
-    - document: "Report"
+      - project: "myproject123"
+      - collection: "myEntries"
+      - document: "Report"
 - read_item:
     try:
       call: http.get
@@ -29,12 +29,12 @@
     except:
       as: e
       steps:
-      - is_the_key_found:
-          switch:
-          - condition: ${e.code == 404}
-            next: document_not_found
-          - condition: ${e.code == 403}
-            next: auth_error
+        - is_the_key_found:
+            switch:
+              - condition: ${e.code == 404}
+                next: document_not_found
+              - condition: ${e.code == 403}
+                next: auth_error
     next: document_found
 - document_not_found:
     return: "Document not found."

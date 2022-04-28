@@ -30,5 +30,5 @@
     next: check_condition
 - exit_loop:
     return:
-        concat_result: ${result}
+      concat_result: ${result}
 # [END workflows_array]

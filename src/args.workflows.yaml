@@ -16,9 +16,9 @@
 main:
   params: [args]
   steps:
-  - step1:
-      assign:
-        - outputVar: ${"Hello " + args.firstName + " " + args.lastName}
-  - step2:
-      return: ${outputVar}
+    - step1:
+        assign:
+          - outputVar: ${"Hello " + args.firstName + " " + args.lastName}
+    - step2:
+        return: ${outputVar}
 # [END workflows_args]

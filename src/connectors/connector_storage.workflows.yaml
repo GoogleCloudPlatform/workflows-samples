@@ -20,9 +20,9 @@
 
 - init:
     assign:
-    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - bucket_name: "bucket-name"
-    - object_name: "object-name"
+      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - bucket_name: "bucket-name"
+      - object_name: "object-name"
 # When alt=media, get object data.
 - download_object_media:
     call: googleapis.storage.v1.objects.get

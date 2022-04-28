@@ -18,7 +18,7 @@
 # Expected successful output: "SUCCESS"
 - init:
     assign:
-    - docType: "PLAIN_TEXT"
+      - docType: "PLAIN_TEXT"
 - analyze_entities:
     call: googleapis.language.v1.documents.analyzeEntities
     args:

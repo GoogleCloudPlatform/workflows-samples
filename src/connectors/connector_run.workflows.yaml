@@ -19,8 +19,8 @@
 
 - init:
     assign:
-    - service_name: "test-service"
-    - project: "your-project-id"
+      - service_name: "test-service"
+      - project: "your-project-id"
 - create_service:
     call: googleapis.run.v1.namespaces.services.create
     args:
@@ -42,7 +42,7 @@
                 serving.knative.dev/type: "container"
             spec:
               containers:
-              - image: "us-docker.pkg.dev/cloudrun/container/hello:latest"
+                - image: "us-docker.pkg.dev/cloudrun/container/hello:latest"
     result: create_rsp
 - get_service:
     call: googleapis.run.v1.namespaces.services.get
