@@ -1,38 +1,40 @@
 [
   {
-    "create_table_entry": null,
-    "assign": [
-      {
-        "entry": [
-          "123"
-        ]
-      }
-    ]
+    "create_table_entry": {
+      "assign": [
+        {
+          "entry": [
+            "123"
+          ]
+        }
+      ]
+    }
   },
   {
-    "create_txn": null,
-    "assign": [
-      {
-        "req": {
-          "mutations": [
-            {
-              "insert": {
-                "columns": [
-                  "ID"
-                ],
-                "table": "Contacts",
-                "values": [
-                  "${entry}"
-                ]
+    "create_txn": {
+      "assign": [
+        {
+          "req": {
+            "mutations": [
+              {
+                "insert": {
+                  "columns": [
+                    "ID"
+                  ],
+                  "table": "Contacts",
+                  "values": [
+                    "${entry}"
+                  ]
+                }
               }
+            ],
+            "singleUseTransaction": {
+              "readWrite": {}
             }
-          ],
-          "singleUseTransaction": {
-            "readWrite": {}
           }
         }
-      }
-    ]
+      ]
+    }
   },
   {
     "create_spanner_session": null,
