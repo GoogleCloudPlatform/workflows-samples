@@ -11,14 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+main:
+  steps:
 # [START workflows_error_catch_retry]
-- STEP_NAME:
-    try:
-      call: http.get
-        # ...
-    except:
-      as: error_dictionary
-      steps:
-        # ...
+    - STEP_NAME:
+        try:
+          call: http.get
+            # ...
+        except:
+          as: error_dictionary
+          steps:
+            # ...
 # [END workflows_error_catch_retry]

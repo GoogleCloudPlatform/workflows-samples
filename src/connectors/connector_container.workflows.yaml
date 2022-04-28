@@ -31,13 +31,11 @@ main:
     - create_k8s_cluster:
         call: googleapis.container.v1.projects.zones.clusters.create
         args:
-          projectId: ${project_id}
-          zone: ${cluster_zone}
           body:
             cluster:
               name: ${cluster_id}
               initial_node_count: 1
-            parent: ${"projects/" + project_id + "/locations/" + args.zone}
+            parent: ${"projects/" + project_id + "/locations/" + cluster_zone}
     - assert_running:
         call: assert_cluster_status
         args:

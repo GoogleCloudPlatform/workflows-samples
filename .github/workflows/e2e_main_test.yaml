@@ -1,6 +1,5 @@
-name: E2E Test
+name: Release - E2E Test
 on:
-  pull_request:
   push:
     branches:
       - main
@@ -13,18 +12,24 @@ jobs:
     outputs:
       files: ${{ steps.get-files.outputs.result }}
     steps:
-    - name: Get changed files
+    - name: Check out repo
+      uses: actions/checkout@v3
+
+    - name: Get files
       uses: actions/github-script@v6
       id: get-files
       with:
         script: |
-          const resp = await github.rest.pulls.listFiles({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: ${{github.event.pull_request.number}}
-          });
-          const files = resp.data.map((file) => file.filename);
-          return files.filter((filename) => filename.startsWith('src'));
+          const fs = require('fs');
+          const Path = require('path');
+          const workspace = process.env.GITHUB_WORKSPACE;
+          
+          let files = fs.readdirSync(Path.join(workspace, 'src'));
+          files = files.map((file) => Path.join('./src', file));
+          let connectors = fs.readdirSync(Path.join(workspace, 'src/connectors'));
+          connectors = connectors.map((file) => Path.join('./src/connectors', file));
+          files.concat(connectors);
+          return files.filter((filename) => filename.endsWith('yaml'));
 
   test:
     name: Run Workflows Test Matrix
