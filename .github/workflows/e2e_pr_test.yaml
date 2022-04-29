@@ -41,8 +41,8 @@ jobs:
     - id: Authenticate
       uses: 'google-github-actions/auth@v0'
       with:
-        workload_identity_provider: 'projects/784176979884/locations/global/workloadIdentityPools/gha-pool/providers/gh-provider'
-        service_account: 'workload-id-fed@friction-finder.iam.gserviceaccount.com'
+        workload_identity_provider: ''
+        service_account: ''
         create_credentials_file: true
         
 

@@ -37,7 +37,7 @@ main:
     - final:
         return:
           - ${workflowScope}  # allowed
-          - ${outerLoopScope}  # not allowed
-          - ${innerLoopScope}  # not allowed
-          - ${outerLoopValue}  # not allowed
+          # - ${outerLoopScope}  # not allowed
+          # - ${innerLoopScope}  # not allowed
+          # - ${outerLoopValue}  # not allowed
 # [END workflows_loop_scope]
