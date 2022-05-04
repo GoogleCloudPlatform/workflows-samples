@@ -14,16 +14,16 @@
 
 # [START workflows_connector_storagetransfer]
 # This workflow demonstrates how to use the Cloud Storage Transfer connector.
-# The workflow creates a storage transfer job that transfers data between two buckets, 
+# The workflow creates a storage transfer job that transfers data between two buckets,
 # runs the job, and deletes the job.
 # Expected successful output: "SUCCESS"
 
 - init:
     assign:
-    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - transferjob_name: "transferJobs/dummy-transfer-job"
-    - src_bucket_name: "[fill in with the source bucket name]"
-    - sink_bucket_name: "[fill in with the destination bucket name]"
+      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - transferjob_name: "transferJobs/dummy-transfer-job"
+      - src_bucket_name: "[fill in with the source bucket name]"
+      - sink_bucket_name: "[fill in with the destination bucket name]"
 - create_transferjob:
     call: googleapis.storagetransfer.v1.transferJobs.create
     args:
@@ -67,5 +67,5 @@
         transferJob:
           status: "DELETED"
 - the_end:
-    return: "SUCCESS"# then deletes the job.
+    return: "SUCCESS"  # then deletes the job.
 # [END workflows_connector_storagetransfer]

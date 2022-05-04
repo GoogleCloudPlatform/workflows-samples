@@ -14,15 +14,15 @@
 
 # [START workflows_dictionary]
 - createMap:
-      assign:
-        - dynamicKey: "MiddleName"
-        - myMap:
-            FirstName: "John"
-            ${dynamicKey}: "Apple"
-            LastName: "Smith"
-            Age: 26
-            Address:
-                Street: "Flower Road 12"
-                City: "Superville"
-                Country: "Atlantis"
+    assign:
+      - dynamicKey: "MiddleName"
+      - myMap:
+          FirstName: "John"
+          ${dynamicKey}: "Apple"
+          LastName: "Smith"
+          Age: 26
+          Address:
+            Street: "Flower Road 12"
+            City: "Superville"
+            Country: "Atlantis"
 # [END workflows_dictionary]

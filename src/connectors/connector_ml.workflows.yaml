@@ -22,19 +22,19 @@
 main:
   params: [args]
   steps:
-  - init:
-      assign:
-      - project_id: ${args.projectID}
-  - list_jobs:
-      call: googleapis.ml.v1.projects.jobs.list
-      args:
-        parent: ${"projects/" + project_id}
-      result: jobs
-  - list_locations:
-      call: googleapis.ml.v1.projects.locations.list
-      args:
-        parent: ${"projects/" + project_id}
-      result: locations
-  - the_end:
-      return: 'SUCCESS'
+    - init:
+        assign:
+          - project_id: ${args.projectID}
+    - list_jobs:
+        call: googleapis.ml.v1.projects.jobs.list
+        args:
+          parent: ${"projects/" + project_id}
+        result: jobs
+    - list_locations:
+        call: googleapis.ml.v1.projects.locations.list
+        args:
+          parent: ${"projects/" + project_id}
+        result: locations
+    - the_end:
+        return: "SUCCESS"
 # [END workflows_connector_ml]

@@ -23,64 +23,64 @@
 main:
   params: []
   steps:
-  - init:
-      assign:
-      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - location: "us-central1"
-      - name: "dummy-function"
-      - sourceArchiveUrl: "gs://your-bucket/cloud-function-source.zip"
-      - service_account: "[Replace with App Engine service account]"  # Use App Engine default SA.
-  - create_function:
-      call: googleapis.cloudfunctions.v1.projects.locations.functions.create
-      args:
-        location: ${"projects/" + project + "/locations/" + location}
-        body:
+    - init:
+        assign:
+          - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          - location: "us-central1"
+          - name: "dummy-function"
+          - sourceArchiveUrl: "gs://your-bucket/cloud-function-source.zip"
+          - service_account: "[Replace with App Engine service account]"  # Use App Engine default SA.
+    - create_function:
+        call: googleapis.cloudfunctions.v1.projects.locations.functions.create
+        args:
+          location: ${"projects/" + project + "/locations/" + location}
+          body:
+            name: ${"projects/" + project + "/locations/" + location + "/functions/" + name}
+            description: "cloud function tested for connector e2e testing, creation/deletion"
+            entryPoint: "helloWorld"
+            runtime: "nodejs10"
+            serviceAccountEmail: ${service_account}
+            sourceArchiveUrl: ${sourceArchiveUrl}
+            httpsTrigger:
+              securityLevel: "SECURE_OPTIONAL"
+    - get_function:
+        call: googleapis.cloudfunctions.v1.projects.locations.functions.get
+        args:
           name: ${"projects/" + project + "/locations/" + location + "/functions/" + name}
-          description: "cloud function tested for connector e2e testing, creation/deletion"
-          entryPoint: "helloWorld"
-          runtime: "nodejs10"
-          serviceAccountEmail: ${service_account}
-          sourceArchiveUrl: ${sourceArchiveUrl}
-          httpsTrigger:
-            securityLevel: "SECURE_OPTIONAL"
-  - get_function:
-      call: googleapis.cloudfunctions.v1.projects.locations.functions.get
-      args:
-        name: ${"projects/" + project + "/locations/" + location + "/functions/" + name}
-      result: function
-  - grant_permission_to_all:
-      call: googleapis.cloudfunctions.v1.projects.locations.functions.setIamPolicy
-      args:
-        resource: ${"projects/" + project + "/locations/" + location + "/functions/" + name}
-        body:
-          policy:
-            bindings:
-            - members: ["allUsers"]
-              role: "roles/cloudfunctions.invoker"
-  - call_function:
-      call: http.get
-      args:
-        url: ${function.httpsTrigger.url}
-      result: resp
-  - verify_response:
-      call: assert_response
-      args:
-        expected_response: "success"
-        got_response: ${resp.body}
-  - delete_function:
-      call: googleapis.cloudfunctions.v1.projects.locations.functions.delete
-      args:
-        name: ${"projects/" + project + "/locations/" + location + "/functions/" + name}
-  - the_end:
-      return: "SUCCESS"
+        result: function
+    - grant_permission_to_all:
+        call: googleapis.cloudfunctions.v1.projects.locations.functions.setIamPolicy
+        args:
+          resource: ${"projects/" + project + "/locations/" + location + "/functions/" + name}
+          body:
+            policy:
+              bindings:
+                - members: ["allUsers"]
+                  role: "roles/cloudfunctions.invoker"
+    - call_function:
+        call: http.get
+        args:
+          url: ${function.httpsTrigger.url}
+        result: resp
+    - verify_response:
+        call: assert_response
+        args:
+          expected_response: "success"
+          got_response: ${resp.body}
+    - delete_function:
+        call: googleapis.cloudfunctions.v1.projects.locations.functions.delete
+        args:
+          name: ${"projects/" + project + "/locations/" + location + "/functions/" + name}
+    - the_end:
+        return: "SUCCESS"
 
 assert_response:
   params: [expected_response, got_response]
   steps:
-  - compare:
-      switch:
-      - condition: ${expected_response == got_response}
-        next: end
-  - fail:
-      raise: ${"Expected response is " + expected_response + ". Got " + got_response + " instead."}
+    - compare:
+        switch:
+          - condition: ${expected_response == got_response}
+            next: end
+    - fail:
+        raise: ${"Expected response is " + expected_response + ". Got " + got_response + " instead."}
 # [END workflows_connector_cloudfunctions]

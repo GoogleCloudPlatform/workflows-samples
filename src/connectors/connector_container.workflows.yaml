@@ -22,56 +22,57 @@
 main:
   params: []
   steps:
-  - init:
-      assign:
-      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - cluster_zone: "us-central1-a"
-      - cluster_id: "[fill in a cluster ID]"
-      - cluster_full_name: ${"projects/" + project_id + "/locations/" + cluster_zone + "/clusters/" + cluster_id}
-  - create_k8s_cluster:
-      call: googleapis.container.v1.projects.zones.clusters.create
-      args:
-        projectId: ${project_id}
-        zone: ${cluster_zone}
-        body:
-          cluster:
-            name: ${cluster_id}
-            initial_node_count: 1
-          parent: ${"projects/" + project_id + "/locations/" + args.clusterZone}
-  - assert_running:
-      call: assert_cluster_status
-      args:
-        expected_status: "RUNNING"
-        project_id: ${project_id}
-        cluster_zone: ${cluster_zone}
-        cluster_id: ${cluster_id}
-        cluster_full_name: ${cluster_full_name}
+    - init:
+        assign:
+          - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          - cluster_zone: "us-central1-a"
+          - cluster_id: "[fill in a cluster ID]"
+          - cluster_full_name: ${"projects/" + project_id + "/locations/" + cluster_zone + "/clusters/" + cluster_id}
+    - create_k8s_cluster:
+        call: googleapis.container.v1.projects.zones.clusters.create
+        args:
+          projectId: ${project_id}
+          zone: ${cluster_zone}
+          body:
+            cluster:
+              name: ${cluster_id}
+              initial_node_count: 1
+            parent: ${"projects/" + project_id + "/locations/" + args.clusterZone}
+    - assert_running:
+        call: assert_cluster_status
+        args:
+          expected_status: "RUNNING"
+          project_id: ${project_id}
+          cluster_zone: ${cluster_zone}
+          cluster_id: ${cluster_id}
+          cluster_full_name: ${cluster_full_name}
 
-  - delete_k8s_cluster:
-      call: googleapis.container.v1.projects.zones.clusters.delete
-      args:
-        projectId: ${project_id}
-        zone: ${cluster_zone}
-        clusterId: ${cluster_id}
-        name: ${cluster_full_name}
-  - the_end:
-      return: "SUCCESS"
+    - delete_k8s_cluster:
+        call: googleapis.container.v1.projects.zones.clusters.delete
+        args:
+          projectId: ${project_id}
+          zone: ${cluster_zone}
+          clusterId: ${cluster_id}
+          name: ${cluster_full_name}
+    - the_end:
+        return: "SUCCESS"
 
 assert_cluster_status:
-  params: [expected_status, project_id, cluster_zone, cluster_id, cluster_full_name]
+  params:
+    [expected_status, project_id, cluster_zone, cluster_id, cluster_full_name]
   steps:
-  - get_cluster:
-      call: googleapis.container.v1.projects.zones.clusters.get
-      args:
-        projectId: ${project_id}
-        zone: ${cluster_zone}
-        clusterId: ${cluster_id}
-        name: ${cluster_full_name}
-      result: cluster
-  - compare:
-      switch:
-      - condition: ${cluster.status == expected_status}
-        next: end
-  - fail:
-      raise: ${"Expected VM status is " + expected_status + ". Got " + cluster.status + " instead."}
+    - get_cluster:
+        call: googleapis.container.v1.projects.zones.clusters.get
+        args:
+          projectId: ${project_id}
+          zone: ${cluster_zone}
+          clusterId: ${cluster_id}
+          name: ${cluster_full_name}
+        result: cluster
+    - compare:
+        switch:
+          - condition: ${cluster.status == expected_status}
+            next: end
+    - fail:
+        raise: ${"Expected VM status is " + expected_status + ". Got " + cluster.status + " instead."}
 # [END workflows_connector_container]

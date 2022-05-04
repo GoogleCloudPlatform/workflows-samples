@@ -15,9 +15,9 @@
 # [START workflows_connect_firestore_write]
 - initialize:
     assign:
-    - project: "myproject123"
-    - collection: "myEntries"
-    - document: "Visits"
+      - project: "myproject123"
+      - collection: "myEntries"
+      - document: "Visits"
 - write_item:
     call: http.request
     args:

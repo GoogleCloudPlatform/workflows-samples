@@ -41,10 +41,10 @@
         inputDocuments:
           gcsDocuments:
             documents:
-            - gcsUri: "gs://connector-demo/documents/helloworld1.pdf"
-              mimeType: "application/pdf"
-            - gcsUri: "gs://connector-demo/documents/helloworld2.pdf"
-              mimeType: "application/pdf"
+              - gcsUri: "gs://connector-demo/documents/helloworld1.pdf"
+                mimeType: "application/pdf"
+              - gcsUri: "gs://connector-demo/documents/helloworld2.pdf"
+                mimeType: "application/pdf"
         documentOutputConfig:
           gcsOutputConfig:
             gcsUri: "gs://connector-demo/documents/"

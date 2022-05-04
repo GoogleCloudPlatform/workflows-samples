@@ -23,69 +23,69 @@
 main:
   params: []
   steps:
-  - init:
-      assign:
-      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - zone: "us-central1-a"
-      - instance: "[fill in an instance name]"
-      - machineType: "e2-micro"
-  - insert_machine:
-      call: googleapis.compute.v1.instances.insert
-      args:
-        project: ${project}
-        zone: ${zone}
-        body:
-          name: ${instance}
-          machineType: ${"zones/" + zone + "/machineTypes/" + machineType}
-          disks:
-          - initializeParams:
-              sourceImage: "projects/debian-cloud/global/images/debian-10-buster-v20201112"
-            boot: true
-            autoDelete: true
-          networkInterfaces:
-          - network: "global/networks/default"
-  - start_machine:
-      call: googleapis.compute.v1.instances.start
-      args:
-        instance: ${instance}
-        project: ${project}
-        zone: ${zone}
-  - assert_running:
-      call: assert_machine_status
-      args:
-        expected_status: "RUNNING"
-        project: ${project}
-        zone: ${zone}
-        instance: ${instance}
-  - stop_machine:
-      call: googleapis.compute.v1.instances.stop
-      args:
-        instance: ${instance}
-        project: ${project}
-        zone: ${zone}
-  - delete_machine:
-      call: googleapis.compute.v1.instances.delete
-      args:
-        instance: ${instance}
-        project: ${project}
-        zone: ${zone}
-  - the_end:
-      return: "SUCCESS"
+    - init:
+        assign:
+          - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          - zone: "us-central1-a"
+          - instance: "[fill in an instance name]"
+          - machineType: "e2-micro"
+    - insert_machine:
+        call: googleapis.compute.v1.instances.insert
+        args:
+          project: ${project}
+          zone: ${zone}
+          body:
+            name: ${instance}
+            machineType: ${"zones/" + zone + "/machineTypes/" + machineType}
+            disks:
+              - initializeParams:
+                  sourceImage: "projects/debian-cloud/global/images/debian-10-buster-v20201112"
+                boot: true
+                autoDelete: true
+            networkInterfaces:
+              - network: "global/networks/default"
+    - start_machine:
+        call: googleapis.compute.v1.instances.start
+        args:
+          instance: ${instance}
+          project: ${project}
+          zone: ${zone}
+    - assert_running:
+        call: assert_machine_status
+        args:
+          expected_status: "RUNNING"
+          project: ${project}
+          zone: ${zone}
+          instance: ${instance}
+    - stop_machine:
+        call: googleapis.compute.v1.instances.stop
+        args:
+          instance: ${instance}
+          project: ${project}
+          zone: ${zone}
+    - delete_machine:
+        call: googleapis.compute.v1.instances.delete
+        args:
+          instance: ${instance}
+          project: ${project}
+          zone: ${zone}
+    - the_end:
+        return: "SUCCESS"
 
 assert_machine_status:
   params: [expected_status, project, zone, instance]
   steps:
-  - get_instance:
-      call: googleapis.compute.v1.instances.get
-      args:
-        instance: ${instance}
-        project: ${project}
-        zone: ${zone}
-      result: instance
-  - compare:
-      switch:
-      - condition: ${instance.status == expected_status}
-        next: end
-  - fail:
-      raise: ${"Expected VM status is " + expected_status + ". Got " + instance.status + " instead."}
+    - get_instance:
+        call: googleapis.compute.v1.instances.get
+        args:
+          instance: ${instance}
+          project: ${project}
+          zone: ${zone}
+        result: instance
+    - compare:
+        switch:
+          - condition: ${instance.status == expected_status}
+            next: end
+    - fail:
+        raise: ${"Expected VM status is " + expected_status + ". Got " + instance.status + " instead."}
 # [END workflows_connector_gce]

@@ -14,20 +14,20 @@
 
 # [START workflows_connector_workflowexecutions]
 # This workflow demonstrates how to use the Cloud Workflow Executions connector
-# to create an execution for a workflow. Make sure the workflow 
+# to create an execution for a workflow. Make sure the workflow
 # already exists in your project.
 # Expected successful output: "SUCCESS"
 
 - init:
     assign:
-    - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - location: "us-central1"
-    - workflow: "[fill in the workflow to execute]"  # Make sure this workflow exists in your project.
-    - arguments:
-        hello: world
-        integer: 100
-        boolean: true
-# The run helper method is the preferred way to execute a workflow as it doesn't require 
+      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - location: "us-central1"
+      - workflow: "[fill in the workflow to execute]"  # Make sure this workflow exists in your project.
+      - arguments:
+          hello: world
+          integer: 100
+          boolean: true
+# The run helper method is the preferred way to execute a workflow as it doesn't require
 # encoding the workflow arguments in a JSON-formatted string. To compare
 # the usage, we list two demo steps:
 - run_execution:
@@ -46,5 +46,7 @@
         argument: ${json.encode_to_string(arguments)}
     result: r2
 - the_end:
-    return: [${r1}, ${r2}]
+    return:
+      - ${r1}
+      - ${r2}
 # [END workflows_connector_workflowexecutions]

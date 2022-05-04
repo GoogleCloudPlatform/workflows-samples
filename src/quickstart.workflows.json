@@ -5,6 +5,17 @@
     ],
     "steps": [
       {
+        "checkInputExists": {
+          "switch": [
+            {
+              "condition": "${input != null}",
+              "next": "checkSearchTermInInput"
+            }
+          ],
+          "next": "getCurrentTime"
+        }
+      },
+      {
         "checkSearchTermInInput": {
           "switch": [
             {

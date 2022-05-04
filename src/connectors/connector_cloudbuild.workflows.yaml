@@ -14,9 +14,9 @@
 
 # [START workflows_connector_cloudbuild]
 # This workflow demonstrates how to use the Cloud Build connector.
-# The workflow creates a simple build and the image is stored to an Artifact Registery repo. 
+# The workflow creates a simple build and the image is stored to an Artifact Registery repo.
 # The workflow assumes a properly defined source tgz file already
-# exists in a Cloud Storage bucket: gs://your-project-id_cloudbuild/source/placeholder_src.tgz 
+# exists in a Cloud Storage bucket: gs://your-project-id_cloudbuild/source/placeholder_src.tgz
 # and a repository "your-project-id-docker-repo" already
 # exists in Artifact Registry where the image will be stored.
 # The new table and dataset are both deleted in the following steps.
@@ -24,10 +24,10 @@
 
 - init:
     assign:
-    - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-    - location_id: "global"
-    - repo: ${project_id + "-docker-repo"}
-    - image_path: ${"us-central1-docker.pkg.dev/" + project_id + "/" + repo + "/quickstart-image:tag1"}
+      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - location_id: "global"
+      - repo: ${project_id + "-docker-repo"}
+      - image_path: ${"us-central1-docker.pkg.dev/" + project_id + "/" + repo + "/quickstart-image:tag1"}
 - create_build:
     call: googleapis.cloudbuild.v1.projects.builds.create
     args:
@@ -39,9 +39,14 @@
             bucket: ${project_id + "_cloudbuild"}
             object: "source/placeholder_src.tgz"
         steps:
-        - name: "gcr.io/cloud-builders/docker"
-          args: ["build", "-t", ${image_path}, "."]
-        images: [${image_path}]
+          - name: "gcr.io/cloud-builders/docker"
+            args:
+              - "build"
+              - "-t"
+              - ${image_path}
+              - "."
+        images:
+          - ${image_path}
 - the_end:
     return: "SUCCESS"
 # [END workflows_connector_cloudbuild]

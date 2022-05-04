@@ -37,7 +37,7 @@ my_own_predicate:
     - what_to_repeat:
         switch:
           - condition: "df"
-            return: True
+            return: true
     - otherwise:
-        return: False
+        return: false
 # [END workflows_error_retry_predicate]

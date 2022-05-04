@@ -15,9 +15,9 @@
 # [START workflows_connect_compute_engine]
 - initialize:
     assign:
-    - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_NUMBER")}
-    - zone: "us-central1-a"
-    - vm_to_stop: "examplevm"
+      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_NUMBER")}
+      - zone: "us-central1-a"
+      - vm_to_stop: "examplevm"
 - stop_instance:
     call: http.post
     args:
