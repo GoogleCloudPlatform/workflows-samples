@@ -24,7 +24,7 @@ jobs:
       run: git diff --exit-code
   
     - name: Create pull request for changes
-      uses: googleapis/code-suggester@v2 # takes the changes from git directory
+      uses: googleapis/code-suggester@v3 # takes the changes from git directory
       if: ${{ failure() }} # run if diff exists
       env:
         ACCESS_TOKEN: ${{ secrets.YOSHI_CODE_BOT_TOKEN }} # manually created and added as repo secret
