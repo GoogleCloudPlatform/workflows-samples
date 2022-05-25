@@ -1,0 +1,79 @@
+{
+  "main": {
+    "params": [
+      "input"
+    ],
+    "steps": [
+      {
+        "init": {
+          "assign": [
+            {
+              "userProfile": {}
+            },
+            {
+              "recentItems": []
+            }
+          ]
+        }
+      },
+      {
+        "enrichUserData": {
+          "parallel": {
+            "shared": [
+              "userProfile",
+              "recentItems"
+            ],
+            "branches": [
+              {
+                "getUserProfileBranch": {
+                  "steps": [
+                    {
+                      "getUserProfile": {
+                        "call": "http.get",
+                        "args": {
+                          "url": "${\"https://example.com/users/\" + input.userId}"
+                        },
+                        "result": "userProfile"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "getRecentItemsBranch": {
+                  "steps": [
+                    {
+                      "getRecentItems": {
+                        "try": {
+                          "call": "http.get",
+                          "args": {
+                            "url": "${\"https://example.com/items?userId=\" + input.userId}"
+                          },
+                          "result": "recentItems"
+                        },
+                        "except": {
+                          "as": "e",
+                          "steps": [
+                            {
+                              "ignoreError": {
+                                "assign": [
+                                  {
+                                    "recentItems": []
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

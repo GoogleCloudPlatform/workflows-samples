@@ -1,0 +1,82 @@
+[
+  {
+    "assignStep": {
+      "assign": [
+        {
+          "input": [
+            "apple",
+            "orange"
+          ]
+        },
+        {
+          "my_result": {}
+        }
+      ]
+    }
+  },
+  {
+    "parallelStep": {
+      "parallel": {
+        "shared": [
+          "my_result"
+        ],
+        "branches": [
+          {
+            "getStock": {
+              "steps": [
+                {
+                  "callGetStock": {
+                    "call": "http.get",
+                    "args": {
+                      "url": "${\"http://mystore.com/getStock/\" + input[0]}"
+                    },
+                    "result": "r"
+                  }
+                },
+                {
+                  "assignResult1": {
+                    "assign": [
+                      {
+                        "my_result[\"getStock\"]": "r.body.some.entry"
+                      },
+                      {
+                        "temp": 1
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "orderStock": {
+              "steps": [
+                {
+                  "callOrderStock": {
+                    "call": "http.get",
+                    "args": {
+                      "url": "${\"http://mystore.com/orderStock/\" + input[1]}"
+                    },
+                    "result": "r"
+                  }
+                },
+                {
+                  "assignResult2": {
+                    "assign": [
+                      {
+                        "my_result[\"orderStock\"]": "r.body.some.entry"
+                      },
+                      {
+                        "temp": 2
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+]

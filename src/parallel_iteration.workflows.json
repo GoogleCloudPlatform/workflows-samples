@@ -1,0 +1,56 @@
+{
+  "main": {
+    "params": [
+      "args"
+    ],
+    "steps": [
+      {
+        "init": {
+          "assign": [
+            {
+              "total": 0
+            }
+          ]
+        }
+      },
+      {
+        "countComments": {
+          "parallel": {
+            "shared": [
+              "total"
+            ],
+            "for": {
+              "value": "postId",
+              "in": "${args.posts}",
+              "steps": [
+                {
+                  "getPostCommentCount": {
+                    "call": "http.get",
+                    "args": {
+                      "url": "${\"https://example.com/postComments/\" + postId}"
+                    },
+                    "result": "numComments"
+                  }
+                },
+                {
+                  "add": {
+                    "assign": [
+                      {
+                        "total": "${total + numComments}"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "done": {
+          "return": "${total}"
+        }
+      }
+    ]
+  }
+}
