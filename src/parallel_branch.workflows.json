@@ -1,0 +1,63 @@
+{
+  "main": {
+    "params": [
+      "args"
+    ],
+    "steps": [
+      {
+        "init": {
+          "assign": [
+            {
+              "user": {}
+            },
+            {
+              "notification": {}
+            }
+          ]
+        }
+      },
+      {
+        "parallelStep": {
+          "parallel": {
+            "shared": [
+              "user",
+              "notification"
+            ],
+            "branches": [
+              {
+                "getUser": {
+                  "steps": [
+                    {
+                      "getUserCall": {
+                        "call": "http.get",
+                        "args": {
+                          "url": "${\"https://example.com/users/\" + args.userId}"
+                        },
+                        "result": "user"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "getNotification": {
+                  "steps": [
+                    {
+                      "getNotificationCall": {
+                        "call": "http.get",
+                        "args": {
+                          "url": "${\"https://example.com/notification/\" + args.notificationId}"
+                        },
+                        "result": "notification"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

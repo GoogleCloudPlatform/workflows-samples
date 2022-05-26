@@ -1,0 +1,85 @@
+{
+  "main": {
+    "params": [],
+    "steps": [
+      {
+        "init": {
+          "assign": [
+            {
+              "workflow_id": "translate"
+            },
+            {
+              "texts_to_translate": [
+                {
+                  "text": "hello world!",
+                  "source": "en",
+                  "target": "fr"
+                },
+                {
+                  "text": "你好 世界！",
+                  "source": "zh-CN",
+                  "target": "en"
+                },
+                {
+                  "text": "No hablo español!",
+                  "source": "es",
+                  "target": "en"
+                }
+              ]
+            },
+            {
+              "translated": [
+                "",
+                "",
+                ""
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "parallel_translate": {
+          "parallel": {
+            "shared": [
+              "translated"
+            ],
+            "for": {
+              "range": "${[0, len(texts_to_translate) - 1]}",
+              "value": "i",
+              "steps": [
+                {
+                  "basic_translate": {
+                    "call": "googleapis.translate.v2.translations.translate",
+                    "args": {
+                      "body": {
+                        "q": "${args.text}",
+                        "target": "${args.target}",
+                        "format": "text",
+                        "source": "${args.source}"
+                      }
+                    },
+                    "result": "r"
+                  }
+                },
+                {
+                  "set_result": {
+                    "assign": [
+                      {
+                        "translated[i]": "${r}"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "return": {
+          "return": "${translated}"
+        }
+      }
+    ]
+  }
+}

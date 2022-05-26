@@ -1,0 +1,32 @@
+{
+  "main": {
+    "params": [
+      "input"
+    ],
+    "steps": [
+      {
+        "sendNotifications": {
+          "parallel": {
+            "for": {
+              "value": "notification",
+              "in": "${input.notifications}",
+              "steps": [
+                {
+                  "notify": {
+                    "call": "http.post",
+                    "args": {
+                      "url": "https://example.com/sendNotification",
+                      "body": {
+                        "notification": "${notification}"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}
