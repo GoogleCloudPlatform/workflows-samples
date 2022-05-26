@@ -29,7 +29,7 @@ main:
               - text: "No hablo español!"
                 source: "es"
                 target: "en"
-          - translated: ["", "", ""] # to write to this variable, you must share it
+          - translated: ["", "", ""]  # to write to this variable, you must share it
     - parallel_translate:
         parallel:
           shared: [translated]

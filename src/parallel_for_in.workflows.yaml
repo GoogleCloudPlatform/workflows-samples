@@ -29,13 +29,13 @@ main:
               - text: "No hablo español!"
                 source: "es"
                 target: "en"
-          - translated: ["", "", ""] # to write to this variable, you must share it
+          - translated: ["", "", ""]  # to write to this variable, you must share it
     - parallel_translate:
         parallel:
           shared: [translated]
           for:
             in: ${texts_to_translate}
-            index: i # optional, use if index is required
+            index: i  # optional, use if index is required
             value: arg
             steps:
               - translate:

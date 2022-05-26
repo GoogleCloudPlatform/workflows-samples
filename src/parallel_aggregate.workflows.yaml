@@ -51,7 +51,7 @@ main:
                   result: query
               - add:
                   assign:
-                    - numWords: ${numWords + int(query.rows[0].f[0].v)} # first result is the count
+                    - numWords: ${numWords + int(query.rows[0].f[0].v)}  # first result is the count
     - done:
         return: ${numWords}
 # [END workflows_parallel_aggregate]
