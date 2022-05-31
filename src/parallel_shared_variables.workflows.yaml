@@ -1,0 +1,48 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START workflows_parallel_shared_variables]
+- assignStep:
+    assign:
+      - input: ["apple", "orange"]
+      - my_result: {}
+- parallelStep:
+    parallel:
+      shared: [my_result]
+      branches:
+        - getStock:
+            steps:
+              - callGetStock:
+                  call: http.get
+                  args:
+                    url: ${"http://mystore.com/getStock/" + input[0]}
+                  result: r  # r is local to this branch
+              - assignResult1:
+                  assign:
+                    - my_result["getStock"]: r.body.some.entry  # ok, shared scope
+                    - temp: 1  # ok, local to branch scope
+                  # - input: 5                                   # error, writing to a parent
+                  # variable not marked as shared
+        - orderStock:
+            steps:
+              - callOrderStock:
+                  call: http.get
+                  args:
+                    url: ${"http://mystore.com/orderStock/" + input[1]}
+                  result: r  # r is local to this branch
+              - assignResult2:
+                  assign:
+                    - my_result["orderStock"]: r.body.some.entry  # ok, shared scope
+                    - temp: 2  # ok, local to branch scope
+# [END workflows_parallel_shared_variables]

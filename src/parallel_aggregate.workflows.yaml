@@ -1,0 +1,57 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START workflows_parallel_aggregate]
+main:
+  params: [input]
+  steps:
+    - init:
+        assign:
+          - numWords: 0
+          - corpuses:
+              - sonnets
+              - various
+              - 1kinghenryvi
+              - 2kinghenryvi
+              - 3kinghenryvi
+              - comedyoferrors
+              - kingrichardiii
+              - titusandronicus
+              - tamingoftheshrew
+              - loveslabourslostnull
+    - runQueries:
+        parallel:
+          # numWords is shared so it can be written within the parallel loop
+          shared: [numWords]
+          for:
+            value: corpus
+            in: ${corpuses}
+            steps:
+              - runQuery:
+                  call: googleapis.bigquery.v2.jobs.query
+                  args:
+                    projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+                    body:
+                      useLegacySql: false
+                      query: ${
+                        "SELECT COUNT(DISTINCT word) FROM `bigquery-public-data.samples.shakespeare` " +
+                        " WHERE corpus='" + corpus + "' "
+                        }
+                  result: query
+              - add:
+                  assign:
+                    - numWords: ${numWords + int(query.rows[0].f[0].v)}  # first result is the count
+    - done:
+        return: ${numWords}
+# [END workflows_parallel_aggregate]
