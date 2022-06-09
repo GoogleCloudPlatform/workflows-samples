@@ -32,8 +32,7 @@ main:
               - loveslabourslostnull
     - runQueries:
         parallel:
-          # numWords is shared so it can be written within the parallel loop
-          shared: [numWords]
+          shared: [numWords]  # numWords is shared so it can be written within the parallel loop
           for:
             value: corpus
             in: ${corpuses}
