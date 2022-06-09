@@ -27,22 +27,22 @@
                   call: http.get
                   args:
                     url: ${"http://mystore.com/getStock/" + input[0]}
-                  result: r  # r is local to this branch
+                  result: local_result  # local_result is local to this branch
               - assignResult1:
                   assign:
-                    - my_result["getStock"]: r.body.some.entry  # ok, shared scope
-                    - temp: 1  # ok, local to branch scope
-                  # - input: 5                                   # error, writing to a parent
-                  # variable not marked as shared
+                    - my_result["getStock"]: r.body.some.entry  # this is ok as variable has shared scope
+                    - temp: 1  # this is ok as variable is local to branch scope
+                  # - input: 5  # this would result in an error as variable is from parent scope
+                  # and is not marked as shared
         - orderStock:
             steps:
               - callOrderStock:
                   call: http.get
                   args:
                     url: ${"http://mystore.com/orderStock/" + input[1]}
-                  result: r  # r is local to this branch
+                  result: local_result  # local_result is local to this branch
               - assignResult2:
                   assign:
-                    - my_result["orderStock"]: r.body.some.entry  # ok, shared scope
-                    - temp: 2  # ok, local to branch scope
+                    - my_result["orderStock"]: r.body.some.entry  # this is ok as variable has shared scope
+                    - temp: 2  # this is ok as variable is local to branch scope
 # [END workflows_parallel_shared_variables]
