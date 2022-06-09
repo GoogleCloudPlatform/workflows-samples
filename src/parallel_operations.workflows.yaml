@@ -22,10 +22,8 @@ main:
           - recentItems: []
     - enrichUserData:
         parallel:
-          # userProfile and recentItems are shared to make them writeable in the branches,
-          # with values that are readable after the branches complete
-          shared: [userProfile, recentItems]
-          branches:
+          shared: [userProfile, recentItems]  # userProfile and recentItems are shared to make them writeable
+          branches:  # in the branches with values that are readable after the branches complete
             - getUserProfileBranch:
                 steps:
                   - getUserProfile:
@@ -46,6 +44,5 @@ main:
                         steps:
                           - ignoreError:
                               assign:
-                                # continue with an empty list if this call fails
-                                - recentItems: []
+                                - recentItems: []  # continue with an empty list if this call fails
 # [END workflows_parallel_operations]
