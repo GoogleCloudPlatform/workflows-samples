@@ -22,7 +22,7 @@ main:
           - recentItems: []
     - enrichUserData:
         parallel:
-          shared: [userProfile, recentItems]  # userProfile and recentItems are shared to make them writeable
+          shared: [userProfile, recentItems]  # userProfile and recentItems are shared to make them writable
           branches:  # in the branches with values that are readable after the branches complete
             - getUserProfileBranch:
                 steps:
