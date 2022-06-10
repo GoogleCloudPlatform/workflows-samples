@@ -13,13 +13,13 @@
 # limitations under the License.
 
 # [START workflows_parallel_shared_variables]
-- assignStep:
+- assignStep:  # these variables can be read by any branch
     assign:
-      - input: ["apple", "orange"]
+      - input: ["apples", "oranges"]
       - my_result: {}
 - parallelStep:
     parallel:
-      shared: [my_result]
+      shared: [my_result]  # my_result is now writable by any branch
       branches:
         - getStock:
             steps:
@@ -27,22 +27,23 @@
                   call: http.get
                   args:
                     url: ${"http://mystore.com/getStock/" + input[0]}
-                  result: r  # r is local to this branch
+                  result: local_result  # local_result is local to this branch scope
               - assignResult1:
                   assign:
-                    - my_result["getStock"]: r.body.some.entry  # ok, shared scope
-                    - temp: 1  # ok, local to branch scope
-                  # - input: 5                                   # error, writing to a parent
-                  # variable not marked as shared
+                    - my_result["getStock"]: ${local_result.body.some.entry}  # ok, my_result has shared scope and is writable
+                    - temp: 1  # ok, variable is local to branch scope
+                    - temp2: "foo"  # ok, variable is local to branch scope
+                  # - input: 5  # deployment error, defined in the parent scope but not marked "shared"
         - orderStock:
             steps:
               - callOrderStock:
                   call: http.get
                   args:
                     url: ${"http://mystore.com/orderStock/" + input[1]}
-                  result: r  # r is local to this branch
+                  result: local_result  # local_result is local to this branch
               - assignResult2:
                   assign:
-                    - my_result["orderStock"]: r.body.some.entry  # ok, shared scope
-                    - temp: 2  # ok, local to branch scope
+                    - my_result["orderStock"]: ${local_result.body.some.entry}  # ok, my_result has shared scope and is writable
+                    - temp: 2  # ok, variable is local to branch scope
+                  # - temp: ${temp2}  # deployment error, temp2 is not defined in this branch 
 # [END workflows_parallel_shared_variables]
