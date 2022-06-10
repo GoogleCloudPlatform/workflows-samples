@@ -4,8 +4,8 @@
       "assign": [
         {
           "input": [
-            "apple",
-            "orange"
+            "apples",
+            "oranges"
           ]
         },
         {
@@ -30,17 +30,20 @@
                     "args": {
                       "url": "${\"http://mystore.com/getStock/\" + input[0]}"
                     },
-                    "result": "r"
+                    "result": "local_result"
                   }
                 },
                 {
                   "assignResult1": {
                     "assign": [
                       {
-                        "my_result[\"getStock\"]": "r.body.some.entry"
+                        "my_result[\"getStock\"]": "${local_result.body.some.entry}"
                       },
                       {
                         "temp": 1
+                      },
+                      {
+                        "temp2": "foo"
                       }
                     ]
                   }
@@ -57,14 +60,14 @@
                     "args": {
                       "url": "${\"http://mystore.com/orderStock/\" + input[1]}"
                     },
-                    "result": "r"
+                    "result": "local_result"
                   }
                 },
                 {
                   "assignResult2": {
                     "assign": [
                       {
-                        "my_result[\"orderStock\"]": "r.body.some.entry"
+                        "my_result[\"orderStock\"]": "${local_result.body.some.entry}"
                       },
                       {
                         "temp": 2
