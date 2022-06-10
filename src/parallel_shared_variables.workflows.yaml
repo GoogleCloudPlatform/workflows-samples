@@ -32,8 +32,7 @@
                   assign:
                     - my_result["getStock"]: r.body.some.entry  # this is ok as variable has shared scope
                     - temp: 1  # this is ok as variable is local to branch scope
-                  # - input: 5  # this would result in an error as variable is from parent scope
-                  # and is not marked as shared
+                  # - input: 5  # this would result in an error as variable is from parent scope and is not marked as shared
         - orderStock:
             steps:
               - callOrderStock:
