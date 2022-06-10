@@ -45,5 +45,5 @@
                   assign:
                     - my_result["orderStock"]: ${local_result.body.some.entry}  # ok, my_result has shared scope and is writable
                     - temp: 2  # ok, variable is local to branch scope
-                  # - temp: ${temp2}  # deployment error, temp2 is not defined in this branch 
+                  # - temp: ${temp2}  # deployment error, temp2 is not defined in this branch
 # [END workflows_parallel_shared_variables]
