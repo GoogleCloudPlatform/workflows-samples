@@ -19,14 +19,14 @@ main:
         try:
           steps:
             - callStep:
-              call: http.get
-              args:
-                url: https://host.com/api
-              result: api_response
+                call: http.get
+                args:
+                  url: https://host.com/api
+                result: api_response
             - checkNotOK:
-              switch:
-                - condition: ${r.code == 202}
-                  raise: ${r}
+                switch:
+                  - condition: ${r.code == 202}
+                    raise: ${r}
         retry:
           predicate: ${custom_predicate}
           max_retries: 5

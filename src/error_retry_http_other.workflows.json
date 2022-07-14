@@ -6,21 +6,23 @@
           "try": {
             "steps": [
               {
-                "callStep": null,
-                "call": "http.get",
-                "args": {
-                  "url": "https://host.com/api"
-                },
-                "result": "api_response"
+                "callStep": {
+                  "call": "http.get",
+                  "args": {
+                    "url": "https://host.com/api"
+                  },
+                  "result": "api_response"
+                }
               },
               {
-                "checkNotOK": null,
-                "switch": [
-                  {
-                    "condition": "${r.code == 202}",
-                    "raise": "${r}"
-                  }
-                ]
+                "checkNotOK": {
+                  "switch": [
+                    {
+                      "condition": "${r.code == 202}",
+                      "raise": "${r}"
+                    }
+                  ]
+                }
               }
             ]
           },
