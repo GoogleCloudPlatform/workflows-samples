@@ -1,0 +1,139 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "createRange": "A20"
+        },
+        {
+          "getRange": "A1:B4"
+        },
+        {
+          "row": {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "backgroundColor": {
+                    "red": 0,
+                    "green": 1,
+                    "blue": 0,
+                    "alpha": 1
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "start1": {
+            "sheetId": 0,
+            "rowIndex": 2,
+            "columnIndex": 0
+          }
+        },
+        {
+          "request1": {
+            "rows": [
+              "${row}"
+            ],
+            "fields": "userEnteredFormat.backgroundColor",
+            "start": "${start1}"
+          }
+        },
+        {
+          "driveScope": "https://www.googleapis.com/auth/drive"
+        }
+      ]
+    }
+  },
+  {
+    "create_spreadsheet": {
+      "call": "googleapis.sheets.v4.spreadsheets.create",
+      "args": {
+        "body": null,
+        "connector_params": {
+          "scopes": "${driveScope}"
+        }
+      },
+      "result": "resp"
+    }
+  },
+  {
+    "assign_sheet_id": {
+      "assign": [
+        {
+          "sheetId": "${resp.spreadsheetId}"
+        }
+      ]
+    }
+  },
+  {
+    "update_spreadsheet": {
+      "call": "googleapis.sheets.v4.spreadsheets.values.update",
+      "args": {
+        "spreadsheetId": "${sheetId}",
+        "range": "${createRange}",
+        "valueInputOption": "RAW",
+        "includeValuesInResponse": null,
+        "body": {
+          "values": [
+            [
+              "text to update"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  {
+    "batch_update": {
+      "call": "googleapis.sheets.v4.spreadsheets.batchUpdate",
+      "args": {
+        "spreadsheetId": "${sheetId}",
+        "body": {
+          "requests": [
+            {
+              "updateCells": "${request1}"
+            }
+          ],
+          "includeSpreadsheetInResponse": true
+        },
+        "connector_params": {
+          "scopes": "${driveScope}"
+        }
+      }
+    }
+  },
+  {
+    "get_from_sheet": {
+      "call": "googleapis.sheets.v4.spreadsheets.get",
+      "args": {
+        "spreadsheetId": "${sheetId}",
+        "ranges": [
+          "${getRange}"
+        ],
+        "includeGridData": false,
+        "connector_params": {
+          "scopes": "${driveScope}"
+        }
+      }
+    }
+  },
+  {
+    "delete_sheet": {
+      "call": "http.delete",
+      "args": {
+        "url": "${\"https://www.googleapis.com/drive/v2/files/\" + sheetId}",
+        "auth": {
+          "type": "OAuth2",
+          "scopes": "${driveScope}"
+        }
+      }
+    }
+  },
+  {
+    "return_step": {
+      "return": "SUCCESS"
+    }
+  }
+]
