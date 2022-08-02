@@ -1,0 +1,77 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "form_title": "sample-form"
+        }
+      ]
+    }
+  },
+  {
+    "create_form": {
+      "call": "googleapis.forms.v1.forms.create",
+      "args": {
+        "body": {
+          "info": {
+            "title": "${form_title}",
+            "result": "create_form_resp"
+          }
+        }
+      }
+    }
+  },
+  {
+    "update_form": {
+      "call": "googleapis.forms.v1.forms.batchUpdate",
+      "args": {
+        "formId": "${create_form_resp.formId}",
+        "body": {
+          "requests": [
+            {
+              "updateFormInfo": null,
+              "info": {
+                "title": "new-title",
+                "updateMask": "title"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "get_form": {
+      "call": "googleapis.forms.v1.forms.get",
+      "args": {
+        "formId": "${create_form_resp.formId}"
+      }
+    }
+  },
+  {
+    "list_responses": {
+      "call": "googleapis.forms.v1.forms.responses.list",
+      "args": {
+        "formId": "${create_form_resp.formId}",
+        "pageSize": 10
+      }
+    }
+  },
+  {
+    "delete_form": {
+      "call": "http.delete",
+      "args": {
+        "url": "${\"https://www.googleapis.com/drive/v3/files/\" + create_form_resp.formId}",
+        "auth": {
+          "type": "OAuth2",
+          "scope": "https://www.googleapis.com/auth/drive"
+        }
+      }
+    }
+  },
+  {
+    "the_end": {
+      "return": "SUCCESS"
+    }
+  }
+]

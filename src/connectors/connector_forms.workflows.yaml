@@ -1,0 +1,61 @@
+# Copyright 2020 Google LLC
+# #
+# # Licensed under the Apache License, Version 2.0 (the "License");
+# # you may not use this file except in compliance with the License.
+# # You may obtain a copy of the License at
+# #
+# #      http://www.apache.org/licenses/LICENSE-2.0
+# #
+# # Unless required by applicable law or agreed to in writing, software
+# # distributed under the License is distributed on an "AS IS" BASIS,
+# # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# # See the License for the specific language governing permissions and
+# # limitations under the License.
+
+# [START workflows_connector_forms]
+# This workflow creates, updates, gets, and deletes a Google Form
+# using the Google Forms connector.
+#
+# Features included in this test:
+# - Google Forms connector
+#
+# Expected successful output: "SUCCESS"
+- init:
+    assign:
+      - form_title: "sample-form"
+- create_form:
+    call: googleapis.forms.v1.forms.create
+    args:
+      body:
+        info:
+          title: ${form_title}
+          result: create_form_resp
+- update_form:
+    call: googleapis.forms.v1.forms.batchUpdate
+    args:
+      formId: ${create_form_resp.formId}
+      body:
+        requests:
+          - updateFormInfo:
+            info:
+              title: "new-title"
+              updateMask: title
+- get_form:
+    call: googleapis.forms.v1.forms.get
+    args:
+      formId: ${create_form_resp.formId}
+- list_responses:
+    call: googleapis.forms.v1.forms.responses.list
+    args:
+      formId: ${create_form_resp.formId}
+      pageSize: 10
+- delete_form:
+    call: http.delete
+    args:
+      url: ${"https://www.googleapis.com/drive/v3/files/" + create_form_resp.formId}
+      auth:
+        type: OAuth2
+        scope: https://www.googleapis.com/auth/drive
+- the_end:
+    return: "SUCCESS"
+# [END workflows_connector_forms]
