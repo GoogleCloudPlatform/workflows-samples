@@ -22,21 +22,21 @@
 # Expected successful output: "SUCCESS"
 - init:
     assign:
-    - createRange: "A20" # example range
-    - getRange: "A1:B4"  # example range
-    - row:
-        values:
-        - {"userEnteredFormat": {"backgroundColor": {"red": 0, "green":1, "blue":0, "alpha":1}}}
-    - start1:
-        sheetId: 0
-        rowIndex: 2
-        columnIndex: 0
-    - request1:
-        rows:
-        - ${row}
-        fields: userEnteredFormat.backgroundColor
-        start: ${start1}
-    - driveScope: https://www.googleapis.com/auth/drive
+      - createRange: "A20" # example range
+      - getRange: "A1:B4"  # example range
+      - row:
+          values:
+            - {"userEnteredFormat": {"backgroundColor": {"red": 0, "green":1, "blue":0, "alpha":1}}}
+      - start1:
+          sheetId: 0
+          rowIndex: 2
+          columnIndex: 0
+      - request1:
+          rows:
+            - ${row}
+          fields: userEnteredFormat.backgroundColor
+          start: ${start1}
+      - driveScope: https://www.googleapis.com/auth/drive
 - create_spreadsheet:
     call: googleapis.sheets.v4.spreadsheets.create
     args:
@@ -46,7 +46,7 @@
     result: resp
 - assign_sheet_id:
     assign:
-    - sheetId: ${resp.spreadsheetId}
+      - sheetId: ${resp.spreadsheetId}
 - update_spreadsheet:
     call: googleapis.sheets.v4.spreadsheets.values.update
     args:
@@ -56,14 +56,14 @@
       includeValuesInResponse:
       body:
         values:
-        - ["text to update"]
+          - ["text to update"]
 - batch_update:
     call: googleapis.sheets.v4.spreadsheets.batchUpdate
     args:
       spreadsheetId: ${sheetId}
       body:
         requests:
-        - updateCells: ${request1}
+          - updateCells: ${request1}
         includeSpreadsheetInResponse: true
       connector_params:
         scopes: ${driveScope}
@@ -72,7 +72,7 @@
     args:
       spreadsheetId: ${sheetId}
       ranges:
-      - ${getRange}
+        - ${getRange}
       includeGridData: false
       connector_params:
         scopes: ${driveScope}
