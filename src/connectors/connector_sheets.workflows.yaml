@@ -22,8 +22,8 @@
 # Expected successful output: "SUCCESS"
 - init:
     assign:
-      - createRange: "A20" # example range
-      - getRange: "A1:B4"  # example range
+      - createRange: "A20"         # example range
+      - getRange: "A1:B4"          # example range
       - row:
           values:
             - {"userEnteredFormat": {"backgroundColor": {"red": 0, "green":1, "blue":0, "alpha":1}}}
@@ -82,7 +82,7 @@
       url: ${"https://www.googleapis.com/drive/v2/files/" + sheetId}
       auth:
         type: OAuth2
-        scopes:  ${driveScope}
+        scopes: ${driveScope}
 - return_step:
     return: SUCCESS
 # [END workflows_connector_sheets]
