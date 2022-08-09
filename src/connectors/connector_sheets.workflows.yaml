@@ -1,0 +1,88 @@
+# Copyright 2020 Google LLC
+# #
+# # Licensed under the Apache License, Version 2.0 (the "License");
+# # you may not use this file except in compliance with the License.
+# # You may obtain a copy of the License at
+# #
+# #      http://www.apache.org/licenses/LICENSE-2.0
+# #
+# # Unless required by applicable law or agreed to in writing, software
+# # distributed under the License is distributed on an "AS IS" BASIS,
+# # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# # See the License for the specific language governing permissions and
+# # limitations under the License.
+
+# [START workflows_connector_sheets]
+# This workflow creates, updates, gets, and deletes a Google Form
+# using the Google Forms connector.
+#
+# Features included in this test:
+# - Google Forms connector
+#
+# Expected successful output: "SUCCESS"
+- init:
+    assign:
+    - createRange: "A20" # example range
+    - getRange: "A1:B4"  # example range
+    - row:
+        values:
+        - {"userEnteredFormat": {"backgroundColor": {"red": 0, "green":1, "blue":0, "alpha":1}}}
+    - start1:
+        sheetId: 0
+        rowIndex: 2
+        columnIndex: 0
+    - request1:
+        rows:
+        - ${row}
+        fields: userEnteredFormat.backgroundColor
+        start: ${start1}
+    - driveScope: https://www.googleapis.com/auth/drive
+- create_spreadsheet:
+    call: googleapis.sheets.v4.spreadsheets.create
+    args:
+      body:
+      connector_params:
+        scopes: ${driveScope}
+    result: resp
+- assign_sheet_id:
+    assign:
+    - sheetId: ${resp.spreadsheetId}
+- update_spreadsheet:
+    call: googleapis.sheets.v4.spreadsheets.values.update
+    args:
+      spreadsheetId: ${sheetId}
+      range: ${createRange}
+      valueInputOption: RAW
+      includeValuesInResponse:
+      body:
+        values:
+        - ["text to update"]
+- batch_update:
+    call: googleapis.sheets.v4.spreadsheets.batchUpdate
+    args:
+      spreadsheetId: ${sheetId}
+      body:
+        requests:
+        - updateCells: ${request1}
+        includeSpreadsheetInResponse: true
+      connector_params:
+        scopes: ${driveScope}
+- get_from_sheet:
+    call: googleapis.sheets.v4.spreadsheets.get
+    args:
+      spreadsheetId: ${sheetId}
+      ranges:
+      - ${getRange}
+      includeGridData: false
+      connector_params:
+        scopes: ${driveScope}
+- delete_sheet:
+    call: http.delete
+    args:
+      url: ${"https://www.googleapis.com/drive/v2/files/" + sheetId}
+      auth:
+        type: OAuth2
+        scopes:  ${driveScope}
+- return_step:
+    return: SUCCESS
+# [END workflows_connector_sheets]
