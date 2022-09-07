@@ -29,7 +29,7 @@ main:
               - kingrichardiii
               - titusandronicus
               - tamingoftheshrew
-              - loveslabourslostnull
+              - loveslabourslost
     - runQueries:
         parallel:  # numWords is shared so it can be written within the parallel loop
           shared: [numWords]
