@@ -1,0 +1,42 @@
+[
+  {
+    "assignStep": {
+      "assign": [
+        {
+          "map": {
+            "1": 10,
+            "2": 20,
+            "3": 30
+          }
+        },
+        {
+          "sum": 0
+        }
+      ]
+    }
+  },
+  {
+    "loopStep": {
+      "for": {
+        "value": "key",
+        "in": "${keys(map)}",
+        "steps": [
+          {
+            "sumStep": {
+              "assign": [
+                {
+                  "sum": "${sum + map[key]}"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "returnStep": {
+      "return": "${sum}"
+    }
+  }
+]

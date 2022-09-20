@@ -1,0 +1,53 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "minTemp": -14.5
+        },
+        {
+          "maxTemp": 42.8
+        }
+      ]
+    }
+  },
+  {
+    "storeNormalBodyTemp": {
+      "for": {
+        "value": "temp",
+        "range": "${[minTemp, maxTemp]}",
+        "steps": [
+          {
+            "checkTemp": {
+              "call": "http.get",
+              "args": {
+                "url": "${\"https://example.com/isBodyTempNormal?temp=\" + string(temp)}"
+              },
+              "result": "isNormal"
+            }
+          },
+          {
+            "storeOrBreak": {
+              "switch": [
+                {
+                  "condition": "${isNormal}",
+                  "next": "storeTemp"
+                }
+              ],
+              "next": "break"
+            }
+          },
+          {
+            "storeTemp": {
+              "call": "http.post",
+              "args": {
+                "url": "${\"https://example.com/storeTemp?temp=\" + string(temp)}",
+                "body": "${temp}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

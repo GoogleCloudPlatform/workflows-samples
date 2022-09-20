@@ -1,0 +1,67 @@
+[
+  {
+    "getUserIDs": {
+      "call": "http.get",
+      "args": {
+        "url": "https://example.com/getUserIDs"
+      },
+      "result": "userIds"
+    }
+  },
+  {
+    "saveUserInfo": {
+      "for": {
+        "value": "uid",
+        "in": "${userIds}",
+        "steps": [
+          {
+            "tryStep": {
+              "try": {
+                "steps": [
+                  {
+                    "get": {
+                      "call": "http.get",
+                      "args": {
+                        "url": "${\"https://example.com/getUserInfo?userId=\" +\nstring(uid)}"
+                      },
+                      "result": "userInfo"
+                    }
+                  },
+                  {
+                    "post": {
+                      "call": "http.post",
+                      "args": {
+                        "url": "${\"https://example.com/saveUserInfo?userId=\" +\nstring(uid)}",
+                        "body": "${userInfo}"
+                      }
+                    }
+                  }
+                ]
+              },
+              "except": {
+                "as": "e",
+                "steps": [
+                  {
+                    "knownErrors": {
+                      "switch": [
+                        {
+                          "condition": "${not(\"HttpError\" in e.tags)}",
+                          "return": "${\"Connection problem with userID: \" + string(uid)}"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unhandledErrors": {
+                      "raise": "${e}"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

@@ -1,0 +1,89 @@
+[
+  {
+    "init": {
+      "assign": [
+        {
+          "textAndSourceLang": {
+            "Hello": "en",
+            "Ciao": "it",
+            "Auf wiedersehen": "de",
+            "Goodbye": "en",
+            "Bonjour": "fr",
+            "lkajshflkj": "unknown"
+          }
+        },
+        {
+          "allowedSourceLang": [
+            "en",
+            "de",
+            "it",
+            "fr"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "translateToFrench": {
+      "for": {
+        "value": "text",
+        "in": "${keys(textAndSourceLang)}",
+        "steps": [
+          {
+            "verifySource": {
+              "switch": [
+                {
+                  "condition": "${not(textAndSourceLang[text] in allowedSourceLang)}",
+                  "next": "continue"
+                },
+                {
+                  "condition": "${textAndSourceLang[text] == \"fr\"}",
+                  "next": "skipFrenchTranslation"
+                }
+              ]
+            }
+          },
+          {
+            "translate": {
+              "call": "googleapis.translate.v2.translations.translate",
+              "args": {
+                "q": "${text}",
+                "target": "fr",
+                "format": "text",
+                "source": "${textAndSourceLang[text]}"
+              },
+              "result": "translation"
+            }
+          },
+          {
+            "getTranslation": {
+              "assign": [
+                {
+                  "translated": "${translation.data.translations[0].translatedText}"
+                }
+              ],
+              "next": "print"
+            }
+          },
+          {
+            "skipFrenchTranslation": {
+              "assign": [
+                {
+                  "translated": "${text}"
+                }
+              ]
+            }
+          },
+          {
+            "print": {
+              "call": "sys.log",
+              "args": {
+                "text": "${\"Original: \" + text + \", Translation: \" + translated}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]
