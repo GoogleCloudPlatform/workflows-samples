@@ -16,12 +16,12 @@
 - init:
     assign:
       - textAndSourceLang:
-            "Hello": "en"
-            "Ciao": "it"
-            "Auf wiedersehen": "de"
-            "Goodbye": "en"
-            "Bonjour": "fr"
-            "lkajshflkj": "unknown"
+          "Hello": "en"
+          "Ciao": "it"
+          "Auf wiedersehen": "de"
+          "Goodbye": "en"
+          "Bonjour": "fr"
+          "lkajshflkj": "unknown"
       - allowedSourceLang: ["en", "de", "it", "fr"]
 - translateToFrench:
     for:
