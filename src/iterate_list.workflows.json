@@ -1,0 +1,44 @@
+[
+  {
+    "assignStep": {
+      "assign": [
+        {
+          "list": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "sum": 0
+        }
+      ]
+    }
+  },
+  {
+    "loopStep": {
+      "for": {
+        "value": "v",
+        "in": "${list}",
+        "steps": [
+          {
+            "getStep": {
+              "assign": [
+                {
+                  "sum": "${sum + v}"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "returnStep": {
+      "return": "${sum}"
+    }
+  }
+]
