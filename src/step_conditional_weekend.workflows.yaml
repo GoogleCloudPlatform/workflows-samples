@@ -22,7 +22,7 @@
     switch:
       - condition: ${currentTime.body.dayOfTheWeek == "Friday"}
         next: friday
-      - condition: ${currentTime.body.dayOfTheWeek == "Saturday" OR currentTime.body.dayOfTheWeek == "Sunday"}
+      - condition: ${currentTime.body.dayOfTheWeek == "Saturday" or currentTime.body.dayOfTheWeek == "Sunday"}
         next: weekend
     next: workWeek
 - friday:
