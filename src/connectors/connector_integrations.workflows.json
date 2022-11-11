@@ -1,0 +1,33 @@
+{
+  "main": {
+    "steps": [
+      {
+        "init": {
+          "assign": [
+            {
+              "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+            },
+            {
+              "location": "us-central1"
+            }
+          ]
+        }
+      },
+      {
+        "get_list": {
+          "call": "googleapis.integrations.v1.projects.locations.integrations.list",
+          "args": {
+            "location": "${location}",
+            "parent": "${\"projects/\" + project + \"/locations/\" + location}"
+          },
+          "result": "response"
+        }
+      },
+      {
+        "the_end": {
+          "return": "${response}"
+        }
+      }
+    ]
+  }
+}
