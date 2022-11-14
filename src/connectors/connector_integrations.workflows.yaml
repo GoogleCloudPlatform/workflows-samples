@@ -16,10 +16,10 @@
 # This workflow sends a List request to Application Integration API.
 main:
   steps:
-  - init:
-      assign:
-      - project: "YOUR_PROJECT_ID"
-      - location: "LOCATION"
+    - init:
+        assign:
+          - project: "YOUR_PROJECT_ID"
+          - location: "LOCATION"
   - get_list:
       call: googleapis.integrations.v1.projects.locations.integrations.list
       args:
