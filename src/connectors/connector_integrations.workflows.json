@@ -5,10 +5,10 @@
         "init": {
           "assign": [
             {
-              "project": "YOUR_PROJECT_ID"
+              "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
             },
             {
-              "location": "LOCATION"
+              "location": "${sys.get_env(\"GOOGLE_CLOUD_LOCATION\")}"
             }
           ]
         }
