@@ -165,34 +165,9 @@
         "switch": {
           "type": "array",
           "description": "A switch block.",
+          "minItems": 1,
           "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "condition": {
-                "description": "An expression to switch on.",
-                "type": "string"
-              },
-              "next": {
-                "description": "The next step to jump to. \"end\" to terminate.",
-                "type": "string",
-                "default": "end"
-              },
-              "steps": {
-                "description": "A list of steps to run in this switch statement.",
-                "$ref": "#/definitions/stepArray"
-              },
-              "return": {
-                "description": "Stop a workflow's execution and return a value, variable, or expression."
-              },
-              "raise": {
-                "description": "Raise an exception.",
-                "$ref": "#/definitions/raise"
-              }
-            },
-            "required": [
-              "condition"
-            ]
+            "$ref": "#/definitions/condition"
           }
         },
         "next": {
@@ -329,6 +304,31 @@
           "type": "object"
         }
       ]
+    },
+    "condition": {
+      "description": "An expression to switch on.",
+      "type": "object",
+      "properties": {
+        "next": {
+          "description": "The next step to jump to. \"end\" to terminate.",
+          "type": "string",
+          "default": "end"
+        },
+        "steps": {
+          "description": "A list of steps to run in this switch statement.",
+          "$ref": "#/definitions/stepArray"
+        },
+        "step": {
+          "$ref": "#/definitions/step"
+        },
+        "return": {
+          "description": "Stop a workflow's execution and return a value, variable, or expression."
+        },
+        "raise": {
+          "description": "Raise an exception.",
+          "$ref": "#/definitions/raise"
+        }
+      }
     },
     "for": {
       "description": "Iterates over a sequence of numbers or through a collection of data\nhttps://cloud.google.com/workflows/docs/reference/syntax/syntax-search",
