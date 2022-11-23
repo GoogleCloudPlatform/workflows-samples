@@ -85,17 +85,9 @@
           "additionalProperties": false,
           "properties": {
             "url": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "description": "Required. URL where the request is sent.",
-                  "format": "uri"
-                },
-                {
-                  "type": "string",
-                  "description": "Required. An expression that resultvs to a URL where the request is sent."
-                }
-              ]
+              "type": "string",
+              "description": "Required. URL where the request is sent.",
+              "format": "uri"
             },
             "method": {
               "type": "string",
