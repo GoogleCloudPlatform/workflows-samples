@@ -380,12 +380,20 @@
         },
         "range": {
           "description": "A number's range\nhttps://cloud.google.com/workflows/docs/reference/syntax/iteration",
-          "type": "array",
-          "items": {
-            "type": "number"
-          },
-          "minItems": 2,
-          "maxItems": 2
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            {
+              "type": "string",
+              "pattern": "^\\$\\{\\[.+\\]\\}$"
+            }
+          ]
         },
         "in": {
           "description": "A list expression\nhttps://cloud.google.com/workflows/docs/reference/syntax/iteration",
