@@ -1,0 +1,70 @@
+name: Test Schema
+on: [pull_request]
+
+env:
+  WORKFLOW: schema/workflows.json
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
+      - name: Set up tooling
+        run: npm install -g ajv-cli
+
+      - name: Validate workflow
+        run: ajv compile -s ${{ env.WORKFLOW }}
+
+      - name: Validate cheatsheet
+        run: ajv validate -s ${{ env.WORKFLOW }} -d cheatsheet.yaml
+
+  get:
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    outputs:
+      matrix: ${{ steps.get-files.outputs.result }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Get source files
+        uses: actions/github-script@v6
+        id: get-files
+        with:
+          script: |
+            const fs = require('fs');
+            const Path = require('path');
+            const workspace = process.env.GITHUB_WORKSPACE;
+
+            let files = fs.readdirSync(Path.join(workspace, 'src'));
+            files = files.map((file) => Path.join('./src', file));
+            let connectors = fs.readdirSync(Path.join(workspace, 'src/connectors'));
+            connectors = connectors.map((file) => Path.join('./src/connectors', file));
+            files.concat(connectors);
+            return files.filter((filename) => filename.endsWith('yaml'));
+
+  smoke-test:
+    runs-on: ubuntu-latest
+    needs: get
+    if: ${{ always() }}
+    strategy:
+      fail-fast: false
+      matrix:
+        sample: ${{ fromJSON(needs.get.outputs.matrix) }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
+      - name: Set up tooling
+        run: npm install -g ajv-cli
+
+      - name: Run Smoke Tests
+        run: ajv validate -s ${{ env.WORKFLOW }} -d ${{ matrix.sample }}
