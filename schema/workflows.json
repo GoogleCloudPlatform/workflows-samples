@@ -354,7 +354,15 @@
         },
         "in": {
           "description": "A list expression\nhttps://cloud.google.com/workflows/docs/reference/syntax/iteration",
-          "type": "array"
+          "anyOf": [
+            {
+              "type": "array"
+            },
+            {
+              "type": "string",
+              "pattern": "^\\${.+}$"
+            }
+          ]
         },
         "steps": {
           "description": "Steps for loop\nhttps://cloud.google.com/workflows/docs/reference/syntax/iteration",
