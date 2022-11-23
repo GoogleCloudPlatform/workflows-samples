@@ -18,10 +18,10 @@ jobs:
         run: npm install -g ajv-cli
 
       - name: Validate workflow
-        run: ajv compile -s ${{ env.WORKFLOW }}
+        run: ajv compile -c ajv-formats -s ${{ env.WORKFLOW }}
 
       - name: Validate cheatsheet
-        run: ajv validate -s ${{ env.WORKFLOW }} -d cheatsheet.yaml
+        run: ajv validate -c ajv-formats -s ${{ env.WORKFLOW }} -d cheatsheet.yaml
 
   get:
     runs-on: ubuntu-latest
@@ -64,7 +64,7 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Set up tooling
-        run: npm install -g ajv-cli
+        run: npm install -g ajv-cli ajv-formats
 
       - name: Run Smoke Tests
-        run: ajv validate -s ${{ env.WORKFLOW }} -d ${{ matrix.sample }}
+        run: ajv validate -c ajv-formats -s ${{ env.WORKFLOW }} -d ${{ matrix.sample }}

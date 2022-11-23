@@ -88,7 +88,8 @@
               "anyOf": [
                 {
                   "type": "string",
-                  "description": "Required. URL where the request is sent."
+                  "description": "Required. URL where the request is sent.",
+                  "format": "uri"
                 },
                 {
                   "type": "string",
@@ -359,7 +360,7 @@
             },
             {
               "type": "string",
-              "pattern": "^\\${.+}$"
+              "pattern": "^\\$\\{.+\\}$"
             }
           ]
         },
