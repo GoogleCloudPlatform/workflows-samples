@@ -27,7 +27,7 @@
         "params": {
           "description": "A list of parameters.",
           "type": "array",
-          "items": {
+          "contains": {
             "type": "string"
           }
         },
