@@ -113,16 +113,40 @@
               ]
             },
             "headers": {
-              "type": "object",
-              "description": "Request headers."
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "Request headers."
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\$\\{.+\\}$"
+                }
+              ]
             },
             "body": {
-              "type": "object",
-              "description": "Request body."
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "Request body."
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\$\\{.+\\}$"
+                }
+              ]
             },
             "query": {
-              "type": "object",
-              "description": "Request query parameters."
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "Request query parameters."
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\$\\{.+\\}$"
+                }
+              ]
             },
             "auth": {
               "type": "object",
