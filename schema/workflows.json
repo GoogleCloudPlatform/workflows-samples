@@ -207,38 +207,46 @@
           "$ref": "#/definitions/step"
         },
         "retry": {
-          "type": "object",
-          "description": "Optional. If omitted, all other fields are required. Options include ${http.default_retry} and ${http.default_retry_non_idempotent}. Allows you to specify a default retry policy to use. If you specify a retry policy, omit all other fields in the retry block.",
-          "additionalProperties": false,
-          "properties": {
-            "predicate": {
-              "type": "string",
-              "description": "Required if you don't select a default retry policy. Defines which error codes will be retried. Options include ${http.default_retry_predicate}, ${http.default_retry_predicate_non_idempotent}, or a custom predicate defined as a subworkflow."
-            },
-            "max_retries": {
-              "type": "integer",
-              "description": "Maximum number of times a step will be retried."
-            },
-            "backoff": {
+          "oneOf": [
+            {
               "type": "object",
-              "description": "Block that controls how retries occur.",
+              "description": "Optional. If omitted, all other fields are required. Options include ${http.default_retry} and ${http.default_retry_non_idempotent}. Allows you to specify a default retry policy to use. If you specify a retry policy, omit all other fields in the retry block.",
               "additionalProperties": false,
               "properties": {
-                "initial_delay": {
-                  "type": "integer",
-                  "description": "Delay in seconds between the initial failure and the first retry."
+                "predicate": {
+                  "type": "string",
+                  "description": "Required if you don't select a default retry policy. Defines which error codes will be retried. Options include ${http.default_retry_predicate}, ${http.default_retry_predicate_non_idempotent}, or a custom predicate defined as a subworkflow."
                 },
-                "max_delay": {
+                "max_retries": {
                   "type": "integer",
-                  "description": "Maximum delay in seconds between retries."
+                  "description": "Maximum number of times a step will be retried."
                 },
-                "multiplier": {
-                  "type": "integer",
-                  "description": "Multiplier applied to the previous delay to calculate the delay for the subsequent retry."
+                "backoff": {
+                  "type": "object",
+                  "description": "Block that controls how retries occur.",
+                  "additionalProperties": false,
+                  "properties": {
+                    "initial_delay": {
+                      "type": "integer",
+                      "description": "Delay in seconds between the initial failure and the first retry."
+                    },
+                    "max_delay": {
+                      "type": "integer",
+                      "description": "Maximum delay in seconds between retries."
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "description": "Multiplier applied to the previous delay to calculate the delay for the subsequent retry."
+                    }
+                  }
                 }
               }
+            },
+            {
+              "type": "string",
+              "pattern": "^\\$\\{.+\\}$"
             }
-          }
+          ]
         },
         "except": {
           "description": "Except a try clause.",
