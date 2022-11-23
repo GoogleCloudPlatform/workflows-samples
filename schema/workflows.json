@@ -82,7 +82,7 @@
         "args": {
           "type": "object",
           "description": "Arguments to a workflow step.",
-          "additionalProperties": false,
+          "additionalProperties": true,
           "properties": {
             "url": {
               "anyOf": [

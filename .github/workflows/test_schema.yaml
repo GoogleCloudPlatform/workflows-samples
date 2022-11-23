@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Set up tooling
-        run: npm install -g ajv-cli
+        run: npm install -g ajv-cli ajv-formats
 
       - name: Validate workflow
         run: ajv compile -c ajv-formats -s ${{ env.WORKFLOW }}
