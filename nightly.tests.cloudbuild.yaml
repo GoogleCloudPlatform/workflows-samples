@@ -1,0 +1,44 @@
+steps:
+  - id: "Deploy Workflows"
+    name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: /bin/bash
+    allowFailure: true
+    args:
+      - "-c"
+      - |
+        for src in $(find ./src/ -type f -name *.workflows.yaml); do
+          tmp_name=${src:6}  # remove src/
+          tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
+          workflow_name=${tmp_name//./-}-$SHORT_SHA  # convert . to -
+
+          test="$(gcloud workflows deploy $workflow_name \
+            --source $src \
+            --location $_REGION \
+            --quiet 2>&1)"
+          
+          if [[ $? -ne 0 ]]; then
+            echo "$workflow_name (src: $src) failed!" >> /workspace/failures.txt
+            echo $test >> /workspace/failures.txt
+          fi
+
+          gcloud workflows delete $workflow_name \
+            --location $_REGION \
+            --quiet
+        done
+
+  - id: "Check for Errors"
+    name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        if [ -f /workspace/failures.txt ]; then
+            echo "Tests FAILED!"
+            cat /workspace/failures.txt
+            exit 1
+        else 
+            echo "Tests PASSED!"
+        fi
+
+substitutions:
+  _REGION: us-central1
