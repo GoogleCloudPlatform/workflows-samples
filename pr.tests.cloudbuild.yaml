@@ -12,6 +12,8 @@ steps:
         curl -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
           https://api.github.com/repos/GoogleCloudPlatform/workflows-samples/pulls/$_PR_NUM/files \
           | jq '.[].filename' > /workspace/changed.txt
+        echo "Changed files: "
+        cat /workspace/changed.txt
 
   - id: "Deploy Workflows"
     name: "gcr.io/cloud-builders/gcloud"
@@ -20,13 +22,13 @@ steps:
     args:
       - "-c"
       - |
-        cat /workspace/changed.txt
-
         for src in $(echo /workspace/changed.txt | grep *.workflows.yaml); do
           echo $src
           tmp_name=${src:6}  # remove src/
           tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
           workflow_name=${tmp_name//./-}-$SHORT_SHA  # convert . to -
+
+          echo "Deploying $workflow_name with source: $src"
 
           test="$(gcloud workflows deploy $workflow_name \
             --source $src \

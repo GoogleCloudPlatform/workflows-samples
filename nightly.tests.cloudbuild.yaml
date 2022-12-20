@@ -11,6 +11,8 @@ steps:
           tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
           workflow_name=${tmp_name//./-}-$SHORT_SHA  # convert . to -
 
+          echo "Deploying $workflow_name with source: $src"
+
           test="$(gcloud workflows deploy $workflow_name \
             --source $src \
             --location $_REGION \
