@@ -1,5 +1,7 @@
 steps:
-  - entrypoint: /bin/bash
+  - id: "Get Changed Files"
+    name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: /bin/bash
     args:
       - "-c"
       - |
