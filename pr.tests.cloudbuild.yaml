@@ -1,4 +1,12 @@
 steps:
+  - entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        apt-get install jq -y
+        curl -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/GoogleCloudPlatform/workflows-samples/pulls/$_PR_NUM/files | jq '.[].filename' > /workspace/changed.txt
+
   - id: "Deploy Workflows"
     name: "gcr.io/cloud-builders/gcloud"
     entrypoint: /bin/bash
@@ -6,8 +14,7 @@ steps:
     args:
       - "-c"
       - |
-        echo $_CHANGED
-        for src in $(echo $_CHANGED | grep *.workflows.yaml); do
+        for src in $(echo /workspace/changed.txt | grep *.workflows.yaml); do
           echo $src
           tmp_name=${src:6}  # remove src/
           tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
