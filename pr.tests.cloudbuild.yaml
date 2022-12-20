@@ -1,6 +1,6 @@
 steps:
   - id: "Get Changed Files"
-    name: "gcr.io/cloud-builders/gcloud"
+    name: "gcr.io/cloud-builders/gcloud:latest"
     waitFor: ["-"]
     entrypoint: bash
     args:
@@ -16,37 +16,39 @@ steps:
         cat /workspace/changed.txt
 
   - id: "Deploy Workflows"
-    name: "gcr.io/cloud-builders/gcloud"
+    name: "gcr.io/cloud-builders/gcloud:latest"
     entrypoint: /bin/bash
     allowFailure: true
     args:
       - "-c"
       - |
         for src in $(cat /workspace/changed.txt | grep .workflows.yaml); do
-          echo $src
-          tmp_name=${src:4}  # remove src/
-          tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
-          workflow_name=${tmp_name//./-}-$SHORT_SHA  # convert . to -
+          if [[ -f "$src" ]]; then
+            tmp_name=${src:4}  # remove src/
+            tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
+            workflow_name=${tmp_name//./-}-$SHORT_SHA  # convert . to -
 
-          echo "Deploying $workflow_name with source: $src"
+            echo "Deploying $workflow_name with source: $src"
 
-          test="$(gcloud workflows deploy $workflow_name \
-            --source $src \
-            --location $_REGION \
-            --quiet 2>&1)"
-          
-          if [[ $? -ne 0 ]]; then
-            echo "$workflow_name (src: $src) failed!" >> /workspace/failures.txt
-            echo $test >> /workspace/failures.txt
+            test="$(gcloud workflows deploy $workflow_name \
+              --source $src \
+              --location $_REGION \
+              --quiet 2>&1)"
+            
+            if [[ $? -ne 0 ]]; then
+              echo "$workflow_name (src: $src) failed!" >> /workspace/failures.txt
+              echo $test >> /workspace/failures.txt
+              echo "" >> /workspace/failures.txt
+            fi
+
+            gcloud workflows delete $workflow_name \
+              --location $_REGION \
+              --quiet
           fi
-
-          gcloud workflows delete $workflow_name \
-            --location $_REGION \
-            --quiet
         done
 
   - id: "Check for Errors"
-    name: "gcr.io/cloud-builders/gcloud"
+    name: "gcr.io/cloud-builders/gcloud:latest"
     entrypoint: /bin/bash
     args:
       - "-c"

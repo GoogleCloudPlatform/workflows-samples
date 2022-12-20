@@ -2,13 +2,13 @@ name: Validate Filename
 on:
   pull_request:
     branches: [main]
-  push: 
+  push:
     branches: [main]
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-    - name: Check out repo
-      uses: actions/checkout@v3
-    - name: Validate Filenames
-      run: ./validateFilenames.sh
+      - name: Check out repo
+        uses: actions/checkout@v3
+      - name: Validate Filenames
+        run: ./tools/validateFilenames.sh
