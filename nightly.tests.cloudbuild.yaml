@@ -6,8 +6,7 @@ steps:
     args:
       - "-c"
       - |
-        runTest() {
-          src=$1
+        for src in $(find ./src/ -type f -name *.workflows.yaml); do
           tmp_name=${src:6}  # remove src/
           tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
           workflow_name=${tmp_name//./-}-$SHORT_SHA  # convert . to -
@@ -18,7 +17,7 @@ steps:
               --source $src \
               --location $_REGION \
               --quiet 2>&1)"
-          wait
+          
           if [[ $? -ne 0 ]]; then
               echo "$workflow_name (src: $src) failed!" >> /workspace/failures.txt
               echo $test >> /workspace/failures.txt
@@ -27,10 +26,6 @@ steps:
           gcloud workflows delete $workflow_name \
               --location $_REGION \
               --quiet
-        }
-
-        for src in $(find ./src/ -type f -name *.workflows.yaml); do
-          runTest $src &
         done
 
   - id: "Check for Errors"
