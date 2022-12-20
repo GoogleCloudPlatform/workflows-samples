@@ -6,8 +6,7 @@ steps:
     args:
       - "-c"
       - |
-        changed=$(commit.files['*'].filename)
-        for src in $changed; do
+        for src in $_CHANGED; do
           echo $src
           tmp_name=${src:6}  # remove src/
           tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
