@@ -6,7 +6,7 @@ steps:
     args:
       - "-c"
       - |
-        for src in $_CHANGED; do
+        for src in $(echo $_CHANGED | grep *.workflows.yaml); do
           echo $src
           tmp_name=${src:6}  # remove src/
           tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
