@@ -6,6 +6,7 @@ steps:
     args:
       - "-c"
       - |
+        echo $_CHANGED
         for src in $(echo $_CHANGED | grep *.workflows.yaml); do
           echo $src
           tmp_name=${src:6}  # remove src/
