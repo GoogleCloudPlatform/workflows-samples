@@ -31,7 +31,7 @@ main:
     - create_k8s_cluster:
         call: googleapis.container.v1.projects.zones.clusters.create
         args:
-          project_id: ${project_id}
+          projectId: ${project_id}
           zone: ${cluster_zone}
           body:
             cluster:
