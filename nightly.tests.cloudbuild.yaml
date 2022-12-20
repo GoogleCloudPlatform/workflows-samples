@@ -18,7 +18,7 @@ steps:
               --source $src \
               --location $_REGION \
               --quiet 2>&1)"
-
+          wait
           if [[ $? -ne 0 ]]; then
               echo "$workflow_name (src: $src) failed!" >> /workspace/failures.txt
               echo $test >> /workspace/failures.txt
@@ -32,7 +32,6 @@ steps:
         for src in $(find ./src/ -type f -name *.workflows.yaml); do
           runTest $src &
         done
-        wait
 
   - id: "Check for Errors"
     name: "gcr.io/cloud-builders/gcloud:latest"
