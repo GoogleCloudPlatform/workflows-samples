@@ -4,7 +4,7 @@ steps:
     waitFor: ["-"]
     entrypoint: bash
     args:
-      - -exc
+      - "-c"
       - |
         apt-get update
         apt-get install jq -y
@@ -22,7 +22,7 @@ steps:
     args:
       - "-c"
       - |
-        for src in $(echo /workspace/changed.txt | grep *.workflows.yaml); do
+        for src in $(cat /workspace/changed.txt | grep *.workflows.yaml); do
           echo $src
           tmp_name=${src:6}  # remove src/
           tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
