@@ -27,8 +27,8 @@
       - bucket_name: "[fill in a bucket name]"
       - job_name: "[fill in a job name]"
       - input_file: "gs://dataflow-samples/shakespeare/kinglear.txt"
-      - output_storage_file_prefix: ${"gs://" + args.bucketName + "/counts"}
-      - temp_location: ${"gs://" + bucket_name + "/counts"}
+      - output_storage_file_prefix: ${"gs://" + bucket_name + "/counts"}
+      - temp_location: ${"gs://" + bucket_name + "/counts/temp"}
       - template_path: "gs://dataflow-templates-us-central1/latest/Word_Count"
 - create_bucket:
     call: googleapis.storage.v1.buckets.insert
