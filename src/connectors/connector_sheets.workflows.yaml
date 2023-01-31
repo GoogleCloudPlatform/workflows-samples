@@ -13,11 +13,11 @@
 # # limitations under the License.
 
 # [START workflows_connector_sheets]
-# This workflow creates, updates, gets, and deletes a Google Form
-# using the Google Forms connector.
+# This workflow creates, updates, gets, and deletes a Google Sheets spreadsheet
+# using the Google Sheets connector.
 #
 # Features included in this test:
-# - Google Forms connector
+# - Google Sheets connector
 #
 # Expected successful output: "SUCCESS"
 - init:
