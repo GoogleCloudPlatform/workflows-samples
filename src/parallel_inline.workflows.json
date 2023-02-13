@@ -1,6 +1,8 @@
 {
   "main": {
-    "params": ["args"],
+    "params": [
+      "args"
+    ],
     "steps": [
       {
         "init": {
