@@ -1,4 +1,5 @@
-# Copyright 2020 Google LLC
+#/bin/bash
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_error_catch_retry]
-- STEP_NAME:
-    try:
-      call: http.get
-        # ...
-    except:
-      as: error_dictionary
-      steps:
-        # ...
-# [END workflows_error_catch_retry]
+echo "Validating filenames..."
+workflowsFilePattern="*.workflows.yaml";
+
+# Check all workflow files to see if the file pattern is good.
+cd src
+for path in $(find . -name '*.yaml'); do
+  if [[ $path == $workflowsFilePattern ]]; then
+    echo "✓ $path"
+  else
+    echo "✗ $path – doesn't match *.workflows.yaml"
+    FAILED=true
+  fi
+done
+
+# Fail CI if a path doesn't match.
+if [[ $FAILED ]]; then exit 1; fi

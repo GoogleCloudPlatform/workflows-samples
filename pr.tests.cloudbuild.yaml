@@ -1,0 +1,78 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+steps:
+  - id: "Get Changed Files"
+    name: "gcr.io/cloud-builders/gcloud:latest"
+    waitFor: ["-"]
+    entrypoint: bash
+    args:
+      - "-c"
+      - |
+        apt-get update
+        apt-get install jq -y
+
+        curl -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/GoogleCloudPlatform/workflows-samples/pulls/$_PR_NUM/files \
+          | jq -r '.[].filename' > /workspace/changed.txt
+        echo "Changed files: "
+        cat /workspace/changed.txt
+
+  - id: "Deploy Workflows"
+    name: "gcr.io/cloud-builders/gcloud:latest"
+    entrypoint: /bin/bash
+    allowFailure: true
+    args:
+      - "-c"
+      - |
+        for src in $(cat /workspace/changed.txt | grep .workflows.yaml); do
+          if [[ -f "$src" ]]; then
+            tmp_name=${src:4}  # remove src/
+            tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
+            workflow_name=${tmp_name//./-}-$SHORT_SHA  # convert . to -
+
+            echo "Deploying $workflow_name with source: $src"
+
+            test="$(gcloud workflows deploy $workflow_name \
+              --source $src \
+              --location $_REGION \
+              --quiet 2>&1)"
+            
+            if [[ $? -ne 0 ]]; then
+              echo "$workflow_name (src: $src) failed!" | tee -a /workspace/failures.txt
+              echo $test | tee -a /workspace/failures.txt
+              echo ""
+            fi
+
+            gcloud workflows delete $workflow_name \
+              --location $_REGION \
+              --quiet
+          fi
+        done
+
+  - id: "Check for Errors"
+    name: "ubuntu:latest"
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        if [ -f /workspace/failures.txt ]; then
+            echo "Tests FAILED!"
+            exit 1
+        else 
+            echo "Tests PASSED!"
+        fi
+
+substitutions:
+  _REGION: us-central1
