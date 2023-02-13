@@ -36,9 +36,9 @@ steps:
               --quiet 2>&1)"
             
             if [[ $? -ne 0 ]]; then
-              echo "$workflow_name (src: $src) failed!" >> /workspace/failures.txt
-              echo $test >> /workspace/failures.txt
-              echo "" >> /workspace/failures.txt
+              echo "$workflow_name (src: $src) failed!" | tee -a /workspace/failures.txt
+              echo $test | tee -a /workspace/failures.txt
+              echo ""
             fi
 
             gcloud workflows delete $workflow_name \
@@ -48,14 +48,13 @@ steps:
         done
 
   - id: "Check for Errors"
-    name: "gcr.io/cloud-builders/gcloud:latest"
+    name: "ubuntu:latest"
     entrypoint: /bin/bash
     args:
       - "-c"
       - |
         if [ -f /workspace/failures.txt ]; then
             echo "Tests FAILED!"
-            cat /workspace/failures.txt
             exit 1
         else 
             echo "Tests PASSED!"

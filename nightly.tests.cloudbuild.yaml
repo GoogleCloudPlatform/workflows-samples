@@ -7,36 +7,39 @@ steps:
       - "-c"
       - |
         for src in $(find ./src/ -type f -name *.workflows.yaml); do
+          # Generate temp workflow name
           tmp_name=${src:6}  # remove src/
           tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
           workflow_name=${tmp_name//./-}-$SHORT_SHA  # convert . to -
 
+          # Test workflow
           echo "Deploying $workflow_name with source: $src"
-
           test="$(gcloud workflows deploy $workflow_name \
               --source $src \
               --location $_REGION \
               --quiet 2>&1)"
           
+          # Save test results
           if [[ $? -ne 0 ]]; then
-              echo "$workflow_name (src: $src) failed!" >> /workspace/failures.txt
-              echo $test >> /workspace/failures.txt
+              echo "$workflow_name (src: $src) failed!" | tee -a /workspace/failures.txt
+              echo $test | tee -a /workspace/failures.txt
+              echo ""
           fi
 
+          # Clean up workflow resource
           gcloud workflows delete $workflow_name \
               --location $_REGION \
               --quiet
         done
 
   - id: "Check for Errors"
-    name: "gcr.io/cloud-builders/gcloud:latest"
+    name: "ubuntu:latest"
     entrypoint: /bin/bash
     args:
       - "-c"
       - |
         if [ -f /workspace/failures.txt ]; then
             echo "Tests FAILED!"
-            cat /workspace/failures.txt
             exit 1
         else 
             echo "Tests PASSED!"
