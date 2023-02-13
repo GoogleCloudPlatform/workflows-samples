@@ -14,11 +14,11 @@
       "args": {
         "body": {
           "info": {
-            "title": "${form_title}",
-            "result": "create_form_resp"
+            "title": "${form_title}"
           }
         }
-      }
+      },
+      "result": "create_form_resp"
     }
   },
   {

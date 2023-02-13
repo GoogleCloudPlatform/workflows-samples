@@ -37,26 +37,29 @@
     }
   },
   {
-    "create_spanner_session": null,
-    "call": "googleapis.spanner.v1.projects.instances.databases.sessions.create",
-    "args": {
-      "database": "projects/placeholder/instances/placeholder-instance-name/databases/placeholder-database-name"
-    },
-    "result": "session"
-  },
-  {
-    "write_entry": null,
-    "call": "googleapis.spanner.v1.projects.instances.databases.sessions.commit",
-    "args": {
-      "session": "${session.name}",
-      "body": "${req}"
+    "create_spanner_session": {
+      "call": "googleapis.spanner.v1.projects.instances.databases.sessions.create",
+      "args": {
+        "database": "projects/placeholder/instances/placeholder-instance-name/databases/placeholder-database-name"
+      },
+      "result": "session"
     }
   },
   {
-    "delete_spanner_session": null,
-    "call": "googleapis.spanner.v1.projects.instances.databases.sessions.delete",
-    "args": {
-      "name": "${session.name}"
+    "write_entry": {
+      "call": "googleapis.spanner.v1.projects.instances.databases.sessions.commit",
+      "args": {
+        "session": "${session.name}",
+        "body": "${req}"
+      }
+    }
+  },
+  {
+    "delete_spanner_session": {
+      "call": "googleapis.spanner.v1.projects.instances.databases.sessions.delete",
+      "args": {
+        "name": "${session.name}"
+      }
     }
   },
   {

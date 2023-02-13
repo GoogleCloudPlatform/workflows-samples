@@ -18,8 +18,8 @@
                 "checkNotOK": {
                   "switch": [
                     {
-                      "condition": "${r.code == 202}",
-                      "raise": "${r}"
+                      "condition": "${api_response.code == 202}",
+                      "raise": "${api_response}"
                     }
                   ]
                 }
