@@ -62,10 +62,7 @@
   {
     "final": {
       "return": [
-        "${workflowScope}",
-        "${outerLoopScope}",
-        "${innerLoopScope}",
-        "${outerLoopValue}"
+        "${workflowScope}"
       ]
     }
   }

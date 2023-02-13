@@ -12,7 +12,7 @@
           "job_id": "dummy-job-id"
         },
         {
-          "topic_id": "dummy-topic-id"
+          "topic": "dummy-topic-id"
         },
         {
           "subscription": "dummy-subscription-id"
