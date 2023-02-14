@@ -1,0 +1,71 @@
+{
+  "main": {
+    "steps": [
+      {
+        "init": {
+          "assign": [
+            {
+              "folder_id": "FOLDER_ID"
+            },
+            {
+              "drive_url": "https://www.googleapis.com/drive/v3/files/"
+            },
+            {
+              "drive_auth_scope": "https://www.googleapis.com/auth/drive"
+            }
+          ]
+        }
+      },
+      {
+        "create_sheet": {
+          "call": "googleapis.sheets.v4.spreadsheets.create",
+          "args": {
+            "body": null,
+            "connector_params": {
+              "scopes": "https://www.googleapis.com/auth/drive"
+            }
+          },
+          "result": "resp"
+        }
+      },
+      {
+        "get_sheet_info": {
+          "call": "http.get",
+          "args": {
+            "url": "${drive_url + resp.spreadsheetId}",
+            "query": {
+              "fields": "parents"
+            },
+            "auth": {
+              "type": "OAuth2",
+              "scopes": "${drive_auth_scope}"
+            }
+          },
+          "result": "sheet_info"
+        }
+      },
+      {
+        "move_sheet": {
+          "call": "http.patch",
+          "args": {
+            "url": "${drive_url + resp.spreadsheetId}",
+            "query": {
+              "addParents": "${folder_id}",
+              "removeParents": "${sheet_info[\"body\"][\"parents\"][0]}"
+            },
+            "auth": {
+              "type": "OAuth2",
+              "scopes": "${drive_auth_scope}"
+            }
+          },
+          "result": "resp"
+        }
+      },
+      {
+        "return": {
+          "return": "${resp}"
+        }
+      }
+    ]
+  }
+}
