@@ -50,5 +50,8 @@ jobs:
         run: npm install -g ajv-cli ajv-formats
 
       - name: Run Smoke Tests
-        run: ajv validate -c ajv-formats -s jsonschema/workflows.json -d ${{ matrix.sample }}
+        run: |
+          ajv validate -c ajv-formats --spec=draft2019 \
+            -s jsonschema/workflows.json \
+            -d ${{ matrix.sample }}
 

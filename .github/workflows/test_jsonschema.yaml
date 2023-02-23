@@ -24,8 +24,11 @@ jobs:
         run: npm install -g ajv-cli ajv-formats
 
       - name: Validate workflow
-        run: ajv compile -c ajv-formats -s jsonschema/workflows.json
+        run: ajv compile -c ajv-formats --spec=draft2019 -s jsonschema/workflows.json
 
       - name: Validate cheatsheet
-        run: ajv validate -c ajv-formats -s jsonschema/workflows.json -d workflows-demos/syntax-cheat-sheet/workflow.yaml
+        run: |
+          ajv validate -c ajv-formats --spec=draft2019 \
+            -s jsonschema/workflows.json \
+            -d workflows-demos/syntax-cheat-sheet/workflow.yaml
 
