@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2019-09/schema#",
   "anyOf": [
     {
       "description": "A list of steps.",
@@ -25,11 +25,13 @@
       "additionalProperties": false,
       "properties": {
         "params": {
-          "description": "A list of parameters.",
+          "description": "The name of the parameter variable.",
           "type": "array",
           "contains": {
             "type": "string"
-          }
+          },
+          "minContains": 0,
+          "maxContains": 1
         },
         "steps": {
           "description": "An array of objects with a single step.",
@@ -125,10 +127,13 @@
               ]
             },
             "body": {
+              "description": "Request body.",
               "anyOf": [
                 {
-                  "type": "object",
-                  "description": "Request body."
+                  "type": "object"
+                },
+                {
+                  "type": "string"
                 },
                 {
                   "type": "string",
@@ -158,6 +163,21 @@
                   "enum": [
                     "OIDC",
                     "OAuth2"
+                  ]
+                },
+                "scopes": {
+                  "description": "String or list of strings to specify token scope.",
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "contains": {
+                        "type": "string"
+                      }
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^\\$\\{.+\\}$"
+                    }
                   ]
                 }
               }
@@ -285,9 +305,7 @@
             "exception_policy": {
               "description": "The action for other branches when an exception occurs",
               "type": "string",
-              "enum": [
-                "continueAll"
-              ]
+              "const": "continueAll"
             },
             "shared": {
               "description": "A list of shared variables",

@@ -24,12 +24,12 @@ jobs:
             const Path = require('path');
             const workspace = process.env.GITHUB_WORKSPACE;
 
-            let files = fs.readdirSync(Path.join(workspace, 'src'));
-            files = files.map((file) => Path.join('./src', file));
-            let connectors = fs.readdirSync(Path.join(workspace, 'src/connectors'));
-            connectors = connectors.map((file) => Path.join('./src/connectors', file));
-            files.concat(connectors);
-            return files.filter((filename) => filename.endsWith('yaml') || filename.endsWith('json'));
+            let files = fs.readdirSync(Path.join(workspace, 'src'))
+                .map((file) => Path.join('./src', file));
+            let connectors = fs.readdirSync(Path.join(workspace, 'src/connectors'))
+                .map((file) => Path.join('./src/connectors', file));
+            return files.concat(connectors)
+                .filter((filename) => filename.endsWith('yaml') || filename.endsWith('json'));
 
   smoke-test:
     runs-on: ubuntu-latest
