@@ -12,7 +12,7 @@
               "location": "us-central1"
             },
             {
-              "name": "dummy-function"
+              "name": "example-function"
             },
             {
               "sourceArchiveUrl": "gs://your-bucket/cloud-function-source.zip"

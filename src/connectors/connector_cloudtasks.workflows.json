@@ -9,10 +9,10 @@
           "location_id": "us-central1"
         },
         {
-          "queue_id": "dummy-queue-id"
+          "queue_id": "example-queue-id"
         },
         {
-          "task_id": "dummy-task-id"
+          "task_id": "example-task-id"
         },
         {
           "schedule_time": "[fill this in]"

@@ -27,7 +27,7 @@ main:
         assign:
           - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
           - location: "us-central1"
-          - name: "dummy-function"
+          - name: "example-function"
           - sourceArchiveUrl: "gs://your-bucket/cloud-function-source.zip"
           - service_account: "[Replace with App Engine service account]"  # Use App Engine default SA.
     - create_function:

@@ -22,8 +22,8 @@
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - collection: "a-dummy-collection"
-      - document: "a-dummy-document"
+      - collection: "example-collection"
+      - document: "example-document"
 - create_document:
     call: googleapis.firestore.v1.projects.databases.documents.createDocument
     args:
@@ -53,7 +53,7 @@
     args:
       name: ${"projects/" + project_id + "/databases/(default)"}
       body:
-        outputUriPrefix: "gs://a_dummy_bucket"  # Make sure this bucket exists.
+        outputUriPrefix: "gs://example_bucket"  # Make sure this bucket exists.
         collectionIds:
           - ${collection}
 - drop:
