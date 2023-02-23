@@ -23,9 +23,9 @@
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
       - location_id: "us-central1"
-      - job_id: "dummy-job-id"
-      - topic: "dummy-topic-id"  # Pubsub topic used by Cloud Scheduler as a notification target.
-      - subscription: "dummy-subscription-id"
+      - job_id: "example-job-id"
+      - topic: "example-topic-id"  # Pubsub topic used by Cloud Scheduler as a notification target.
+      - subscription: "example-subscription-id"
 - create_topic:
     call: googleapis.pubsub.v1.projects.topics.create
     args:
@@ -43,7 +43,7 @@
       parent: ${"projects/" + project_id + "/locations/" + location_id}
       body:
         name: ${"projects/" + project_id + "/locations/" + location_id + "/jobs/" + job_id}
-        description: "A dummy job created by connector_cloudscheduler.yaml workflow to test the Cloud Scheduler connector."
+        description: "An example job created by connector_cloudscheduler.yaml workflow to test the Cloud Scheduler connector."
         schedule: "* * * * *"  # Run job every minute, see https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules.
         pubsubTarget:
           topicName: ${"projects/" + project_id + "/topics/" + topic}

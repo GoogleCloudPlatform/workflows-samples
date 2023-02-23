@@ -21,7 +21,7 @@
     assign:
       - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
       - location: "us-central1"
-      - workflow: "dummy-workflow"
+      - workflow: "example-workflow"
 - create_workflow:
     call: googleapis.workflows.v1.projects.locations.workflows.create
     args:
@@ -29,7 +29,7 @@
       workflowId: ${workflow}
       body:
         name: ${"projects/" + project + "/locations/" + location + "/workflows/" + workflow}
-        description: "A dummy workflow to be created and deleted."
+        description: "An example workflow to be created and deleted."
         sourceContents: "- step:\n    next: end"
 - get_workflow:
     call: googleapis.workflows.v1.projects.locations.workflows.get
