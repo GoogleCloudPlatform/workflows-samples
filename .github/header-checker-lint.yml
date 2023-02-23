@@ -10,3 +10,5 @@ sourceFileExtensions:
   - 'yaml'
   - 'yml'
   - 'sh'
+ignoreFiles:
+  - '.github/*'
