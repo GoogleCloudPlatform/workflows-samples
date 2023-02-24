@@ -133,6 +133,9 @@
                   "type": "object"
                 },
                 {
+                  "type": "null"
+                },
+                {
                   "type": "string"
                 },
                 {

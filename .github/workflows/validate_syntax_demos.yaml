@@ -16,7 +16,7 @@ jobs:
         with:
           repository: GoogleCloudPlatform/workflows-demos
           path: workflows-demos
-      - run: echo $(pwd); echo $(ls)
+
       - name: Get source files
         uses: actions/github-script@v6
         id: get-files
@@ -43,8 +43,14 @@ jobs:
       matrix:
         sample: ${{ fromJSON(needs.get-all-files.outputs.matrix) }}
     steps:
-      - name: Check out repo
+      - name: workflows-samples > Checkout Repository
         uses: actions/checkout@v3
+      
+      - name: workflows-demos > Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          repository: GoogleCloudPlatform/workflows-demos
+          path: workflows-demos
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
