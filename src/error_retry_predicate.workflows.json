@@ -37,7 +37,7 @@
         "what_to_repeat": {
           "switch": [
             {
-              "condition": "df",
+              "condition": true,
               "return": true
             }
           ]

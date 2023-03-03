@@ -1,21 +1,40 @@
 {
+  "title": "Google Cloud Workflows",
+  "description": "Orchestrate Workflows consisting of Google Cloud APIs, SaaS APIs or private API endpoints.",
   "$schema": "https://json-schema.org/draft/2019-09/schema#",
-  "anyOf": [
+  "oneOf": [
+    {
+      "type": "object",
+      "description": "The main workflow.",
+      "required": ["main"],
+      "properties": {
+        "main": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "params": {
+              "description": "The name of the parameter variable.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 0,
+              "maxItems": 1
+            },
+            "steps": {
+              "description": "An array of objects with a single step.",
+              "$ref": "#/definitions/stepArray"
+            }
+          }
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/subworkflow"
+      }
+    },
     {
       "description": "A list of steps.",
       "$ref": "#/definitions/stepArray"
-    },
-    {
-      "type": "object",
-      "description": "A map of subworkflows.",
-      "minProperties": 1,
-      "additionalProperties": false,
-      "patternProperties": {
-        "^.*$": {
-          "description": "A subworkflow.",
-          "$ref": "#/definitions/subworkflow"
-        }
-      }
     }
   ],
   "definitions": {
@@ -31,7 +50,7 @@
             "type": "string"
           },
           "minContains": 0,
-          "maxContains": 1
+          "maxContains": 10
         },
         "steps": {
           "description": "An array of objects with a single step.",
@@ -62,208 +81,141 @@
       "description": "A single workflow step.",
       "additionalProperties": false,
       "properties": {
+        "assign": {
+          "$ref": "#/definitions/assign"
+        },
         "call": {
-          "description": "Required",
+          "$ref": "#/definitions/call"
+        },
+        "args": {
+          "$ref": "#/definitions/args"
+        },
+        "result": {
+          "$ref": "#/definitions/result"
+        },
+        "next": {
+          "$ref": "#/definitions/next"
+        },
+        "switch": {
+          "$ref": "#/definitions/switch"
+        },
+        "for": {
+          "$ref": "#/definitions/for"
+        },
+        "parallel": {
+          "$ref": "#/definitions/parallel"
+        },
+        "raise": {
+          "$ref": "#/definitions/raise"
+        },
+        "try": {
+          "$ref": "#/definitions/try"
+        },
+        "retry": {
+          "$ref": "#/definitions/retry"
+        },
+        "except": {
+          "$ref": "#/definitions/except"
+        },
+        "return": {
+          "$ref": "#/definitions/return"
+        },
+        "steps": {
+          "$ref": "#/definitions/stepArray"
+        }
+      }
+    },
+    "assign": {
+      "description": "A list of variable assignment maps.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A single variable assignment.",
+        "minProperties": 1,
+        "maxProperties": 1
+      },
+      "minItems": 1,
+      "maxItems": 50
+    },
+    "call": {
+      "description": "Run a function and return a result.",
+      "anyOf": [
+        {
+          "description": "Use `http.get`, `http.post`, or `http.request` for HTTP requests.",
+          "type": "string",
+          "enum": [
+            "http.get",
+            "http.post",
+            "http.put",
+            "http.patch",
+            "http.delete",
+            "http.request",
+            "sys.sleep",
+            "sys.sleep_until",
+            "sys.log"
+          ]
+        },
+        {
+          "description": "A subworkflow.",
+          "type": "string"
+        },
+        {
+          "description": "A Google Cloud API connector.",
+          "type": "string",
+          "pattern": "^googleapis(\\.[a-zA-Z1-9]+)+"
+        }
+      ]
+    },
+    "args": {
+      "type": "object",
+      "description": "Pass arguments and their values when calling a function that accepts parameters.",
+      "additionalProperties": true,
+      "properties": {
+        "url": {
           "anyOf": [
             {
-              "description": "Use `http.get`, `http.post`, or `http.request` for HTTP requests.",
+              "description": "URL where the request is sent. Required if using call type http.request.",
               "type": "string",
-              "enum": [
-                "http.get",
-                "http.post",
-                "http.request",
-                "sys.sleep"
-              ]
+              "format": "uri"
             },
             {
-              "description": "A name of a subworkflow within this workflow, or a connector.",
-              "type": "string"
+              "description": "An expression that results to a URL where the request is sent. Required if using call type http.request.",
+              "type": "string",
+              "pattern": "^\\$\\{.+\\}$"
             }
           ]
         },
-        "args": {
+        "method": {
+          "description": "The type of HTTP request method to use. Required if using call type http.request.",
+          "type": "string",
+          "enum": [
+            "GET",
+            "HEAD",
+            "POST",
+            "PUT",
+            "DELETE",
+            "CONNECT",
+            "OPTIONS",
+            "TRACE",
+            "PATCH"
+          ]
+        },
+        "headers": {
+          "description": "Header fields to supply input to the API.",
           "type": "object",
-          "description": "Arguments to a workflow step.",
-          "additionalProperties": true,
-          "properties": {
-            "url": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "description": "Required. URL where the request is sent.",
-                  "format": "uri"
-                },
-                {
-                  "type": "string",
-                  "description": "Required. An expression that results to a URL where the request is sent."
-                }
-              ]
-            },
-            "method": {
-              "type": "string",
-              "description": "Required if using call type http.request. The type of HTTP request method to use.",
-              "enum": [
-                "GET",
-                "HEAD",
-                "POST",
-                "PUT",
-                "DELETE",
-                "CONNECT",
-                "OPTIONS",
-                "TRACE",
-                "PATCH"
-              ]
-            },
-            "headers": {
-              "anyOf": [
-                {
-                  "type": "object",
-                  "description": "Request headers."
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\$\\{.+\\}$"
-                }
-              ]
-            },
-            "body": {
-              "description": "Request body.",
-              "anyOf": [
-                {
-                  "type": "object"
-                },
-                {
-                  "type": "null"
-                },
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\$\\{.+\\}$"
-                }
-              ]
-            },
-            "query": {
-              "anyOf": [
-                {
-                  "type": "object",
-                  "description": "Request query parameters."
-                },
-                {
-                  "type": "string",
-                  "pattern": "^\\$\\{.+\\}$"
-                }
-              ]
-            },
-            "auth": {
-              "type": "object",
-              "description": "Required if the API being called requires authentication.",
-              "additionalProperties": false,
-              "properties": {
-                "type": {
-                  "description": "The type of authentication.",
-                  "enum": [
-                    "OIDC",
-                    "OAuth2"
-                  ]
-                },
-                "scopes": {
-                  "description": "String or list of strings to specify token scope.",
-                  "anyOf": [
-                    {
-                      "type": "array",
-                      "contains": {
-                        "type": "string"
-                      }
-                    },
-                    {
-                      "type": "string",
-                      "pattern": "^\\$\\{.+\\}$"
-                    }
-                  ]
-                }
-              }
-            },
-            "timeout": {
-              "type": "number",
-              "description": "Time in seconds. How long a request is allowed to run before throwing an exception."
-            },
-            "seconds": {
-              "type": "number",
-              "description": "The number of seconds to sleep."
-            }
-          }
+          "minProperties": 1
         },
-        "assign": {
-          "type": "array",
-          "description": "Define a dictionary.",
-          "items": {
-            "type": "object",
-            "description": "A single variable assignment.",
-            "minProperties": 1,
-            "maxProperties": 1
-          }
-        },
-        "result": {
-          "type": "string",
-          "description": "Variable name where the result of an HTTP invocation step is stored."
-        },
-        "switch": {
-          "type": "array",
-          "description": "A switch block.",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/definitions/condition"
-          }
-        },
-        "next": {
-          "type": "string",
-          "description": "The next step to jump to. \"end\" to terminate.",
-          "default": "end"
-        },
-        "return": {
-          "description": "Stop a workflow's execution and return a value, variable, or expression."
-        },
-        "try": {
-          "description": "Try a single step or a list of steps.",
-          "$ref": "#/definitions/step"
-        },
-        "retry": {
-          "oneOf": [
+        "body": {
+          "description": "Body fields to supply input to the API.",
+          "anyOf": [
             {
-              "type": "object",
-              "description": "Optional. If omitted, all other fields are required. Options include ${http.default_retry} and ${http.default_retry_non_idempotent}. Allows you to specify a default retry policy to use. If you specify a retry policy, omit all other fields in the retry block.",
-              "additionalProperties": false,
-              "properties": {
-                "predicate": {
-                  "type": "string",
-                  "description": "Required if you don't select a default retry policy. Defines which error codes will be retried. Options include ${http.default_retry_predicate}, ${http.default_retry_predicate_non_idempotent}, or a custom predicate defined as a subworkflow."
-                },
-                "max_retries": {
-                  "type": "integer",
-                  "description": "Maximum number of times a step will be retried."
-                },
-                "backoff": {
-                  "type": "object",
-                  "description": "Block that controls how retries occur.",
-                  "additionalProperties": false,
-                  "properties": {
-                    "initial_delay": {
-                      "type": "integer",
-                      "description": "Delay in seconds between the initial failure and the first retry."
-                    },
-                    "max_delay": {
-                      "type": "integer",
-                      "description": "Maximum delay in seconds between retries."
-                    },
-                    "multiplier": {
-                      "type": "integer",
-                      "description": "Multiplier applied to the previous delay to calculate the delay for the subsequent retry."
-                    }
-                  }
-                }
-              }
+              "type": "object"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "string",
@@ -271,138 +223,176 @@
             }
           ]
         },
-        "except": {
-          "description": "Except a try clause.",
-          "oneOf": [
+        "query": {
+          "description": "Query fields to supply input to the API.",
+          "anyOf": [
             {
-              "$ref": "#/definitions/step"
+              "type": "object"
             },
             {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "as": {
-                  "type": "string",
-                  "description": "Name of a dictionary variable that contains the error message."
-                },
-                "steps": {
-                  "description": "An array of objects with a single step.",
-                  "$ref": "#/definitions/stepArray"
-                }
-              }
+              "type": "string",
+              "pattern": "^\\$\\{.+\\}$"
             }
           ]
         },
-        "raise": {
-          "description": "Raise an exception.",
-          "$ref": "#/definitions/raise"
-        },
-        "for": {
-          "$ref": "#/definitions/for"
-        },
-        "parallel": {
+        "auth": {
+          "description": "Required if the API being called requires authentication.",
           "type": "object",
-          "description": "Run branches or iterations in parallel",
           "additionalProperties": false,
           "properties": {
-            "exception_policy": {
-              "description": "The action for other branches when an exception occurs",
-              "type": "string",
-              "const": "continueAll"
+            "type": {
+              "description": "The type of authentication.",
+              "enum": [
+                "OIDC",
+                "OAuth2"
+              ]
             },
-            "shared": {
-              "description": "A list of shared variables",
-              "type": "array",
-              "uniqueItems": true,
-              "items": {
-                "type": "string"
-              }
-            },
-            "concurrency_limit": {
-              "description": "An upper limit for branches/iterations to perform concurrently",
-              "type": "integer"
-            },
-            "branches": {
-              "description": "A list of branches that will run concurrently",
-              "type": "array",
-              "minItems": 2,
-              "maxItems": 10,
-              "items": {
-                "type": "object",
-                "properties": {
-                  "steps": {
-                    "description": "A list of steps",
-                    "$ref": "#/definitions/stepArray"
+            "scope": {
+              "description": "Specify token scope to limit an application's access to a user's account.",
+              "anyOf": [
+                {
+                  "description": "List of scope strings.",
+                  "type": "array",
+                  "contains": {
+                    "type": "string"
                   }
+                },
+                {
+                  "description": "Scope string.",
+                  "type": "string"
                 }
-              }
+              ]
             },
-            "for": {
-              "description": "A standard for loop to be evaluated in parallel",
-              "$ref": "#/definitions/for"
+            "scopes": {
+              "description": "Specify token scope to limit an application's access to a user's account.",
+              "$ref": "#/definitions/scopes"
+            },
+            "audience": {
+              "description": "Specifies the audience for the OIDC token. By default, it's set to the same value as url; however, it should be set to your service's root URL.",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uri"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\$\\{.+\\}$"
+                }
+              ]
             }
           }
         },
-        "steps": {
-          "$ref": "#/definitions/stepArray"
+        "timeout": {
+          "description": "Time in seconds. How long a request is allowed to run before throwing an exception.",
+          "type": "number",
+          "maximum": 1800
+        },
+        "connector_params": {
+          "description": "Connector-specific parameters.",
+          "type": "object",
+          "properties": {
+            "timeout": {
+              "description": "Time in seconds. The end-to-end duration the connector call is allowed to run for before throwing a timeout exception.",
+              "type": "integer",
+              "default": 1800,
+              "maximum": 31536000
+            },
+            "polling_policy": {
+              "description": "Polling policy.",
+              "type": "object",
+              "properties": {
+                "initial_delay": {
+                  "description": "Time in seconds. Only applies to long-running operation calls.",
+                  "type": "number",
+                  "default": 1.0
+                },
+                "multiplier": {
+                  "description": "Time in seconds. Only applies to long-running operation calls.",
+                  "type": "number",
+                  "default": 1.25
+                },
+                "max_delay": {
+                  "description": "Time in seconds. Only applies to long-running operation calls.",
+                  "type": "number",
+                  "default": 60.0
+                }
+              }
+            },
+            "skip_polling": {
+              "description": "If set to True, the connector invocation call is non-blocking if the initial request to manage or update the resource succeeds",
+              "type": "boolean",
+              "default": false
+            },
+            "scopes": {
+              "description": "OAuth2 scopes to pass to the Google API.",
+              "$ref": "#/definitions/scopes"
+            }
+          }
         }
       }
     },
-    "raise": {
-      "description": "Raise an exception.",
+    "result": {
+      "description": "Assign the result from a call to this variable."
+    },
+    "next": {
+      "description": "Define what step Workflows should execute next.",
       "anyOf": [
         {
-          "description": "String message.",
+          "description": "The step name.",
           "type": "string"
         },
         {
-          "description": "A dictionary.",
-          "type": "object"
+          "description": "Stop a workflow's execution without returning a value.",
+          "type": "string",
+          "const": "end"
+        },
+        {
+          "description": "Terminate the current iteration of a for loop and continue with the next iteration.",
+          "type": "string",
+          "const": "continue"
+        },
+        {
+          "description": "Terminate iteration of a for loop.",
+          "type": "string",
+          "const": "break"
         }
       ]
     },
-    "condition": {
-      "description": "An expression to switch on.",
-      "type": "object",
-      "properties": {
-        "next": {
-          "description": "The next step to jump to. \"end\" to terminate.",
-          "type": "string",
-          "default": "end"
-        },
-        "steps": {
-          "description": "A list of steps to run in this switch statement.",
-          "$ref": "#/definitions/stepArray"
-        },
-        "step": {
-          "$ref": "#/definitions/step"
-        },
-        "return": {
-          "description": "Stop a workflow's execution and return a value, variable, or expression."
-        },
-        "raise": {
-          "description": "Raise an exception.",
-          "$ref": "#/definitions/raise"
-        }
-      }
+    "return": {
+      "description": "Stop a workflow's execution and return a value, variable, or expression."
     },
     "for": {
-      "description": "Iterates over a sequence of numbers or through a collection of data\nhttps://cloud.google.com/workflows/docs/reference/syntax/syntax-search",
+      "description": "Iterates over a sequence of numbers or through a collection of data, such as a list or map.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "value": {
-          "description": "A loop variable name\nhttps://cloud.google.com/workflows/docs/reference/syntax/iteration",
+          "description": "A loop variable name. Contains the value of the currently iterated element.",
           "type": "string"
         },
         "index": {
-          "description": "An index variable name\nhttps://cloud.google.com/workflows/docs/reference/syntax/iteration",
+          "description": "An index variable name. Contains the value to the current offset of the iteration. ",
           "type": "string"
         },
-        "range": {
-          "description": "A number's range\nhttps://cloud.google.com/workflows/docs/reference/syntax/iteration",
+        "in": {
+          "description": "An expression that evaluates into a list or a list definition. Required, if not using 'range'.",
           "anyOf": [
             {
+              "description": "A list.",
+              "type": "array"
+            },
+            {
+              "description": "An expression that evaluates into a list.",
+              "type": "string",
+              "pattern": "^\\$\\{.+\\}$"
+            }
+          ]
+        },
+        "range": {
+          "description": "A list of two expressions, specifying the beginning and end of the range, both inclusive. Required, if not using 'in'.",
+          "anyOf": [
+            {
+              "description": "Array specifying the beginning and end of the range, both inclusive.",
               "type": "array",
               "items": {
                 "type": "number"
@@ -411,30 +401,236 @@
               "maxItems": 2
             },
             {
+              "description": "The expressions must evaluate into incrementable values; that is, integer or double. Make sure that you do not use multiple expressions inside a list like this: [${rangeStart}, ${rangeEnd}]).",
               "type": "string",
               "pattern": "^\\$\\{\\[.+\\]\\}$"
             }
           ]
         },
-        "in": {
-          "description": "A list expression\nhttps://cloud.google.com/workflows/docs/reference/syntax/iteration",
+        "steps": {
+          "description": "Each iteration the steps will be executed.",
+          "$ref": "#/definitions/stepArray"
+        }
+      }
+    },
+    "parallel": {
+      "type": "object",
+      "description": "Define a part of your workflow where two or more steps can execute concurrently. A 'parallel' step waits until all the steps defined within it have completed or are interrupted by an unhandled exception; execution then continues.",
+      "additionalProperties": false,
+      "properties": {
+        "exception_policy": {
+          "description": "The action for other branches when an exception occurs. Optional. The default policy, 'continueAll', results in no further action, and all other branches will attempt to run.",
+          "type": "string",
+          "const": "continueAll"
+        },
+        "shared": {
+          "description": "A list of writable variables with parent scope that allow assignments within the 'parallel' step.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "concurrency_limit": {
+          "description": "The maximum number of branches and iterations that can concurrently execute within a single workflow execution before further branches and iterations are queued to wait. This applies to a single 'parallel' step only and does not cascade. Must be a positive integer and can be either a literal value or an expression.",
+          "type": "integer"
+        },
+        "branches": {
+          "description": "Branches that can run concurrently. Required, if not using 'for'.",
+          "$ref": "#/definitions/branches"
+        },
+        "for": {
+          "description": "A loop where iterations can run concurrently. Required, if not using 'branches'.",
+          "$ref": "#/definitions/for"
+        }
+      }
+    },
+    "branches": {
+      "description": "Execute parallel branches concurrently and the steps in each branch sequentially.",
+      "$ref": "#/definitions/stepArray"
+    },
+    "switch": {
+      "description": "A switch block. A selection mechanism that allows the value of an expression to control the flow of a workflow's execution. If a value matches, that condition's statement is executed.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/condition"
+      }
+    },
+    "condition": {
+      "type": "object",
+      "required": [
+        "condition"
+      ],
+      "patternProperties": {
+        "condition": {
+          "description": "An expression to switch on.",
           "anyOf": [
-            {
-              "type": "array"
-            },
             {
               "type": "string",
               "pattern": "^\\$\\{.+\\}$"
+            },
+            {
+              "type": "boolean"
             }
           ]
         },
         "steps": {
-          "description": "Steps for loop\nhttps://cloud.google.com/workflows/docs/reference/syntax/iteration",
+          "$ref": "#/definitions/stepArray"
+        },
+        "assign": {
+          "$ref": "#/definitions/assign"
+        },
+        "call": {
+          "$ref": "#/definitions/call"
+        },
+        "args": {
+          "$ref": "#/definitions/args"
+        },
+        "result": {
+          "$ref": "#/definitions/result"
+        },
+        "next": {
+          "$ref": "#/definitions/next"
+        },
+        "switch": {
+          "$ref": "#/definitions/switch"
+        },
+        "for": {
+          "$ref": "#/definitions/for"
+        },
+        "parallel": {
+          "$ref": "#/definitions/parallel"
+        },
+        "raise": {
+          "$ref": "#/definitions/raise"
+        },
+        "try": {
+          "$ref": "#/definitions/try"
+        },
+        "retry": {
+          "$ref": "#/definitions/retry"
+        },
+        "except": {
+          "$ref": "#/definitions/except"
+        },
+        "return": {
+          "$ref": "#/definitions/return"
+        }
+      }
+    },
+    "raise": {
+      "description": "Raise an exception.",
+      "anyOf": [
+        {
+          "description": "Error message string.",
+          "type": "string"
+        },
+        {
+          "description": "Error message map.",
+          "type": "object",
+          "properties": {
+            "code": {
+              "description": "Error code.",
+              "type": "integer"
+            },
+            "message": {
+              "description": "Error message string.",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "try": {
+      "description": "try/except structure for error handling.",
+      "anyOf": [
+        {
+          "description": "A step.",
+          "$ref": "#/definitions/step"
+        },
+        {
+          "description": "A list of steps.",
+          "$ref": "#/definitions/stepArray"
+        }
+      ]
+    },
+    "except": {
+      "description": "try/except structure for error handling.",
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^as$": {
+          "type": "string"
+        },
+        "^steps$": {
+          "description": "A list of steps.",
           "$ref": "#/definitions/stepArray"
         }
       }
+    },
+    "retry": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Retry block. Optional, if using a default retry policy.",
+          "additionalProperties": false,
+          "properties": {
+            "predicate": {
+              "type": "string",
+              "description": "Defines which error codes will be retried. Options include ${http.default_retry_predicate}, ${http.default_retry_predicate_non_idempotent}, or a custom predicate defined as a subworkflow."
+            },
+            "max_retries": {
+              "type": "integer",
+              "description": "Maximum number of times a step will be retried, not counting the initial step execution attempt."
+            },
+            "backoff": {
+              "type": "object",
+              "description": "Block that controls how retries occur.",
+              "additionalProperties": false,
+              "properties": {
+                "initial_delay": {
+                  "type": "integer",
+                  "description": "Delay in seconds between the initial failure and the first retry."
+                },
+                "max_delay": {
+                  "type": "integer",
+                  "description": "Maximum delay in seconds between retries."
+                },
+                "multiplier": {
+                  "type": "integer",
+                  "description": "Multiplier applied to the previous delay to calculate the delay for the subsequent retry."
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "Default retry policy. Optional, if using retry block. Options include ${http.default_retry} and ${http.default_retry_non_idempotent}.",
+          "type": "string",
+          "pattern": "^\\$\\{.+\\}$"
+        }
+      ]
+    },
+    "scopes": {
+      "description": "Specify token scope to limit an application's access to a user's account.",
+      "anyOf": [
+        {
+          "description": "List of scope strings.",
+          "type": "array",
+          "contains": {
+            "type": "string"
+          }
+        },
+        {
+          "description": "Scope string.",
+          "type": "string"
+        },
+        {
+          "description": "Space and comma-separated strings",
+          "type": "string"
+        }
+      ]
     }
-  },
-  "description": "Orchestrate Workflows consisting of Google Cloud APIs, SaaS APIs or private API endpoints.",
-  "title": "Google Cloud Workflows config file"
+  }
 }
