@@ -1,0 +1,24 @@
+# Synchronize repository settings from a centralized config
+# https://github.com/googleapis/repo-automation-bots/tree/main/packages/sync-repo-settings
+# Install: https://github.com/apps/sync-repo-settings
+
+# Disable merge commits
+rebaseMergeAllowed: true
+squashMergeAllowed: true
+mergeCommitAllowed: false
+# Enable branch protection
+branchProtectionRules:
+- pattern: main
+  isAdminEnforced: true
+  requiredStatusCheckContexts:
+    - 'cla/google'
+    - 'test-pr'
+  # - Add required status checks like presubmit tests
+  requiredApprovingReviewCount: 1
+  requiresCodeOwnerReviews: true
+  requiresStrictStatusChecks: true
+
+# Set team access
+permissionRules:
+  - team: torus-dpe
+    permission: admin
