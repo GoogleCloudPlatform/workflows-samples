@@ -283,9 +283,8 @@
           }
         },
         "timeout": {
-          "description": "Time in seconds. How long a request is allowed to run before throwing an exception.",
-          "type": "number",
-          "maximum": 1800
+          "description": "Time in seconds. How long a request is allowed to run before throwing an exception. Default and maximum values vary by call.",
+          "type": "number"
         },
         "connector_params": {
           "description": "Connector-specific parameters.",
