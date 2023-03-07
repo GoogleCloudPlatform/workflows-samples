@@ -21,7 +21,7 @@
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - transferjob_name: "transferJobs/dummy-transfer-job"
+      - transferjob_name: "transferJobs/example-transfer-job"
       - src_bucket_name: "[fill in with the source bucket name]"
       - sink_bucket_name: "[fill in with the destination bucket name]"
 - create_transferjob:

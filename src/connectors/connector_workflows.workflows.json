@@ -9,7 +9,7 @@
           "location": "us-central1"
         },
         {
-          "workflow": "dummy-workflow"
+          "workflow": "example-workflow"
         }
       ]
     }
@@ -22,7 +22,7 @@
         "workflowId": "${workflow}",
         "body": {
           "name": "${\"projects/\" + project + \"/locations/\" + location + \"/workflows/\" + workflow}",
-          "description": "A dummy workflow to be created and deleted.",
+          "description": "An example workflow to be created and deleted.",
           "sourceContents": "- step:\n    next: end"
         }
       }
