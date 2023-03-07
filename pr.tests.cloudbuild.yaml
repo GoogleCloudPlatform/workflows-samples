@@ -36,7 +36,7 @@ steps:
     args:
       - "-c"
       - |
-        for src in $(cat /workspace/changed.txt | grep .workflows.yaml); do
+        for src in $(cat /workspace/changed.txt | grep .workflows.); do
           if [[ -f "$src" ]]; then
             tmp_name=${src:4}  # remove src/
             tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
