@@ -6,10 +6,10 @@
           "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
         },
         {
-          "collection": "a-dummy-collection"
+          "collection": "example-collection"
         },
         {
-          "document": "a-dummy-document"
+          "document": "example-document"
         }
       ]
     }
@@ -66,7 +66,7 @@
       "args": {
         "name": "${\"projects/\" + project_id + \"/databases/(default)\"}",
         "body": {
-          "outputUriPrefix": "gs://a_dummy_bucket",
+          "outputUriPrefix": "gs://example_bucket",
           "collectionIds": [
             "${collection}"
           ]

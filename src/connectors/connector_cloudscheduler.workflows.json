@@ -9,13 +9,13 @@
           "location_id": "us-central1"
         },
         {
-          "job_id": "dummy-job-id"
+          "job_id": "example-job-id"
         },
         {
-          "topic": "dummy-topic-id"
+          "topic": "example-topic-id"
         },
         {
-          "subscription": "dummy-subscription-id"
+          "subscription": "example-subscription-id"
         }
       ]
     }
@@ -47,7 +47,7 @@
         "parent": "${\"projects/\" + project_id + \"/locations/\" + location_id}",
         "body": {
           "name": "${\"projects/\" + project_id + \"/locations/\" + location_id + \"/jobs/\" + job_id}",
-          "description": "A dummy job created by connector_cloudscheduler.yaml workflow to test the Cloud Scheduler connector.",
+          "description": "An example job created by connector_cloudscheduler.yaml workflow to test the Cloud Scheduler connector.",
           "schedule": "* * * * *",
           "pubsubTarget": {
             "topicName": "${\"projects/\" + project_id + \"/topics/\" + topic}",
