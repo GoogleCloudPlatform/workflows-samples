@@ -6,7 +6,9 @@
     {
       "type": "object",
       "description": "The main workflow.",
-      "required": ["main"],
+      "required": [
+        "main"
+      ],
       "properties": {
         "main": {
           "type": "object",
@@ -141,7 +143,7 @@
       "description": "Run a function and return a result.",
       "anyOf": [
         {
-          "description": "Use `http.get`, `http.post`, or `http.request` for HTTP requests.",
+          "description": "Standard library module for HTTP/S request support.",
           "type": "string",
           "enum": [
             "http.get",
@@ -149,10 +151,24 @@
             "http.put",
             "http.patch",
             "http.delete",
-            "http.request",
+            "http.request"
+          ]
+        },
+        {
+          "description": "Standard library module for common system interface.",
+          "type": "string",
+          "enum": [
             "sys.sleep",
             "sys.sleep_until",
             "sys.log"
+          ]
+        },
+        {
+          "description": "Standard library module for event support.",
+          "type": "string",
+          "enum": [
+            "events.await_callback",
+            "events.create_callback_endpoint"
           ]
         },
         {
