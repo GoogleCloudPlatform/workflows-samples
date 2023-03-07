@@ -452,16 +452,18 @@
       "description": "A switch block. A selection mechanism that allows the value of an expression to control the flow of a workflow's execution. If a value matches, that condition's statement is executed.",
       "type": "array",
       "minItems": 1,
+      "maxItems": 50,
       "items": {
         "$ref": "#/definitions/condition"
       }
     },
     "condition": {
       "type": "object",
+      "description": "Define conditional expressions for a switch block.",
       "required": [
         "condition"
       ],
-      "patternProperties": {
+      "properties": {
         "condition": {
           "description": "An expression to switch on.",
           "anyOf": [
@@ -542,7 +544,7 @@
       ]
     },
     "try": {
-      "description": "try/except structure for error handling.",
+      "description": "A try/except structure for error handling.",
       "anyOf": [
         {
           "description": "A step.",
@@ -555,20 +557,22 @@
       ]
     },
     "except": {
-      "description": "try/except structure for error handling.",
+      "description": "A try/except structure for error handling.",
       "type": "object",
       "additionalProperties": false,
-      "patternProperties": {
-        "^as$": {
+      "properties": {
+        "as": {
+          "description": "The name of a map variable that contains the error message.",
           "type": "string"
         },
-        "^steps$": {
+        "steps": {
           "description": "A list of steps.",
           "$ref": "#/definitions/stepArray"
         }
       }
     },
     "retry": {
+      "description": "Define a retry policy to retry steps that return a specific error code.",
       "oneOf": [
         {
           "type": "object",

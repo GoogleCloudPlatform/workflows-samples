@@ -1,4 +1,4 @@
-name: Test JSON Schema
+name: Validate JSON Schema
 on:
   pull_request:
     paths:
@@ -11,20 +11,20 @@ jobs:
       - name: workflows-samples > Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
+      - name: Install tools
+        run: npm install -g ajv-cli ajv-formats
+
+      - name: Validate workflow
+        run: ajv compile -c ajv-formats --spec=draft2019 -s jsonschema/workflows.json
+
       - name: workflows-demos > Checkout Repository
         uses: actions/checkout@v3
         with:
           repository: GoogleCloudPlatform/workflows-demos
           path: workflows-demos
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-
-      - name: Set up tooling
-        run: npm install -g ajv-cli ajv-formats
-
-      - name: Validate workflow
-        run: ajv compile -c ajv-formats --spec=draft2019 -s jsonschema/workflows.json
 
       - name: Validate cheatsheet
         run: |
