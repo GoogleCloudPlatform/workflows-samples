@@ -51,7 +51,7 @@ jobs:
 
       - name: Validate sample syntax
         run: |
-          ajv validate -c ajv-formats --spec=draft2019 \
+          ajv validate -c ajv-formats \
             -s jsonschema/workflows.json \
             -d ${{ matrix.sample }}
 
