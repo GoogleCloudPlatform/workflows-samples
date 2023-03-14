@@ -2,7 +2,7 @@ name: Validate JSON Schema
 on:
   pull_request:
     paths:
-    - 'jsonschema/**'
+    - 'jsonschema/workflows.json'
 
 jobs:
   validate:
