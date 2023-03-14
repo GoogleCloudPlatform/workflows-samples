@@ -1,0 +1,34 @@
+name: Validate JSON Schema
+on:
+  pull_request:
+    paths:
+    - 'jsonschema/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: workflows-samples > Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
+      - name: Install tools
+        run: npm install -g ajv-cli ajv-formats
+
+      - name: Validate workflow
+        run: ajv compile -c ajv-formats --spec=draft2019 -s jsonschema/workflows.json
+
+      - name: workflows-demos > Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          repository: GoogleCloudPlatform/workflows-demos
+          path: workflows-demos
+
+      - name: Validate cheatsheet
+        run: |
+          ajv validate -c ajv-formats --spec=draft2019 \
+            -s jsonschema/workflows.json \
+            -d workflows-demos/syntax-cheat-sheet/workflow.yaml
+

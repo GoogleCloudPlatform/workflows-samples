@@ -36,7 +36,7 @@ my_own_predicate:
   steps:
     - what_to_repeat:
         switch:
-          - condition: "df"
+          - condition: true
             return: true
     - otherwise:
         return: false
