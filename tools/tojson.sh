@@ -28,8 +28,8 @@ then
 fi
 
 # Loop through all yaml files, convert to json
-rm -rf **/*.json
 cd src
+# rm -rf **/*.json
 for path in $(find . -name '*.yaml'); do
   yaml2json $path --save --pretty
 done
