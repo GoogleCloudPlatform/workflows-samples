@@ -63,6 +63,7 @@
       "type": "array",
       "description": "An array of objects with a single step.",
       "minItems": 1,
+      "maxItems": 100000,
       "items": {
         "type": "object",
         "description": "An object with a single step.",
@@ -81,6 +82,12 @@
       "type": "object",
       "description": "A single workflow step.",
       "additionalProperties": false,
+      "dependencies": {
+        "args": ["call"],
+        "result": ["call"],
+        "except": ["try"],
+        "retry": ["try"]
+      },
       "properties": {
         "assign": {
           "$ref": "#/definitions/assign"
@@ -379,6 +386,7 @@
       "description": "Iterates over a sequence of numbers or through a collection of data, such as a list or map.",
       "type": "object",
       "additionalProperties": false,
+      "required": ["value", "steps"],
       "properties": {
         "value": {
           "description": "A loop variable name. Contains the value of the currently iterated element.",
@@ -425,7 +433,11 @@
           "description": "Each iteration the steps will be executed.",
           "$ref": "#/definitions/stepArray"
         }
-      }
+      },
+      "oneOf": [
+        {"required": ["in"]},
+        {"required": ["range"]}
+      ]
     },
     "parallel": {
       "type": "object",
@@ -457,7 +469,11 @@
           "description": "A loop where iterations can run concurrently. Required, if not using 'branches'.",
           "$ref": "#/definitions/for"
         }
-      }
+      },
+      "oneOf": [
+        {"required": ["for"]},
+        {"required": ["branches"]}
+      ]
     },
     "branches": {
       "description": "Execute parallel branches concurrently and the steps in each branch sequentially.",
