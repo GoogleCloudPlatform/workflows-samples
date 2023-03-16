@@ -12,7 +12,7 @@ branchProtectionRules:
   isAdminEnforced: true
   requiredStatusCheckContexts:
     - 'cla/google'
-    - 'test-pr'
+    - 'test-pr (workflows-samples-tests)'
   # - Add required status checks like presubmit tests
   requiredApprovingReviewCount: 1
   requiresCodeOwnerReviews: true
