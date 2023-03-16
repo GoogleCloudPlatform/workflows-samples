@@ -20,7 +20,7 @@ steps:
     args:
       - "-c"
       - |
-        for src in $(find ./src/ -type f -name *.workflows.yaml); do
+        for src in $(find ./src -type f -name *.workflows.*); do
           # Generate temp workflow name
           tmp_name=${src:6}  # remove src/
           tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present

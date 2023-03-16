@@ -2,14 +2,17 @@ name: Generate JSON PR
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "jsonschema/**"
 
 jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repo
+      - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Setup Node
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "16"
@@ -20,21 +23,17 @@ jobs:
       - name: Run toJSON script
         run: ./tools/tojson.sh
 
-      - name: Check for diff
-        run: git diff --exit-code
-
       - name: Create pull request for changes
-        uses: googleapis/code-suggester@v4 # takes the changes from git directory
-        if: ${{ failure() }} # run if diff exists
+        uses: googleapis/code-suggester@v4
         env:
           ACCESS_TOKEN: ${{ secrets.YOSHI_CODE_BOT_TOKEN }} # manually created and added as repo secret
         with:
           command: pr
           upstream_owner: ${{ github.repository_owner }}
           upstream_repo: "workflows-samples"
-          description: "Generated in GitHub action: https://github.com/${{ github.repository }}/actions/workflows/generate_json_pr.yaml"
           title: "chore: Regenerate JSON"
           message: "chore: Regenerate JSON"
+          description: "Generated in GitHub action: https://github.com/${{ github.repository }}/actions/workflows/generate_json_pr.yaml"
           branch: "main"
           git_dir: "src/"
           primary: "main"
