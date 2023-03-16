@@ -3,7 +3,7 @@ on:
   pull_request:
     paths:
     - 'src/**'
-    - 'jsonschema/**'
+    - 'jsonschema/workflows.json'
 
 jobs:
   get-all-files:
