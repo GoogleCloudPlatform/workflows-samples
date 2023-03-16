@@ -44,7 +44,7 @@
                       "projectId": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}",
                       "body": {
                         "useLegacySql": false,
-                        "query": "${\"SELECT COUNT(DISTINCT word) FROM `bigquery-public-data.samples.shakespeare` \" +\" WHERE corpus='\" + corpus + \"' \"}"
+                        "query": "${\n\"SELECT COUNT(DISTINCT word) FROM `bigquery-public-data.samples.shakespeare` \" +\n\" WHERE corpus='\" + corpus + \"' \"\n}"
                       }
                     },
                     "result": "query"
