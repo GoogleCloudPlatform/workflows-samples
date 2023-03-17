@@ -30,7 +30,7 @@ jobs:
                   getFiles(Path.join(dir, dirent.name)) : Path.join(dir, dirent.name)).flat();
             }
             return getFiles(".")
-                .filter((filename) => filename.endsWith('yaml'));
+                .filter((filename) => filename.endsWith('yaml') && !filename.includes("cloudbuild"));
 
   smoke-test:
     runs-on: ubuntu-latest
