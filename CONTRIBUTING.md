@@ -115,10 +115,12 @@ The JSON Schema specification also allows us to define auxiliary schema in order
         * Max_delay
 * Scopes
 
-### Updating the schema
-
-TBD
-
 #### Best Practices
 
-Currently following [best practices defined by the SchemaStore community](https://github.com/SchemaStore/schemastore/blob/master/CONTRIBUTING.md#best-practices). 
+* Use the lowest possible schema draft needed, preferably Draft v4, to ensure interoperability with as many supported editors, IDEs and parsers as possible.
+* Always use `description`, `type`, `additionalProperties`.
+    * Always set `additionalProperties` to `false` until documentation permits additional properties explicitly. That tool the JSON schema is created for can be changed in the future to allow wrong extra properties.
+* Always use `minLength`/`maxLength`/`pattern`/etc for property values.
+* Always be consistent across your schema: order properties and describe in the one style.
+
+Find more best practices defined by the [SchemaStore community](https://github.com/SchemaStore/schemastore/blob/master/CONTRIBUTING.md#best-practices).

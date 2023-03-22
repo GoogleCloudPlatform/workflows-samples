@@ -83,7 +83,7 @@ To use a local copy of the JSON schema, update user settings in VSCode (see belo
 }
 ```
 
-## Syntax Validation
+## Workflows Syntax Validation
 
 This can be use for both JSON and YAML Cloud Workflows files.
 
@@ -105,7 +105,7 @@ ajv validate -c ajv-formats --spec=draft2019 \
     -d <PATH_TO_FILE>
 ```
 
-### Validation JSON Schema Syntax
+### JSON Schema Syntax Validation
 
 Ensure that the JSON schema is valid:
 
