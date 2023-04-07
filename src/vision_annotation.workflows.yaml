@@ -1,0 +1,32 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# requests should be a list of "AnnotateImageRequest" Object (https://cloud.google.com/vision/docs/reference/rest/v1/AnnotateImageRequest)
+# For eg: { "requests": [ { "image": { "source": { "gcsImageUri": "gs://bucket-name/image.jpg" } }, "features": [ { "type": "LABEL_DETECTION", "maxResults": 1 } ] } ] }
+# [START workflows_vision_annotation]
+main:
+  params: [args]
+  steps:
+    - new_annotation:
+        call: http.post
+        args:
+          url: "https://vision.googleapis.com/v1/images:annotate"
+          auth:
+            type: OAuth2
+          body:
+            requests: ${args.requests}
+        result: vision_response
+    - return_result:
+        return: ${vision_response.body.responses[0].labelAnnotations[0]}
+# [END workflows_vision_annotation]

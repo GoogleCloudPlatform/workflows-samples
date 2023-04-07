@@ -1,0 +1,29 @@
+{
+    "main": {
+      "params": [
+        "args"
+      ],
+      "steps": [
+        {
+          "new_annotation": {
+            "call": "http.post",
+            "args": {
+              "url": "https://vision.googleapis.com/v1/images:annotate",
+              "auth": {
+                "type": "OAuth2"
+              },
+              "body": {
+                "requests": "${args.requests}"
+              }
+            },
+            "result": "vision_response"
+          }
+        },
+        {
+          "return_result": {
+            "return": "${vision_response.body.responses[0].labelAnnotations[0]}"
+          }
+        }
+      ]
+    }
+  }
