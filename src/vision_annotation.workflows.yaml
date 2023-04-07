@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# requests should be a list of "AnnotateImageRequest" Object (https://cloud.google.com/vision/docs/reference/rest/v1/AnnotateImageRequest)
+# For eg: { "requests": [ { "image": { "source": { "gcsImageUri": "gs://bucket-name/image.jpg" } }, "features": [ { "type": "LABEL_DETECTION", "maxResults": 1 } ] } ] }
 # [START workflows_vision_annotation]
 main:
   params: [args]
