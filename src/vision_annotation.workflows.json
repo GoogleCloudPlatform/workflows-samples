@@ -8,7 +8,7 @@
         "new_annotation": {
           "call": "http.post",
           "args": {
-            "url": "${\"https://vision.googleapis.com/v1/images:annotate\"}",
+            "url": "https://vision.googleapis.com/v1/images:annotate",
             "auth": {
               "type": "OAuth2"
             },
@@ -20,17 +20,8 @@
         }
       },
       {
-        "assign_vision": {
-          "assign": [
-            {
-              "vision_result": "${vision_response.body.responses[0].labelAnnotations[0]}"
-            }
-          ]
-        }
-      },
-      {
         "return_result": {
-          "return": "${vision_result}"
+          "return": "${vision_response.body.responses[0].labelAnnotations[0]}"
         }
       }
     ]
