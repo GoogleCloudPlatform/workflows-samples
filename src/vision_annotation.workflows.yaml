@@ -25,9 +25,6 @@ main:
           body:
             requests: ${args.requests}
         result: vision_response
-    - assign_vision:
-        assign:
-          - vision_result: ${vision_response.body.responses[0].labelAnnotations[0]}
     - return_result:
-        return: ${vision_result}
+        return: ${vision_response.body.responses[0].labelAnnotations[0]}
 # [END workflows_vision_annotation]
