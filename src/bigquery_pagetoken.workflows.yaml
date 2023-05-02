@@ -24,11 +24,10 @@ main:
         args:
           projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
           body:
-            configuration:
-              query:
-                useLegacySql: false
-                # Remove LIMIT from the query to iterate through all results
-                query: SELECT name, SUM(number) AS total FROM `bigquery-public-data.usa_names.usa_1910_2013` GROUP BY name ORDER BY total DESC LIMIT 50
+            query:
+              useLegacySql: false
+              # Remove LIMIT from the query to iterate through all results
+              query: SELECT name, SUM(number) AS total FROM `bigquery-public-data.usa_names.usa_1910_2013` GROUP BY name ORDER BY total DESC LIMIT 50
         result: query
     - getPage:
         call: googleapis.bigquery.v2.jobs.getQueryResults
