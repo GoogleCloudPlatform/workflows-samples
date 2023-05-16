@@ -42,4 +42,4 @@ main:
         call: googleapis.batch.v1.projects.locations.jobs.delete
         args:
           name: ${"projects/" + project + "/locations/" + location + "/jobs/" + jobId}
-# [END workflows_connector_transcoder]
+# [END workflows_connector_batch]
