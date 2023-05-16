@@ -1,0 +1,55 @@
+{
+  "main": {
+    "steps": [
+      {
+        "init": {
+          "assign": [
+            {
+              "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+            },
+            {
+              "location": "${sys.get_env(\"GOOGLE_CLOUD_LOCATION\")}"
+            },
+            {
+              "jobId": "example-job"
+            }
+          ]
+        }
+      },
+      {
+        "create_job": {
+          "call": "googleapis.batch.v1.projects.locations.jobs.create",
+          "args": {
+            "parent": "${\"projects/\" + project + \"/locations/\" + location}",
+            "jobId": "${jobId}",
+            "body": {
+              "priority": 99,
+              "taskGroups": {
+                "taskSpec": {
+                  "runnables": {
+                    "script": {
+                      "text": "echo Hello World!"
+                    }
+                  },
+                  "computeResource": {
+                    "cpuMilli": 2000,
+                    "memoryMib": 16
+                  }
+                },
+                "taskCount": 1
+              }
+            }
+          }
+        }
+      },
+      {
+        "delete_job": {
+          "call": "googleapis.batch.v1.projects.locations.jobs.delete",
+          "args": {
+            "name": "${\"projects/\" + project_id + \"/locations/\" + location + \"/jobs/\" + jobId}"
+          }
+        }
+      }
+    ]
+  }
+}
