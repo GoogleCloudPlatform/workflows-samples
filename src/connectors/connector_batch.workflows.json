@@ -46,7 +46,7 @@
         "delete_job": {
           "call": "googleapis.batch.v1.projects.locations.jobs.delete",
           "args": {
-            "name": "${\"projects/\" + project_id + \"/locations/\" + location + \"/jobs/\" + jobId}"
+            "name": "${\"projects/\" + project + \"/locations/\" + location + \"/jobs/\" + jobId}"
           }
         }
       }
