@@ -8,7 +8,7 @@ A simple Cloud Function used in Workflow samples that returns the day of the wee
 gcloud functions deploy datetime \
 --trigger-http \
 --entry-point getValue \
---runtime python37 \
+--runtime python38 \
 --allow-unauthenticated
 ```
 
