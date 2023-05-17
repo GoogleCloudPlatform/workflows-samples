@@ -16,33 +16,28 @@
 main:
   params: [input]
   steps:
-    - checkInputExists:
-        switch:
-          - condition: ${input != null}
-            next: checkSearchTermInInput
-        next: getCurrentTime
     - checkSearchTermInInput:
         switch:
-          - condition: ${"searchTerm" in input}
+          - condition: '${"searchTerm" in input}'
             assign:
-              - searchTerm: ${input.searchTerm}
+              - searchTerm: '${input.searchTerm}'
             next: readWikipedia
-    - getCurrentTime:
-        call: http.get
+    - getLocation:
+        call: sys.get_env
         args:
-          url: https://us-central1-workflowsample.cloudfunctions.net/datetime
-        result: currentDateTime
+          name: GOOGLE_CLOUD_LOCATION
+        result: location
     - setFromCallResult:
         assign:
-          - searchTerm: ${currentDateTime.body.dayOfTheWeek}
+          - searchTerm: '${text.split(location, "-")[0]}'
     - readWikipedia:
         call: http.get
         args:
-          url: https://en.wikipedia.org/w/api.php
+          url: 'https://en.wikipedia.org/w/api.php'
           query:
             action: opensearch
-            search: ${searchTerm}
+            search: '${searchTerm}'
         result: wikiResult
     - returnOutput:
-        return: ${wikiResult.body[1]}
+        return: '${wikiResult.body[1]}'
 # [END workflows_quickstart]
