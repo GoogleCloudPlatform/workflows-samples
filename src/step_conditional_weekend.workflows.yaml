@@ -16,13 +16,13 @@
 - getCurrentTime:
     call: http.get
     args:
-      url: https://us-central1-workflowsample.cloudfunctions.net/datetime
+      url: https://timeapi.io/api/Time/current/zone?timeZone=Europe/Amsterdam
     result: currentTime
 - conditionalSwitch:
     switch:
-      - condition: ${currentTime.body.dayOfTheWeek == "Friday"}
+      - condition: ${currentTime.body.dayOfWeek == "Friday"}
         next: friday
-      - condition: ${currentTime.body.dayOfTheWeek == "Saturday" or currentTime.body.dayOfTheWeek == "Sunday"}
+      - condition: ${currentTime.body.dayOfWeek == "Saturday" or currentTime.body.dayOfWeek == "Sunday"}
         next: weekend
     next: workWeek
 - friday:

@@ -30,4 +30,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# IDEs
 .vscode/
+.idea/
