@@ -5,17 +5,6 @@
     ],
     "steps": [
       {
-        "checkInputExists": {
-          "switch": [
-            {
-              "condition": "${input != null}",
-              "next": "checkSearchTermInInput"
-            }
-          ],
-          "next": "getCurrentTime"
-        }
-      },
-      {
         "checkSearchTermInInput": {
           "switch": [
             {
@@ -31,19 +20,19 @@
         }
       },
       {
-        "getCurrentTime": {
-          "call": "http.get",
+        "getLocation": {
+          "call": "sys.get_env",
           "args": {
-            "url": "https://us-central1-workflowsample.cloudfunctions.net/datetime"
+            "name": "GOOGLE_CLOUD_LOCATION"
           },
-          "result": "currentDateTime"
+          "result": "location"
         }
       },
       {
         "setFromCallResult": {
           "assign": [
             {
-              "searchTerm": "${currentDateTime.body.dayOfTheWeek}"
+              "searchTerm": "${text.split(location, \"-\")[0]}"
             }
           ]
         }
