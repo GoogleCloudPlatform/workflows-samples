@@ -164,9 +164,11 @@
           "description": "Standard library module for common system interface.",
           "type": "string",
           "enum": [
+            "sys.get_env",
+            "sys.now",
+            "sys.log",
             "sys.sleep",
-            "sys.sleep_until",
-            "sys.log"
+            "sys.sleep_until"
           ]
         },
         {
