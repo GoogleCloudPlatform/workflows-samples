@@ -42,7 +42,7 @@ jobs:
             });
 
             // createOrCommentIssue creates a new issue or comments on an existing issue.
-            const createOrCommentIssue = async function (title, body) {
+            const createOrCommentIssue = async function (title, body, checkName) {
                 // Filter previous issues by trigger name
                 const issues = prevIssues.filter((issue) => issue.title.includes(checkName));
                 if (issues.length > 1) {
