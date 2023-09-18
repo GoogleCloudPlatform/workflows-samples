@@ -1,0 +1,151 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'reporter'
+on:
+  schedule:
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: 'ubuntu-latest'
+    permissions:
+      issues: 'write'
+
+    steps:
+      - uses: 'actions/github-script@v6'
+        with:
+          script: |
+            // Label for all issues opened by reporter
+            const periodicLabel = 'nightly-failure';
+            // Check name suffix
+            const periodicCheckSuffix = 'nightly';
+
+            // Find all open issues with reporter label
+            const prevIssues = await github.paginate(github.rest.issues.listForRepo, {
+                ...context.repo,
+                state: 'open',
+                // creator: 'github-actions[bot]',
+                labels: [periodicLabel]
+            });
+
+            // createOrCommentIssue creates a new issue or comments on an existing issue.
+            const createOrCommentIssue = async function (title, body) {
+                // Filter previous issues by trigger name
+                const issues = prevIssues.filter((issue) => issue.title.includes(checkName));
+                if (issues.length > 1) {
+                    console.log(
+                        `Found ${issues.length} issues but only adding comment to ${issues[0].html_url}`
+                    );
+                }
+                if (issues.length >= 1) {
+                    console.log(
+                        `Adding comment to previous issue ${issues[0].html_url}`
+                    );
+                    await github.rest.issues.createComment({
+                        ...context.repo,
+                        issue_number: issues[0].number,
+                        body
+                    });
+                } else {
+                    console.log(`Creating issue for ${checkName}`);
+                    await github.rest.issues.create({
+                        ...context.repo,
+                        title,
+                        body,
+                        labels: [periodicLabel]
+                    });
+                }
+            };
+
+            // updateAndCloseIssues comments on any existing issues and closes them. No-op if no issue exists.
+            const updateAndCloseIssues = async function (body, checkName) {
+                // Filter previous issues by trigger name
+                const issues = prevIssues.filter((issue) => issue.title.includes(checkName));
+                if (issues.length < 1) {
+                    console.log('No previous issues found, skipping close');
+                    return;
+                }
+                for (const prevIssue of issues) {
+                    console.log(`Adding comment to previous issue ${prevIssue.html_url}`);
+                    await github.rest.issues.createComment({
+                        ...context.repo,
+                        issue_number: prevIssue.number,
+                        body
+                    });
+                    console.log(`Closing ${prevIssue.html_url}`);
+                    await github.rest.issues.update({
+                        ...context.repo,
+                        issue_number: prevIssue.number,
+                        state: 'closed'
+                    });
+                }
+            };
+
+            // Find all check runs for each commit and then filter for the periodic.
+            const commits = await github.paginate(github.rest.repos.listCommits, {
+                ...context.repo
+            });
+
+            let periodicChecks = [];
+
+            for (const commit of commits) {
+                console.log(
+                    `Evaluating ${commit.html_url}: "${commit.commit.message}"`
+                );
+                // Lists check runs for a commit ref
+                // Checks API only allows for ref and if we use main there could be edge cases where
+                // the check run happened on a SHA that is different from head.
+                const checks = await github.rest.checks.listForRef({
+                    ...context.repo,
+                    ref: commit.sha
+                });
+                // Find check runs for this commit
+                for (const check of checks.data.check_runs) {
+                    if (check.name.includes(periodicCheckSuffix)) {
+                        console.log(`Found check: ${check.name}`);
+                        periodicChecks.push(check);
+                    } else {
+                        console.log(`Ignoring check: ${check.name}`);
+                    }
+                }
+                // Loop through checks and update issues
+                for (const periodicCheck of periodicChecks) {
+                    const periodicCheckName = periodicCheck.name.substring(0, periodicCheck.name.indexOf("("));
+                    if (periodicCheck.status === 'completed' && periodicCheck.conclusion === 'success') {
+                        await updateAndCloseIssues(`🤖 Auto-generated comment.\n\nLooks like this issue is flaky. :worried:\n\nstatus: ${periodicCheck.conclusion}\ncommit: ${commit.html_url}\nrun:${periodicCheck.html_url}\nbuildURL: ${periodicCheck.details_url}.\n\nClosing this issue.`, periodicCheckName);
+                    } else if (periodicCheck.status === 'in_progress') {
+                        console.log(`Check ${periodicCheckName}, ${periodicCheck.html_url}, is pending for ${commit.html_url}. Retry again later.`);
+                    } else {
+                        await createOrCommentIssue(
+                            `Nightly test: ${periodicCheckName} failed`,
+                            `🤖 Auto-generated Issue.\n\nstatus: ${periodicCheck.conclusion}\ncommit: ${commit.html_url}\nrun:${periodicCheck.html_url}\nbuildURL: ${periodicCheck.details_url}`, periodicCheckName
+                        );
+                    }
+                }
+                if (periodicChecks.length >= 1) {
+                    // exit early if checks were found
+                    return;
+                }
+            }
+
+            if (periodicChecks.length < 1) {
+                // Report if nightly checks are not found across all commits
+                await createOrCommentIssue(
+                    'Missing nightly test runs.',
+                    `🤖 Auto-generated Issue.\n\nNightly tests have not run in the past 24hrs. Last checked from ${commits[0].html_url
+                    } to ${commits[commits.length - 1].html_url}.`, 'Missing nightly'
+                );
+            }
