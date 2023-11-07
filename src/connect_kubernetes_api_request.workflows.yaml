@@ -25,7 +25,7 @@ main:
           path: "/api/v1/namespaces/default/pods"
           query:
             limit: 3
-          timeout: 60 # 1 minute
+          timeout: 60  # 1 minute
         result: res
     - returnPods:
         return: '${res.body.items}'
