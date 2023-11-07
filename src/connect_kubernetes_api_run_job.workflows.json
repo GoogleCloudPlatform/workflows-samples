@@ -1,0 +1,96 @@
+  {
+    "main": {
+      "steps": [
+        {
+          "init": {
+            "assign": [
+              {
+                "project": "PROJECT_ID"
+              },
+              {
+                "location": "LOCATION"
+              },
+              {
+                "cluster_id": "CLUSTER_NAME"
+              },
+              {
+                "job_name": "JOB_NAME"
+              },
+              {
+                "namespace": "default"
+              }
+            ]
+          }
+        },
+        {
+          "create_job": {
+            "call": "gke.create_job",
+            "args": {
+              "cluster_id": "${cluster_id}",
+              "location": "${location}",
+              "project": "${project}",
+              "namespace": "${namespace}",
+              "job": {
+                "apiVersion": "batch/v1",
+                "kind": "Job",
+                "metadata": {
+                  "name": "${job_name}"
+                },
+                "spec": {
+                  "template": {
+                    "spec": {
+                      "containers": [
+                        {
+                          "name": "counter",
+                          "image": "centos:7",
+                          "command": [
+                            "bin/bash",
+                            "-c",
+                            "for i in 9 8 7 6 5 4 3 2 1 ; do echo $i ; done"
+                          ]
+                        }
+                      ],
+                      "restartPolicy": "Never"
+                    }
+                  }
+                }
+              }
+            },
+            "result": "job"
+          }
+        },
+        {
+          "wait_for_job": {
+            "call": "gke.await_job",
+            "args": {
+              "cluster_id": "${cluster_id}",
+              "job_name": "${job_name}",
+              "location": "${location}",
+              "project": "${project}",
+              "timeout": 90
+            },
+            "result": "completed_job"
+          }
+        },
+        {
+          "cleanup_job": {
+            "call": "gke.delete_job",
+            "args": {
+              "cluster_id": "${cluster_id}",
+              "job_name": "${job_name}",
+              "location": "${location}",
+              "project": "${project}",
+              "query": {
+                "propagationPolicy": "Foreground"
+              }
+            }
+          }
+        },
+        {
+          "return_job": {
+            "return": "${completed_job}"
+          }
+        }
+      ]
+    }
+  }
