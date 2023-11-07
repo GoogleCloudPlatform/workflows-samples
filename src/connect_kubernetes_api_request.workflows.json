@@ -1,0 +1,28 @@
+{
+  "main": {
+    "steps": [
+      {
+        "list_cluster_pods": {
+          "call": "gke.request",
+          "args": {
+            "cluster_id": "CLUSTER_NAME",
+            "project": "PROJECT_ID",
+            "location": "LOCATION",
+            "method": "GET",
+            "path": "/api/v1/namespaces/default/pods",
+            "query": {
+              "limit": 3
+            },
+            "timeout": 60
+          },
+          "result": "res"
+        }
+      },
+      {
+        "returnPods": {
+          "return": "${res.body.items}"
+        }
+      }
+    ]
+  }
+}
