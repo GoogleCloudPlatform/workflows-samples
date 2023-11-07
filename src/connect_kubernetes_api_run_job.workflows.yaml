@@ -38,12 +38,12 @@ main:
               template:
                 spec:
                   containers:
-                  - name: counter
-                    image: centos:7
-                    command:
-                    - "bin/bash"
-                    - "-c"
-                    - "for i in 9 8 7 6 5 4 3 2 1 ; do echo $i ; done"
+                    - name: counter
+                      image: centos:7
+                      command:
+                        - "bin/bash"
+                        - "-c"
+                        - "for i in 9 8 7 6 5 4 3 2 1 ; do echo $i ; done"
                   restartPolicy: Never
         result: job
     - wait_for_job:  # if job fails, raise error with "FailedJobError" tag and "job" field
@@ -66,4 +66,4 @@ main:
             propagationPolicy: "Foreground"  # delete child Pods
     - return_job:
         return: '${completed_job}'
-# [END workflows_connect_kubernetes_api_run_job]  
+# [END workflows_connect_kubernetes_api_run_job]
