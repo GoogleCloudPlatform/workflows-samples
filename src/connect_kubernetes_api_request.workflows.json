@@ -1,28 +1,61 @@
-{
-  "main": {
-    "steps": [
-      {
-        "list_cluster_pods": {
-          "call": "gke.request",
-          "args": {
-            "cluster_id": "CLUSTER_NAME",
-            "project": "PROJECT_ID",
-            "location": "LOCATION",
-            "method": "GET",
-            "path": "/api/v1/namespaces/default/pods",
-            "query": {
-              "limit": 3
+  {
+    "main": {
+      "steps": [
+        {
+          "create_deployment": {
+            "call": "gke.request",
+            "args": {
+              "cluster_id": "CLUSTER_NAME",
+              "project": "PROJECT_ID",
+              "location": "LOCATION",
+              "method": "POST",
+              "path": "/apis/apps/v1/namespaces/default/deployments",
+              "body": {
+                "kind": "Deployment",
+                "metadata": {
+                  "name": "nginx-deployment",
+                  "labels": {
+                    "app": "nginx"
+                  }
+                },
+                "spec": {
+                  "replicas": 3,
+                  "selector": {
+                    "matchLabels": {
+                      "app": "nginx"
+                    }
+                  },
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app": "nginx"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "name": "nginx",
+                          "image": "nginx:1.14.2",
+                          "ports": [
+                            {
+                              "containerPort": 80
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
             },
-            "timeout": 60
-          },
-          "result": "res"
+            "result": "result"
+          }
+        },
+        {
+          "returnResult": {
+            "return": "${result}"
+          }
         }
-      },
-      {
-        "returnPods": {
-          "return": "${res.body.items}"
-        }
-      }
-    ]
+      ]
+    }
   }
-}
