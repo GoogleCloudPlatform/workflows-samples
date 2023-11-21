@@ -32,7 +32,7 @@ main:
           - translated: ["", "", ""]
     - parallel_translate:
         parallel:
-          shared: [translated] # to write to this variable, you must share it
+          shared: [translated]  # to write to this variable, you must share it
           for:
             range: ${[0, len(texts_to_translate) - 1]}
             value: i
