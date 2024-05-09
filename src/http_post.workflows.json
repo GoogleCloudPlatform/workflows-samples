@@ -1,6 +1,6 @@
 [
   {
-    "get_message": {
+    "send_message": {
       "call": "http.post",
       "args": {
         "url": "https://www.example.com/endpoint",
