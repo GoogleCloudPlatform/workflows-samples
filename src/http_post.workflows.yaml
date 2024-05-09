@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START workflows_http_post]
-- get_message:
+- send_message:
     call: http.post
     args:
       url: https://www.example.com/endpoint
