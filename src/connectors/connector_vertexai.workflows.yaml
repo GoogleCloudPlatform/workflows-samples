@@ -21,11 +21,11 @@ main:
   steps:
   - init:
       assign:
-      - location: ${sys.get_env("GOOGLE_CLOUD_LOCATION")}
-      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      # Follow https://cloud.google.com/vertex-ai/docs/training/create-custom-container to build
-      # a custom container image for training.
-      - container_image_uri: "IMAGE_URI"
+        - location: ${sys.get_env("GOOGLE_CLOUD_LOCATION")}
+        - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+        # Follow https://cloud.google.com/vertex-ai/docs/training/create-custom-container to build
+        # a custom container image for training.
+        - container_image_uri: "IMAGE_URI"
   - create_custom_job:
       call: googleapis.aiplatform.v1.projects.locations.customJobs.create
       args:
@@ -35,15 +35,15 @@ main:
           displayName: "example-custom-job"
           jobSpec:
             workerPoolSpecs:
-            - machineSpec:
-                machineType: "n1-standard-4"
-                acceleratorType: "NVIDIA_TESLA_V100"
-                acceleratorCount: 1
-              replicaCount: 1
-              containerSpec:
-                imageUri: ${container_image_uri}
-                command: []
-                args: []
+              - machineSpec:
+                  machineType: "n1-standard-4"
+                  acceleratorType: "NVIDIA_TESLA_V100"
+                  acceleratorCount: 1
+                replicaCount: 1
+                containerSpec:
+                  imageUri: ${container_image_uri}
+                  command: []
+                  args: []
       result: customJobsResponse
   - delete_custom_job:
       call: googleapis.aiplatform.v1.projects.locations.customJobs.delete
