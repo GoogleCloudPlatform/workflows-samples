@@ -34,9 +34,24 @@ main:
 my_own_predicate:
   params: [e]
   steps:
+    - log_error_tags:
+        call: sys.log
+        args:
+          data: ${e.tags}
+          severity: "INFO"
+    - log_error_message:
+        call: sys.log
+        args:
+          data: ${e.message}
+          severity: "INFO"
+    - log_error_code:
+        call: sys.log
+        args:
+          data: ${e.code}
+          severity: "INFO"
     - what_to_repeat:
         switch:
-          - condition: true
+          - condition: ${e.code == 202}
             return: true
     - otherwise:
         return: false

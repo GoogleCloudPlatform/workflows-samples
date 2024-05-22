@@ -33,21 +33,48 @@
       "e"
     ],
     "steps": [
-      {
-        "what_to_repeat": {
-          "switch": [
-            {
-              "condition": true,
-              "return": true
+          {
+            "log_error_tags": {
+              "call": "sys.log",
+              "args": {
+                "data": "${e.tags}",
+                "severity": "INFO"
+              }
             }
-          ]
-        }
-      },
-      {
-        "otherwise": {
-          "return": false
-        }
+          },
+          {
+            "log_error_message": {
+              "call": "sys.log",
+              "args": {
+                "data": "${e.message}",
+                "severity": "INFO"
+              }
+            }
+          },
+          {
+            "log_error_code": {
+              "call": "sys.log",
+              "args": {
+                "data": "${e.code}",
+                "severity": "INFO"
+              }
+            }
+          },
+          {
+            "what_to_repeat": {
+              "switch": [
+                {
+                  "condition": "${e.code == 202}",
+                  "return": true
+                }
+              ]
+            }
+          },
+          {
+            "otherwise": {
+              "return": false
+            }
+          }
+        ]
       }
-    ]
-  }
-}
+    }
