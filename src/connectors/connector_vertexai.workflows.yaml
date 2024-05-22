@@ -52,5 +52,5 @@ main:
           region: ${location}
         result: deleteCustomJobResponse
     - return:
-        return: ${deleteCustomJobResponse}
+        return: "SUCCESS"
 # [END workflows_connector_vertexai]
