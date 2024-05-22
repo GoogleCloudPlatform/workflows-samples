@@ -4,4 +4,6 @@
 # For syntax help see:
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
 
-*     @GoogleCloudPlatform/torus-dpe
+# Cloud Workflows team repo owner/maintainer
+# DevRel Engineering (EGG) supports owners
+*     @GoogleCloudPlatform/api-workflows @GoogleCloudPlatform/team-egg
