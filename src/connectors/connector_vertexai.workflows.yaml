@@ -1,0 +1,56 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START workflows_connector_vertexai]
+# This workflow demonstrates how to use the Vertex AI connector.
+# This workflow creates a Vertex AI custom Job and then deletes the
+# job once the long-running operation of creating the job completes.
+# Expected successful output: "SUCCESS"
+main:
+  steps:
+  - init:
+      assign:
+      - location: ${sys.get_env("GOOGLE_CLOUD_LOCATION")}
+      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      # Follow https://cloud.google.com/vertex-ai/docs/training/create-custom-container to build
+      # a custom container image for training.
+      - container_image_uri: "IMAGE_URI"
+  - create_custom_job:
+      call: googleapis.aiplatform.v1.projects.locations.customJobs.create
+      args:
+        parent: ${"projects/" + project + "/locations/" + location}
+        region: ${location}
+        body:
+          displayName: "example-custom-job"
+          jobSpec:
+            workerPoolSpecs:
+            - machineSpec:
+                machineType: "n1-standard-4"
+                acceleratorType: "NVIDIA_TESLA_V100"
+                acceleratorCount: 1
+              replicaCount: 1
+              containerSpec:
+                imageUri: ${container_image_uri}
+                command: []
+                args: []
+      result: customJobsResponse
+  - delete_custom_job:
+      call: googleapis.aiplatform.v1.projects.locations.customJobs.delete
+      args:
+        name: ${customJobsResponse.name}
+        region: ${location}
+      result: deleteCustomJobResponse
+  - return:
+      return: ${deleteCustomJobResponse}
+# [END workflows_connector_vertexai]
