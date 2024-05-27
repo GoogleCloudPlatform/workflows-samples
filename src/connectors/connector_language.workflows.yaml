@@ -13,9 +13,9 @@
 # limitations under the License.
 
 # [START workflows_connector_language]
-# This workflow demonstrates how to use the Cloud Language connector.
-# The workflow analyzes some texts and returns "SUCCESS".
-# Expected successful output: "SUCCESS"
+# This workflow demonstrates how to use the Cloud Language connector:
+# Analyze and classify text samples and log the results
+# Expected output: "SUCCESS"
 - init:
     assign:
       - docType: "PLAIN_TEXT"
@@ -28,6 +28,12 @@
           language: "en"
           content: "Eiffel Tower"
         encodingType: "UTF8"
+    result: response_analyze
+- log_analyze_result:
+    call: sys.log
+    args:
+      data: ${response_analyze}
+      severity: "INFO"
 - classify_text:
     call: googleapis.language.v1.documents.analyzeSentiment
     args:
@@ -37,6 +43,12 @@
           language: "en"
           content: "I love workflows!"
         encodingType: "UTF8"
+    result: response_classify
+- log_classify_result:
+    call: sys.log
+    args:
+      data: ${response_classify}
+      severity: "INFO"
 - the_end:
     return: "SUCCESS"
 # [END workflows_connector_language]
