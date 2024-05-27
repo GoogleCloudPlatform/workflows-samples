@@ -13,50 +13,52 @@
 # limitations under the License.
 
 # [START workflows_connector_storage]
-# This workflow demonstrates how to use the Cloud Storage connector.
-# The workflow shows how to download/upload simple objects.
-# The workflow creates a Cloud Storage bucket and then deletes it.
-# Expected successful output: "SUCCESS"
-
+# This workflow demonstrates how to use the Cloud Storage connector:
+# Create a bucket and upload an object to the bucket
+# Delete the bucket and the object
+# Replace BUCKET_NAME and FILE_NAME placeholders
+# Expected output: "SUCCESS"
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - bucket_name: "bucket-name"
-      - object_name: "object-name"
-# When alt=media, get object data.
-- download_object_media:
-    call: googleapis.storage.v1.objects.get
-    args:
-      bucket: ${bucket_name}
-      object: ${object_name}
-      alt: "media"
-    result: object_data
-# When alt is not set, get metadata.
-- get_object_metadata:
-    call: googleapis.storage.v1.objects.get
-    args:
-      bucket: ${bucket_name}
-      object: ${object_name}
-    result: object_metadata
-# When uploadType=media, upload object data.
-# Use objects.update to udpate object metadata.
-- upload_object_media:
-    call: googleapis.storage.v1.objects.insert
-    args:
-      bucket: ${bucket_name}
-      uploadType: "media"
-      name: ${object_name}
-      body: "hello world"
+      - bucket_name: "BUCKET_NAME"
+      - object_name: "FILE_NAME.txt"
 - create_bucket:
     call: googleapis.storage.v1.buckets.insert
     args:
       project: ${project_id}
       body:
         name: ${bucket_name}
+- upload_object_media:
+    call: googleapis.storage.v1.objects.insert
+    args:
+      bucket: ${bucket_name}
+      uploadType: "media"  # uploads object data
+      name: ${object_name}
+      body: "hello world"
+- download_object_media:
+    call: googleapis.storage.v1.objects.get
+    args:
+      bucket: ${bucket_name}
+      object: ${object_name}
+      alt: "media"  # gets object data
+    result: object_data
+# If `alt` is not set, get metadata
+- get_object_metadata:
+    call: googleapis.storage.v1.objects.get
+    args:
+      bucket: ${bucket_name}
+      object: ${object_name}
+    result: object_metadata
 - get_bucket:
     call: googleapis.storage.v1.buckets.get
     args:
       bucket: ${bucket_name}
+- delete_object:
+    call: googleapis.storage.v1.objects.delete
+    args:
+      bucket: ${bucket_name}
+      object: ${object_name}
 - delete_bucket:
     call: googleapis.storage.v1.buckets.delete
     args:
