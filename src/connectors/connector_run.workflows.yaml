@@ -14,13 +14,13 @@
 
 # [START workflows_connector_run]
 # This workflow demonstrates how to use the Cloud Run connector:
-# Specify your project ID and location before creating a new service
-# and then deleting it
+# Create a new service and then delete it
+# A location must be specified
 # Expected output is the `delete_service` response with a "Success" status
 - init:
     assign:
       - service_name: "test-service"
-      - project: "YOUR_PROJECT_ID"
+      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
 - create_service:
     call: googleapis.run.v1.namespaces.services.create
     args:
