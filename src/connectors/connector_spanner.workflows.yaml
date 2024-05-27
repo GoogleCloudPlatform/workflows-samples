@@ -15,7 +15,7 @@
 # [START workflows_connector_spanner]
 # This workflow demonstrates how to use the Spanner connector:
 # Write entries to an existing Spanner database
-# Replace placeholders with your project ID, instance, and database
+# Replace PROJECT_ID, SPANNER_INSTANCE, and SPANNER_DATABASE placeholders
 # Expected output: "SUCCESS"
 - create_table_entry:
     assign:
@@ -35,7 +35,7 @@
 - create_spanner_session:
     call: googleapis.spanner.v1.projects.instances.databases.sessions.create
     args:
-      database: projects/YOUR_PROJECT_ID/instances/YOUR_SPANNER_INSTANCE/databases/YOUR_SPANNER_DATABASE
+      database: projects/PROJECT_ID/instances/SPANNER_INSTANCE/databases/SPANNER_DATABASE
     result: session
 - write_entry:
     call: googleapis.spanner.v1.projects.instances.databases.sessions.commit
