@@ -41,7 +41,7 @@
         document:
           type: ${docType}
           language: "en"
-          content: "I love workflows!"
+          content: "I love Workflows!"
         encodingType: "UTF8"
     result: response_classify
 - log_classify_result:
