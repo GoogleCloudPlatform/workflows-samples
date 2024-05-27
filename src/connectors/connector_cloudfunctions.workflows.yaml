@@ -13,13 +13,12 @@
 # limitations under the License.
 
 # [START workflows_connector_cloudfunctions]
-# This workflow demonstrates how to use the Cloud Functions connector.
-# This workflow creates a function from a zip archive containing the source code stored in a Cloud Storage bucket:
-# gs://your-bucket/cloud-function-source.zip.
-# Make sure cloud-function-source.zip contains properly structured Cloud Functions source code and the function returns
-# "success" when triggered.
-# Expected successful output: "SUCCESS"
-
+# This workflow demonstrates how to use the Cloud Functions connector:
+# Create a function using source code stored as a zip archive in a
+# Cloud Storage bucket (gs://your-bucket/cloud-function-source.zip)
+# Make sure that the source code is a properly structured Cloud Function
+# and returns "success" when triggered
+# Expected output: "SUCCESS"
 main:
   params: []
   steps:
@@ -28,8 +27,8 @@ main:
           - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
           - location: "us-central1"
           - name: "example-function"
-          - sourceArchiveUrl: "gs://your-bucket/cloud-function-source.zip"
-          - service_account: "[Replace with App Engine service account]"  # Use App Engine default SA.
+          - sourceArchiveUrl: "gs://YOUR_BUCKET/cloud-function-source.zip"
+          - service_account: "YOUR_PROJECT_ID@appspot.gserviceaccount.com"  # App Engine default service account
     - create_function:
         call: googleapis.cloudfunctions.v1.projects.locations.functions.create
         args:
