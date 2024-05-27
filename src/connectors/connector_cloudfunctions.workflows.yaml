@@ -28,7 +28,7 @@ main:
           - location: "us-central1"
           - name: "example-function"
           - sourceArchiveUrl: "gs://YOUR_BUCKET/cloud-function-source.zip"
-          - service_account: "YOUR_PROJECT_ID@appspot.gserviceaccount.com"  # App Engine default service account
+          - service_account: ${project + "@appspot.gserviceaccount.com"}  # App Engine default service account
     - create_function:
         call: googleapis.cloudfunctions.v1.projects.locations.functions.create
         args:
