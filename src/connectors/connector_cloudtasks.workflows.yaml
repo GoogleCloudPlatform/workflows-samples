@@ -13,19 +13,19 @@
 # limitations under the License.
 
 # [START workflows_connector_cloudtasks]
-# This workflow demonstrates how to use the Cloud Tasks connector.
-# The workflow creates a Cloud Tasks queue, creates a task in that queue,
-# and then deletes the task and the queue.
-# Expected successful output: "SUCCESS"
-
+# This workflow demonstrates how to use the Cloud Tasks connector:
+# Create a Cloud Tasks queue and create a task in that queue
+# Delete the task and then the queue
+# Replace TIME_IN_ZULU_FORMAT and CLOUD_FUNCTION_URL placeholders
+# Expected output: "SUCCESS"
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
       - location_id: "us-central1"
       - queue_id: "example-queue-id"
       - task_id: "example-task-id"
-      - schedule_time: "[fill this in]"  # The time when the task is scheduled to be attempted or retried. Must be in RFC3339 UTC "Zulu" format, examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
-      - cloud_function_url: "[fill this in]"  # The Cloud Function to be triggered by the task.
+      - schedule_time: "TIME_IN_ZULU_FORMAT"  # time in RFC3339 UTC "Zulu" format (eg. "2014-10-02T15:01:23Z")
+      - cloud_function_url: "CLOUD_FUNCTION_URL"  # Cloud Function URL to be triggered by the task
 - create_queue:
     call: googleapis.cloudtasks.v2.projects.locations.queues.create
     args:
