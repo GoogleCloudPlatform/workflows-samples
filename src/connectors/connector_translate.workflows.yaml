@@ -13,10 +13,10 @@
 # limitations under the License.
 
 # [START workflows_connector_translate]
-# This workflow demonstrates how to use the Cloud Translate connector.
-# The workflow translates some texts and then creates/deletes a glossary.
-# Expected successful output: "SUCCESS"
-
+# This workflow demonstrates how to use the Cloud Translate connector:
+# Translate text from English to French
+# Create and delete a glossary (see https://cloud.google.com/translate/docs/advanced/glossary)
+# Expected output: "SUCCESS"
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
@@ -44,7 +44,7 @@
             inputUri: "gs://translate-glossary-source/glossary.csv"
         languagePair:
           sourceLanguageCode: "en-US"
-          targetLanguageCode: "zh-CN"
+          targetLanguageCode: "fr-CA"
 - list_glossaries:
     call: googleapis.translate.v3.projects.locations.glossaries.list
     args:
