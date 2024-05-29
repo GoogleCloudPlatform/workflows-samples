@@ -29,7 +29,7 @@
     args:
       project: ${project_id}
       body:
-        name: ${src_bucket_name}      
+        name: ${src_bucket_name}
 - create_sink_bucket:
     call: googleapis.storage.v1.buckets.insert
     args:
