@@ -37,7 +37,7 @@
             latest_revision: true
             percent: 100
           template:
-            metadata:rs
+            metadata:
               labels:
                 serving.knative.dev/type: "container"
             spec:
