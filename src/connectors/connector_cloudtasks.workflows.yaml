@@ -16,7 +16,6 @@
 # This workflow demonstrates how to use the Cloud Tasks connector:
 # Create a Cloud Tasks queue and create a task in that queue
 # Delete the task and then the queue
-# Replace TIME_IN_ZULU_FORMAT and CLOUD_FUNCTION_URL placeholders
 # Expected output: "SUCCESS"
 - init:
     assign:
@@ -24,6 +23,7 @@
       - location_id: "us-central1"
       - queue_id: "example-queue-id"
       - task_id: "example-task-id"
+      # Replace TIME_IN_ZULU_FORMAT and CLOUD_FUNCTION_URL placeholders
       - schedule_time: "TIME_IN_ZULU_FORMAT"  # time in RFC3339 UTC "Zulu" format (eg. "2014-10-02T15:01:23Z")
       - cloud_function_url: "CLOUD_FUNCTION_URL"  # Cloud Function URL to be triggered by the task
 - create_queue:
