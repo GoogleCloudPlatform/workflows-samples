@@ -15,10 +15,10 @@
               "name": "example-function"
             },
             {
-              "sourceArchiveUrl": "gs://your-bucket/cloud-function-source.zip"
+              "sourceArchiveUrl": "gs://BUCKET_NAME/cloud-function-source.zip"
             },
             {
-              "service_account": "[Replace with App Engine service account]"
+              "service_account": "${project + \"@appspot.gserviceaccount.com\"}"
             }
           ]
         }
@@ -30,7 +30,7 @@
             "location": "${\"projects/\" + project + \"/locations/\" + location}",
             "body": {
               "name": "${\"projects/\" + project + \"/locations/\" + location + \"/functions/\" + name}",
-              "description": "cloud function tested for connector e2e testing, creation/deletion",
+              "description": "Cloud Function for Workflows connector testing",
               "entryPoint": "helloWorld",
               "runtime": "nodejs10",
               "serviceAccountEmail": "${service_account}",
@@ -85,7 +85,7 @@
           "call": "assert_response",
           "args": {
             "expected_response": "success",
-            "got_response": "${resp.body}"
+            "actual_response": "${resp.body}"
           }
         }
       },
@@ -107,14 +107,14 @@
   "assert_response": {
     "params": [
       "expected_response",
-      "got_response"
+      "actual_response"
     ],
     "steps": [
       {
         "compare": {
           "switch": [
             {
-              "condition": "${expected_response == got_response}",
+              "condition": "${expected_response == actual_response}",
               "next": "end"
             }
           ]
@@ -122,7 +122,7 @@
       },
       {
         "fail": {
-          "raise": "${\"Expected response is \" + expected_response + \". Got \" + got_response + \" instead.\"}"
+          "raise": "${\"Expected response is \" + expected_response + \". Received \" + got_response + \" instead.\"}"
         }
       }
     ]
