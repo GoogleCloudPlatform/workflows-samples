@@ -13,13 +13,9 @@
 # limitations under the License.
 
 # [START workflows_connector_forms]
-# This workflow creates, updates, gets, and deletes a Google Form
-# using the Google Forms connector.
-#
-# Features included in this test:
-# - Google Forms connector
-#
-# Expected successful output: "SUCCESS"
+# This workflow demonstrates how to use the Google Forms connector:
+# Create, update, get, and delete a Google Form
+# Expected output: "SUCCESS"
 - init:
     assign:
       - form_title: "sample-form"
@@ -37,8 +33,8 @@
       body:
         requests:
           - updateFormInfo:
-            info:
-              title: "new-title"
+              info:
+                title: "new-title"
               updateMask: title
 - get_form:
     call: googleapis.forms.v1.forms.get
