@@ -15,10 +15,8 @@
 # [START workflows_connector_cloudfunctions]
 # This workflow demonstrates how to use the Cloud Functions connector:
 # Create a function using source code stored as a zip archive in a
-# Cloud Storage bucket (gs://your-bucket/cloud-function-source.zip)
-# Make sure that the source code is a properly structured Cloud Function
-# and returns "success" when triggered
-# Replace BUCKET_NAME placeholder
+# Cloud Storage bucket (gs://BUCKET_NAME/cloud-function-source.zip)
+# Source code must be a properly structured Cloud Function
 # Expected output: "SUCCESS"
 main:
   params: []
@@ -28,7 +26,7 @@ main:
           - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
           - location: "us-central1"
           - name: "example-function"
-          - sourceArchiveUrl: "gs://BUCKET_NAME/cloud-function-source.zip"
+          - sourceArchiveUrl: "gs://BUCKET_NAME/cloud-function-source.zip"  # Replace BUCKET_NAME placeholder
           - service_account: ${project + "@appspot.gserviceaccount.com"}  # App Engine default service account
     - create_function:
         call: googleapis.cloudfunctions.v1.projects.locations.functions.create
@@ -65,7 +63,7 @@ main:
     - verify_response:
         call: assert_response
         args:
-          expected_response: "success"
+          expected_response: "success"  # function must return "success" when triggered
           actual_response: ${resp.body}
     - delete_function:
         call: googleapis.cloudfunctions.v1.projects.locations.functions.delete
