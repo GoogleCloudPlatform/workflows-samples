@@ -47,7 +47,7 @@
         "parent": "${\"projects/\" + project_id + \"/locations/\" + location_id}",
         "body": {
           "name": "${\"projects/\" + project_id + \"/locations/\" + location_id + \"/jobs/\" + job_id}",
-          "description": "An example job created by connector_cloudscheduler.yaml workflow to test the Cloud Scheduler connector.",
+          "description": "An example job created by Workflows to test the Cloud Scheduler connector.",
           "schedule": "* * * * *",
           "pubsubTarget": {
             "topicName": "${\"projects/\" + project_id + \"/topics/\" + topic}",
