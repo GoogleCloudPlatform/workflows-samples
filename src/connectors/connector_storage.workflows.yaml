@@ -16,13 +16,12 @@
 # This workflow demonstrates how to use the Cloud Storage connector:
 # Create a bucket and upload an object to the bucket
 # Delete the bucket and the object
-# Replace BUCKET_NAME and FILE_NAME placeholders
 # Expected output: "SUCCESS"
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - bucket_name: "BUCKET_NAME"
-      - object_name: "FILE_NAME.txt"
+      - bucket_name: "BUCKET_NAME"  # Replace BUCKET_NAME placeholder
+      - object_name: "FILE_NAME.txt"  # Replace FILE_NAME placeholder
 - create_bucket:
     call: googleapis.storage.v1.buckets.insert
     args:
