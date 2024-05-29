@@ -12,7 +12,7 @@
               "cluster_zone": "us-central1-a"
             },
             {
-              "cluster_id": "[fill in a cluster ID]"
+              "cluster_id": "CLUSTER_ID"
             },
             {
               "cluster_full_name": "${\"projects/\" + project_id + \"/locations/\" + cluster_zone + \"/clusters/\" + cluster_id}"
@@ -21,7 +21,7 @@
         }
       },
       {
-        "create_k8s_cluster": {
+        "create_gke_cluster": {
           "call": "googleapis.container.v1.projects.zones.clusters.create",
           "args": {
             "projectId": "${project_id}",
@@ -49,7 +49,7 @@
         }
       },
       {
-        "delete_k8s_cluster": {
+        "delete_gke_cluster": {
           "call": "googleapis.container.v1.projects.zones.clusters.delete",
           "args": {
             "projectId": "${project_id}",
@@ -99,7 +99,7 @@
       },
       {
         "fail": {
-          "raise": "${\"Expected VM status is \" + expected_status + \". Got \" + cluster.status + \" instead.\"}"
+          "raise": "${\"Expected VM status is \" + expected_status + \". Received \" + cluster.status + \" instead.\"}"
         }
       }
     ]
