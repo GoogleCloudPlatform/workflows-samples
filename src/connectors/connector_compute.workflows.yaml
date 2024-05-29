@@ -16,7 +16,7 @@
 # This workflow demonstrates how to use the Compute Engine connector:
 # Create and start a Compute Engine VM instance, then stop and delete the VM
 # Each step waits until the long-running operation of stopping or starting the VM completes
-# After each step, the machine status is verified 
+# After each step, the machine status is verified
 # Expected output: "SUCCESS"
 main:
   params: []
