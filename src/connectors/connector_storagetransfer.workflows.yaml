@@ -35,7 +35,7 @@
     args:
       project: ${project_id}
       body:
-        name: ${sink_bucket_name}  
+        name: ${sink_bucket_name}
 - create_transfer_job:
     call: googleapis.storagetransfer.v1.transferJobs.create
     args:
