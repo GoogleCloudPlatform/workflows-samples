@@ -14,7 +14,7 @@
 
 # [START workflows_connector_write_firestore]
 # This workflow demonstrates how to use the Firestore connector:
-# Write data to a document in the default Firestore database 
+# Write data to a document in the default Firestore database
 # Expected output: "projects/PROJECT_ID/databases/(default)/documents/peopleDatabase/smith.j"
 - init_variables:
     assign:
