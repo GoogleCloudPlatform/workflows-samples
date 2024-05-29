@@ -26,7 +26,7 @@ main:
           - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
           - location: "us-central1"
           - name: "example-function"
-          - sourceArchiveUrl: "gs://BUCKET_NAME/cloud-function-source.zip"  # Replace BUCKET_NAME placeholder
+          - sourceArchiveUrl: "gs://BUCKET_NAME/cloud-function-source.zip"  # replace BUCKET_NAME placeholder
           - service_account: ${project + "@appspot.gserviceaccount.com"}  # App Engine default service account
     - create_function:
         call: googleapis.cloudfunctions.v1.projects.locations.functions.create
