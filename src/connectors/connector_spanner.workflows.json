@@ -11,7 +11,7 @@
     }
   },
   {
-    "create_txn": {
+    "create_transaction": {
       "assign": [
         {
           "req": {
@@ -40,7 +40,7 @@
     "create_spanner_session": {
       "call": "googleapis.spanner.v1.projects.instances.databases.sessions.create",
       "args": {
-        "database": "projects/placeholder/instances/placeholder-instance-name/databases/placeholder-database-name"
+        "database": "projects/PROJECT_ID/instances/SPANNER_INSTANCE/databases/SPANNER_DATABASE"
       },
       "result": "session"
     }
