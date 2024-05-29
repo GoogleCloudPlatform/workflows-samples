@@ -12,56 +12,71 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_connector_storage]
-# This workflow demonstrates how to use the Cloud Storage connector:
-# Create a bucket and upload an object to the bucket
-# Delete the bucket and the object
+# [START workflows_connector_storagetransfer]
+# This workflow demonstrates how to use the Cloud Storage Transfer Service connector:
+# Create source and sink Cloud Storage buckets and then create a transfer job
+# that transfers data from the source bucket to the sink bucket
+# Run the transfer job and then set the status of the job to "DELETED"
 # Expected output: "SUCCESS"
+
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - bucket_name: "BUCKET_NAME"  # Replace BUCKET_NAME placeholder
-      - object_name: "FILE_NAME.txt"  # Replace FILE_NAME placeholder
-- create_bucket:
+      - transfer_job_name: "transferJobs/example-transfer-job"
+      - source_bucket_name: "SOURCE_BUCKET_NAME"  # replace SOURCE_BUCKET_NAME placeholder
+      - sink_bucket_name: "SINK_BUCKET_NAME"  # replace SINK_BUCKET_NAME placeholder
+- create_source_bucket:
     call: googleapis.storage.v1.buckets.insert
     args:
       project: ${project_id}
       body:
-        name: ${bucket_name}
-- upload_object_media:
-    call: googleapis.storage.v1.objects.insert
+        name: ${src_bucket_name}      
+- create_sink_bucket:
+    call: googleapis.storage.v1.buckets.insert
     args:
-      bucket: ${bucket_name}
-      uploadType: "media"  # uploads object data
-      name: ${object_name}
-      body: "hello world"
-- download_object_media:
-    call: googleapis.storage.v1.objects.get
+      project: ${project_id}
+      body:
+        name: ${sink_bucket_name}  
+- create_transfer_job:
+    call: googleapis.storagetransfer.v1.transferJobs.create
     args:
-      bucket: ${bucket_name}
-      object: ${object_name}
-      alt: "media"  # gets object data
-    result: object_data
-# If `alt` is not set, get metadata
-- get_object_metadata:
-    call: googleapis.storage.v1.objects.get
+      body:
+        name: ${transfer_job_name}
+        description: "A job that transfers data from source bucket to sink bucket"
+        projectId: ${project_id}
+        transferSpec:
+          gcsDataSink:
+            bucketName: ${sink_bucket_name}
+            path: ""
+          gcsDataSource:
+            bucketName: ${src_bucket_name}
+            path: ""
+        status: "DISABLED"
+- enable_transfer_job:
+    call: googleapis.storagetransfer.v1.transferJobs.patch
     args:
-      bucket: ${bucket_name}
-      object: ${object_name}
-    result: object_metadata
-- get_bucket:
-    call: googleapis.storage.v1.buckets.get
+      jobName: ${transfer_job_name}
+      body:
+        projectId: ${project_id}
+        transferJob:
+          status: "ENABLED"
+- run_transfer_job:
+    call: googleapis.storagetransfer.v1.transferJobs.run
     args:
-      bucket: ${bucket_name}
-- delete_object:
-    call: googleapis.storage.v1.objects.delete
+      jobName: ${transfer_job_name}
+      body:
+        projectId: ${project_id}
+    result: r
+- delete_transfer_job:
+    # Transfer jobs become eligible for garbage collection 30 days
+    # after their status is set to DELETED
+    call: googleapis.storagetransfer.v1.transferJobs.patch
     args:
-      bucket: ${bucket_name}
-      object: ${object_name}
-- delete_bucket:
-    call: googleapis.storage.v1.buckets.delete
-    args:
-      bucket: ${bucket_name}
+      jobName: ${transfer_job_name}
+      body:
+        projectId: ${project_id}
+        transferJob:
+          status: "DELETED"
 - the_end:
     return: "SUCCESS"
-# [END workflows_connector_storage]
+# [END workflows_connector_storagetransfer]
