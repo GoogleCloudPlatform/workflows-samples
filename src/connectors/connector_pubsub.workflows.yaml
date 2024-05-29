@@ -13,19 +13,18 @@
 # limitations under the License.
 
 # [START workflows_connector_pubsub]
-# This workflow demonstrates how to use the Cloud Pub/Sub connector.
-# The workflow creates a Pub/Sub topic, a new subscription to that new topic, publishes a new message to
-# the topic, pulls the message from the subscription, and then deletes both
-# the subscription and the topic.
-# Expected successful output: "SUCCESS"
-
+# This workflow demonstrates how to use the Cloud Pub/Sub connector:
+# Create a Pub/Sub topic and a subscription to that topic
+# Publish a message to the topic and pull the message from the subscription
+# Delete both the subscription and the topic
+# Expected output: "SUCCESS"
 - init:
     assign:
       - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - topic: "[fill in a Pubsub topic name]"
-      - subscription: "[fill in a Pubsub subscription name]"
-      - message: {"hello": "world"}  # An object used as a secret.
-      - base64Msg: ${base64.encode(json.encode(message))}
+      - topic: "TOPIC_ID"  # replace TOPIC_ID placeholder
+      - subscription: "SUBSCRIPTION_ID"  # replace SUBSCRIPTION_ID placeholder
+      - message: {"hello": "world"}
+      - base64Msg: ${base64.encode(json.encode(message))}  # encodes bytes to Base64 text
 - create_topic:
     call: googleapis.pubsub.v1.projects.topics.create
     args:
@@ -66,5 +65,5 @@
 - the_end:
     return: "SUCCESS"
 - failed:
-    raise: ${"got data:" + m.receivedMessages[0].message.data + " want data:" + base64Msg}
+    raise: ${"Received data:" + m.receivedMessages[0].message.data + " Expected data:" + base64Msg}
 # [END workflows_connector_pubsub]
