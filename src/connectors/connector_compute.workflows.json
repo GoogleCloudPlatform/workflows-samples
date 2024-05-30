@@ -12,7 +12,7 @@
               "zone": "us-central1-a"
             },
             {
-              "instance": "[fill in an instance name]"
+              "instance": "INSTANCE_NAME"
             },
             {
               "machineType": "e2-micro"
@@ -137,7 +137,7 @@
       },
       {
         "fail": {
-          "raise": "${\"Expected VM status is \" + expected_status + \". Got \" + instance.status + \" instead.\"}"
+          "raise": "${\"Expected VM status is \" + expected_status + \". Received \" + instance.status + \" instead.\"}"
         }
       }
     ]

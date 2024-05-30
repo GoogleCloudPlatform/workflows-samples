@@ -13,20 +13,18 @@
 # limitations under the License.
 
 # [START workflows_connector_bigquery]
-# This workflow demonstrates how to use the BigQuery connector.
-# The workflow creates a new dataset and then issues a simple query to insert a table with
-# some data from bigquery-public-data.usa_names.usa_1910_2013.
-# The new table and dataset are both deleted in the following steps.
-# Expected successful output: "SUCCESS"
-
+# This workflow demonstrates how to use the BigQuery connector:
+# Create a dataset and then insert a table with data from a public dataset
+# Delete both the table and dataset
+# Expected output: "SUCCESS"
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
       - dataset_id: "example_dataset"
       - table_id: "example_table"
       - query: "SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 5000;"
-      - create_disposition: "CREATE_IF_NEEDED"  # create a new one if table doesn't exist
-      - write_disposition: "WRITE_TRUNCATE"  # truncate it if the table already exists
+      - create_disposition: "CREATE_IF_NEEDED"  # creates table if it doesn't exist
+      - write_disposition: "WRITE_TRUNCATE"  # truncates table if it already exists
 - create_dataset:
     call: googleapis.bigquery.v2.datasets.insert
     args:

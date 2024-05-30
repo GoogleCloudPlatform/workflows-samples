@@ -13,13 +13,11 @@
 # limitations under the License.
 
 # [START workflows_connector_compute]
-# This workflow demonstrates how to use the Cloud Compute Engine connector.
-# The workflow creates and starts a Compute Engine VM instance. Then it stops and deletes
-# the VM instance.
-# Each of these steps waits until the long-running operation of stopping or starting the VM
-# is completed. After each step, an assertion about current status of the machine is made.
-# Expected successful output: "SUCCESS"
-
+# This workflow demonstrates how to use the Compute Engine connector:
+# Create and start a Compute Engine VM instance, then stop and delete the VM
+# Each step waits until the long-running operation of stopping or starting the VM completes
+# After each step, the machine status is verified
+# Expected output: "SUCCESS"
 main:
   params: []
   steps:
@@ -27,7 +25,7 @@ main:
         assign:
           - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
           - zone: "us-central1-a"
-          - instance: "[fill in an instance name]"
+          - instance: "INSTANCE_NAME"  # replace INSTANCE_NAME placeholder
           - machineType: "e2-micro"
     - insert_machine:
         call: googleapis.compute.v1.instances.insert
@@ -94,5 +92,5 @@ assert_machine_status:
           - condition: ${instance.status == expected_status}
             next: end
     - fail:
-        raise: ${"Expected VM status is " + expected_status + ". Got " + instance.status + " instead."}
+        raise: ${"Expected VM status is " + expected_status + ". Received " + instance.status + " instead."}
 # [END workflows_connector_compute]

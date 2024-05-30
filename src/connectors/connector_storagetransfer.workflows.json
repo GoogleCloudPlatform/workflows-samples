@@ -6,24 +6,46 @@
           "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
         },
         {
-          "transferjob_name": "transferJobs/example-transfer-job"
+          "transfer_job_name": "transferJobs/example-transfer-job"
         },
         {
-          "src_bucket_name": "[fill in with the source bucket name]"
+          "src_bucket_name": "SOURCE_BUCKET_NAME"
         },
         {
-          "sink_bucket_name": "[fill in with the destination bucket name]"
+          "sink_bucket_name": "SINK_BUCKET_NAME"
         }
       ]
     }
   },
   {
-    "create_transferjob": {
+    "create_source_bucket": {
+      "call": "googleapis.storage.v1.buckets.insert",
+      "args": {
+        "project": "${project_id}",
+        "body": {
+          "name": "${src_bucket_name}"
+        }
+      }
+    }
+  },
+  {
+    "create_sink_bucket": {
+      "call": "googleapis.storage.v1.buckets.insert",
+      "args": {
+        "project": "${project_id}",
+        "body": {
+          "name": "${sink_bucket_name}"
+        }
+      }
+    }
+  },
+  {
+    "create_transfer_job": {
       "call": "googleapis.storagetransfer.v1.transferJobs.create",
       "args": {
         "body": {
-          "name": "${transferjob_name}",
-          "description": "A job that transfers data between src and sink buckets.",
+          "name": "${transfer_job_name}",
+          "description": "A job that transfers data from source bucket to sink bucket",
           "projectId": "${project_id}",
           "transferSpec": {
             "gcsDataSink": {
@@ -41,10 +63,10 @@
     }
   },
   {
-    "enable_transferjob": {
+    "enable_transfer_job": {
       "call": "googleapis.storagetransfer.v1.transferJobs.patch",
       "args": {
-        "jobName": "${transferjob_name}",
+        "jobName": "${transfer_job_name}",
         "body": {
           "projectId": "${project_id}",
           "transferJob": {
@@ -55,10 +77,10 @@
     }
   },
   {
-    "run_job": {
+    "run_transfer_job": {
       "call": "googleapis.storagetransfer.v1.transferJobs.run",
       "args": {
-        "jobName": "${transferjob_name}",
+        "jobName": "${transfer_job_name}",
         "body": {
           "projectId": "${project_id}"
         }
@@ -67,10 +89,10 @@
     }
   },
   {
-    "delete_transferjob": {
+    "delete_transfer_job": {
       "call": "googleapis.storagetransfer.v1.transferJobs.patch",
       "args": {
-        "jobName": "${transferjob_name}",
+        "jobName": "${transfer_job_name}",
         "body": {
           "projectId": "${project_id}",
           "transferJob": {

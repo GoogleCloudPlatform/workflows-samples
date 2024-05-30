@@ -13,13 +13,18 @@
 # limitations under the License.
 
 # [START workflows_connector_spanner]
-# This workflow demonstrates how to use the Cloud Spanner connector to write
-# some entries to an existing database.
-# Expected successful output: "SUCCESS"
+# This workflow demonstrates how to use the Spanner connector:
+# Write entries to an existing Spanner database
+# Your database should have the same schema described in the
+# `create_transaction` step
+# Expected output: "SUCCESS"
 - create_table_entry:
     assign:
+      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - spanner_inst: "SPANNER_INSTANCE"  # replace SPANNER_INSTANCE placeholder
+      - spanner_db: "SPANNER_DATABASE"  # replace SPANNER_DATABASE placeholder
       - entry: ["123"]
-- create_txn:
+- create_transaction:
     assign:
       - req:
           mutations:
@@ -34,7 +39,7 @@
 - create_spanner_session:
     call: googleapis.spanner.v1.projects.instances.databases.sessions.create
     args:
-      database: projects/placeholder/instances/placeholder-instance-name/databases/placeholder-database-name
+      database: ${"projects/" + project_id + "/instances/" + spanner_inst + "/databases/" + spanner_db}
     result: session
 - write_entry:
     call: googleapis.spanner.v1.projects.instances.databases.sessions.commit

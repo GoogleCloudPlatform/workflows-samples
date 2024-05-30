@@ -13,18 +13,18 @@
 # limitations under the License.
 
 # [START workflows_connector_cloudscheduler]
-# This workflow demonstrates how to use the Cloud Scheduler connector.
-# This workflow creates a Pub/Sub topic and a subscription to the topic which is used by Cloud Scheduler
-# as a notification method. The workflow then creates a scheduler job, waits for the job to finish, and pulls the notification from
-# the subscription. It then deletes all resources.
-# Expected successful output: "SUCCESS"
-
+# This workflow demonstrates how to use the Cloud Scheduler connector:
+# Create a Pub/Sub topic and subscription for notifications
+# Create a Cloud Scheduler job that runs every minute and publishes
+# a message to the Pub/Sub topic when finished
+# Retrieve message from the subscription and then delete all resources
+# Expected output: "SUCCESS"
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
       - location_id: "us-central1"
       - job_id: "example-job-id"
-      - topic: "example-topic-id"  # Pubsub topic used by Cloud Scheduler as a notification target.
+      - topic: "example-topic-id"
       - subscription: "example-subscription-id"
 - create_topic:
     call: googleapis.pubsub.v1.projects.topics.create
@@ -43,8 +43,8 @@
       parent: ${"projects/" + project_id + "/locations/" + location_id}
       body:
         name: ${"projects/" + project_id + "/locations/" + location_id + "/jobs/" + job_id}
-        description: "An example job created by connector_cloudscheduler.yaml workflow to test the Cloud Scheduler connector."
-        schedule: "* * * * *"  # Run job every minute, see https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules.
+        description: "An example job created by Workflows to test the Cloud Scheduler connector."
+        schedule: "* * * * *"  # runs job every minute
         pubsubTarget:
           topicName: ${"projects/" + project_id + "/topics/" + topic}
           attributes:
@@ -52,7 +52,7 @@
 - sleep:
     call: sys.sleep
     args:
-      seconds: 100
+      seconds: 100  # sleeps for 100 seconds to allow job to run
 - pull_message:
     call: googleapis.pubsub.v1.projects.subscriptions.pull
     args:
