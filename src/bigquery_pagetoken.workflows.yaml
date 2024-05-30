@@ -13,6 +13,10 @@
 # limitations under the License.
 
 # [START workflows_bigquery_pagetoken]
+# Use a page token to loop through a page of results at a time when
+# querying a BigQuery dataset larger than the Workflows memory limit
+# This workflow queries a public dataset to determine the most common
+# names in the US between 1910 and 2013
 main:
   params: [input]
   steps:
