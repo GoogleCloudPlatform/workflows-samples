@@ -9,7 +9,7 @@
           "transfer_job_name": "transferJobs/example-transfer-job"
         },
         {
-          "source_bucket_name": "SOURCE_BUCKET_NAME"
+          "src_bucket_name": "SOURCE_BUCKET_NAME"
         },
         {
           "sink_bucket_name": "SINK_BUCKET_NAME"
