@@ -22,7 +22,7 @@
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
       - transfer_job_name: "transferJobs/example-transfer-job"
-      - source_bucket_name: "SOURCE_BUCKET_NAME"  # replace SOURCE_BUCKET_NAME placeholder
+      - src_bucket_name: "SOURCE_BUCKET_NAME"  # replace SOURCE_BUCKET_NAME placeholder
       - sink_bucket_name: "SINK_BUCKET_NAME"  # replace SINK_BUCKET_NAME placeholder
 - create_source_bucket:
     call: googleapis.storage.v1.buckets.insert
