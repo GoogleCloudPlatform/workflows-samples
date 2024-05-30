@@ -26,7 +26,8 @@ main:
           - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
           - location: "us-central1"
           - name: "example-function"
-          - sourceArchiveUrl: "gs://BUCKET_NAME/cloud-function-source.zip"  # replace BUCKET_NAME placeholder
+          - bucket: "BUCKET_NAME"  # replace BUCKET_NAME placeholder
+          - sourceArchiveUrl: ${"gs://" + bucket + "/cloud-function-source.zip"}
           - service_account: ${project + "@appspot.gserviceaccount.com"}  # App Engine default service account
     - create_function:
         call: googleapis.cloudfunctions.v1.projects.locations.functions.create
@@ -80,5 +81,5 @@ assert_response:
           - condition: ${expected_response == actual_response}
             next: end
     - fail:
-        raise: ${"Expected response is " + expected_response + ". Received " + got_response + " instead."}
+        raise: ${"Expected response is " + expected_response + ". Received " + actual_response + " instead."}
 # [END workflows_connector_cloudfunctions]
