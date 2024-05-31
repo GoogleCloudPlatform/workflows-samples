@@ -28,17 +28,17 @@ main:
 reverse_list:
   params: [source]
   steps:
-  - init:
+    - init:
       assign:
-      - dst: []
+        - dst: []
   - reverse:
       for:
         value: entry
         in: ${source}
         steps:
-        - prepend_value:
+          - prepend_value:
             assign:
-            - dst: ${list.prepend(dst, entry)}
+              - dst: ${list.prepend(dst, entry)}
   - return_destination:
       return: ${dst}
 # [END workflows_list_reverse]
