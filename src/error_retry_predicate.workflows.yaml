@@ -16,7 +16,7 @@
 # Define a custom error handler, custom predicate, and custom backoff parameters
 # The `my_own_predicate` subworkflow accepts a map as an argument and defines the
 # exception; it returns true if a retry; false, otherwise
-# Expected outcome: the execution fails and returns an HTTP 404 Not Found error 
+# Expected outcome: the execution fails and returns an HTTP 404 Not Found error
 main:
   steps:
     - read_item:
