@@ -13,6 +13,9 @@
 # limitations under the License.
 
 # [START workflows_error_catch]
+# Use a custom exception handler to catch exceptions and return predefined
+# error messages; if the exception isn't recognized, the workflow
+# execution fails and throws the exception returned by the GET request
 - read_item:
     try:
       call: http.get
