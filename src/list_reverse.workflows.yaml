@@ -29,16 +29,16 @@ reverse_list:
   params: [source]
   steps:
     - init:
-      assign:
-        - dst: []
-  - reverse:
-      for:
-        value: entry
-        in: ${source}
-        steps:
+        assign:
+          - dst: []
+    - reverse:
+        for:
+          value: entry
+          in: ${source}
+          steps:
           - prepend_value:
-            assign:
-              - dst: ${list.prepend(dst, entry)}
-  - return_destination:
-      return: ${dst}
+              assign:
+                - dst: ${list.prepend(dst, entry)}
+    - return_destination:
+        return: ${dst}
 # [END workflows_list_reverse]
