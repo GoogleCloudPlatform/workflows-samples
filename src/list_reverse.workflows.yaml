@@ -36,9 +36,9 @@ reverse_list:
           value: entry
           in: ${source}
           steps:
-          - prepend_value:
-              assign:
-                - dst: ${list.prepend(dst, entry)}
+            - prepend_value:
+                assign:
+                  - dst: ${list.prepend(dst, entry)}
     - return_destination:
         return: ${dst}
 # [END workflows_list_reverse]
