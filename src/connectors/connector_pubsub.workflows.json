@@ -6,10 +6,10 @@
           "project": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
         },
         {
-          "topic": "[fill in a Pubsub topic name]"
+          "topic": "TOPIC_ID"
         },
         {
-          "subscription": "[fill in a Pubsub subscription name]"
+          "subscription": "SUBSCRIPTION_ID"
         },
         {
           "message": {
@@ -102,7 +102,7 @@
   },
   {
     "failed": {
-      "raise": "${\"got data:\" + m.receivedMessages[0].message.data + \" want data:\" + base64Msg}"
+      "raise": "${\"Received data:\" + m.receivedMessages[0].message.data + \" Expected data:\" + base64Msg}"
     }
   }
 ]

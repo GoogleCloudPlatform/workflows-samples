@@ -22,7 +22,7 @@
         "workflowId": "${workflow}",
         "body": {
           "name": "${\"projects/\" + project + \"/locations/\" + location + \"/workflows/\" + workflow}",
-          "description": "An example workflow to be created and deleted.",
+          "description": "An example workflow to create and delete using the Workflows connector",
           "sourceContents": "- step:\n    next: end"
         }
       }

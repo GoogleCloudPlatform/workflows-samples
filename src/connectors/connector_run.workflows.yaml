@@ -13,14 +13,14 @@
 # limitations under the License.
 
 # [START workflows_connector_run]
-# This workflow demonstrates how to use the the Cloud Run connector to create
-# a new service and then deletes it. Note that the location has to be specified.
-# Expected successful output: delete operation's response
-
+# This workflow demonstrates how to use the Cloud Run connector:
+# Create a new service and then delete it
+# A location must be specified
+# Expected output is the `delete_service` response with a "Success" status
 - init:
     assign:
       - service_name: "test-service"
-      - project: "your-project-id"
+      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
 - create_service:
     call: googleapis.run.v1.namespaces.services.create
     args:
@@ -43,19 +43,19 @@
             spec:
               containers:
                 - image: "us-docker.pkg.dev/cloudrun/container/hello:latest"
-    result: create_rsp
+    result: create_response
 - get_service:
     call: googleapis.run.v1.namespaces.services.get
     args:
       name: ${"namespaces/" + project + "/services/" + service_name}
       location: "us-central1"
-    result: get_resp
+    result: get_response
 - delete_service:
     call: googleapis.run.v1.namespaces.services.delete
     args:
       location: "us-central1"
       name: ${"namespaces/" + project + "/services/" + service_name}
-    result: delete_rsp
+    result: delete_response
 - return:
-    return: ${delete_rsp}
+    return: ${delete_response}
 # [END workflows_connector_run]

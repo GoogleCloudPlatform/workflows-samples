@@ -13,17 +13,13 @@
 # limitations under the License.
 
 # [START workflows_connector_sheets]
-# This workflow creates, updates, gets, and deletes a Google Sheets spreadsheet
-# using the Google Sheets connector.
-#
-# Features included in this test:
-# - Google Sheets connector
-#
-# Expected successful output: "SUCCESS"
+# This workflow demonstrates how to use the Google Sheets connector:
+# Create, update, get, and delete a Google Sheets spreadsheet
+# Expected output: "SUCCESS"
 - init:
     assign:
-      - createRange: "A20"         # example range
-      - getRange: "A1:B4"          # example range
+      - createRange: "A20"  # example range
+      - getRange: "A1:B4"  # example range
       - row:
           values:
             - {"userEnteredFormat": {"backgroundColor": {"red": 0, "green":1, "blue":0, "alpha":1}}}

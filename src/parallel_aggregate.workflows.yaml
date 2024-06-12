@@ -13,6 +13,9 @@
 # limitations under the License.
 
 # [START workflows_parallel_aggregate]
+# Use a parallel loop to make ten queries to a public BigQuery dataset and
+# use a shared variable to accumulate a count of words; after all iterations
+# complete, return the total number of words across all documents
 main:
   params: [input]
   steps:
@@ -31,7 +34,7 @@ main:
               - tamingoftheshrew
               - loveslabourslost
     - runQueries:
-        parallel:  # numWords is shared so it can be written within the parallel loop
+        parallel:  # 'numWords' is shared so it can be written within the parallel loop
           shared: [numWords]
           for:
             value: corpus

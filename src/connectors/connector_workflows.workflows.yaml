@@ -13,10 +13,9 @@
 # limitations under the License.
 
 # [START workflows_connector_workflows]
-# This workflow demonstrates how to use the Cloud Workflows connector.
-# The workflow creates/gets/deletes a workflow.
-# Expected successful output: "SUCCESS"
-
+# This workflow demonstrates how to use the Workflows connector:
+# Create, get, and then delete a workflow
+# Expected output: "SUCCESS"
 - init:
     assign:
       - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
@@ -29,7 +28,7 @@
       workflowId: ${workflow}
       body:
         name: ${"projects/" + project + "/locations/" + location + "/workflows/" + workflow}
-        description: "An example workflow to be created and deleted."
+        description: "An example workflow to create and delete using the Workflows connector"
         sourceContents: "- step:\n    next: end"
 - get_workflow:
     call: googleapis.workflows.v1.projects.locations.workflows.get

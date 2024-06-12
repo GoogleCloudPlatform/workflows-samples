@@ -3,6 +3,15 @@
     "create_table_entry": {
       "assign": [
         {
+          "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+        },
+        {
+          "spanner_inst": "SPANNER_INSTANCE"
+        },
+        {
+          "spanner_db": "SPANNER_DATABASE"
+        },
+        {
           "entry": [
             "123"
           ]
@@ -11,7 +20,7 @@
     }
   },
   {
-    "create_txn": {
+    "create_transaction": {
       "assign": [
         {
           "req": {
@@ -40,7 +49,7 @@
     "create_spanner_session": {
       "call": "googleapis.spanner.v1.projects.instances.databases.sessions.create",
       "args": {
-        "database": "projects/placeholder/instances/placeholder-instance-name/databases/placeholder-database-name"
+        "database": "${\"projects/\" + project_id + \"/instances/\" + spanner_inst + \"/databases/\" + spanner_db}"
       },
       "result": "session"
     }

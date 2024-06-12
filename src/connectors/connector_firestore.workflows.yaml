@@ -13,12 +13,11 @@
 # limitations under the License.
 
 # [START workflows_connector_firestore]
-# This workflow demonstrates how to use the Firestore connector.
-# The workflow first creates a Firestore document, then retrieves the document,
-# and exports the document to a Google Cloud Storage bucket.
-# The document is deleted eventually.
-# Expected successful output: "SUCCESS"
-
+# This workflow demonstrates how to use the Firestore connector:
+# Create and retrieve a Firestore document
+# Export the document to a Cloud Storage bucket (which must already exist)
+# Delete the document
+# Expected output: "SUCCESS"
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
@@ -53,7 +52,7 @@
     args:
       name: ${"projects/" + project_id + "/databases/(default)"}
       body:
-        outputUriPrefix: "gs://example_bucket"  # Make sure this bucket exists.
+        outputUriPrefix: "gs://EXAMPLE_BUCKET"  # replace EXAMPLE_BUCKET placeholder with existing bucket
         collectionIds:
           - ${collection}
 - drop:
