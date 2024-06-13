@@ -15,10 +15,10 @@
           "task_id": "example-task-id"
         },
         {
-          "schedule_time": "[fill this in]"
+          "schedule_time": "TIME_IN_ZULU_FORMAT"
         },
         {
-          "cloud_function_url": "[fill this in]"
+          "cloud_function_url": "CLOUD_FUNCTION_URL"
         }
       ]
     }

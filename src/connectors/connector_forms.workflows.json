@@ -29,9 +29,10 @@
         "body": {
           "requests": [
             {
-              "updateFormInfo": null,
-              "info": {
-                "title": "new-title",
+              "updateFormInfo": {
+                "info": {
+                  "title": "new-title"
+                },
                 "updateMask": "title"
               }
             }

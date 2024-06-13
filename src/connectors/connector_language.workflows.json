@@ -20,6 +20,16 @@
           },
           "encodingType": "UTF8"
         }
+      },
+      "result": "response_analyze"
+    }
+  },
+  {
+    "log_analyze_result": {
+      "call": "sys.log",
+      "args": {
+        "data": "${response_analyze}",
+        "severity": "INFO"
       }
     }
   },
@@ -31,10 +41,20 @@
           "document": {
             "type": "${docType}",
             "language": "en",
-            "content": "I love workflows!"
+            "content": "I love Workflows!"
           },
           "encodingType": "UTF8"
         }
+      },
+      "result": "response_classify"
+    }
+  },
+  {
+    "log_classify_result": {
+      "call": "sys.log",
+      "args": {
+        "data": "${response_classify}",
+        "severity": "INFO"
       }
     }
   },
