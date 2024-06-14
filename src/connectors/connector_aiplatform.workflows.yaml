@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_connector_vertexai]
-# This workflow demonstrates how to use the Vertex AI connector.
+# [START workflows_connector_aiplatform]
+# This workflow demonstrates how to use the aiplatform (Vertex AI) connector.
 # This workflow creates a Vertex AI custom Job and then deletes the
 # job once the long-running operation of creating the job completes.
 # Expected successful output: "SUCCESS"
@@ -53,4 +53,4 @@ main:
         result: deleteCustomJobResponse
     - return:
         return: "SUCCESS"
-# [END workflows_connector_vertexai]
+# [END workflows_connector_aiplatform]
