@@ -1,5 +1,5 @@
 #/bin/bash
-# Copyright 2024 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ then
     exit
 fi
 
-# Loop through all yaml files, convert to json
+# Loop through all yaml files or a single specified file, then convert to json.
 if [[ $file =  "all" ]]
 then
   cd src
