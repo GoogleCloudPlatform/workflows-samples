@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START workflows_connector_documentai]
-# This workflow demonstrates how to use the the process and batchProcess
+# This workflow demonstrates how to use the process and batchProcess
 # APIs in the Cloud Document AI connector.
 # Expected successful output: the batch process response.
 
