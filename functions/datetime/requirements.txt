@@ -1,4 +1,4 @@
 # Function dependencies, for example:
 # package>=version
 flask==3.0.2
-functions-framework==3.8.0
+functions-framework==3.8.1
