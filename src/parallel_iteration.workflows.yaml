@@ -21,7 +21,7 @@ main:
           - total: 0
     - countComments:
         parallel:
-          shared: [total]
+          shared: [total]    # allows child branch to write to this variable
           for:
             value: postId
             in: ${args.posts}
