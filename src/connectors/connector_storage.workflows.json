@@ -9,7 +9,7 @@
           "bucket_name": "BUCKET_NAME"
         },
         {
-          "object_name": "FILE_NAME.txt"
+          "object_name": "${text.url_encode(\"FILE_NAME.txt\")}"
         }
       ]
     }

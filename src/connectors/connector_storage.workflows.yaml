@@ -20,10 +20,8 @@
 - init:
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - bucket_name: "BUCKET_NAME"  # replace BUCKET_NAME placeholder
-      - object_name: "FILE_NAME.txt"  # replace FILE_NAME placeholder
-      # For connector calls, you should URL-encode object names to be path safe
-      # For example: `name: ${text.url_encode(object_name)}`
+      - bucket_name: "BUCKET_NAME"  # replace BUCKET_NAME and FILE_NAME placeholders
+      - object_name: ${text.url_encode("FILE_NAME.txt")}  # URL-encode object names to be path safe
 - create_bucket:
     call: googleapis.storage.v1.buckets.insert
     args:
