@@ -9,7 +9,7 @@
           "bucket_name": "BUCKET_NAME"
         },
         {
-          "object_name": "${text.url_encode(\"FILE_NAME.txt\")}"
+          "encoded_object_name": "${text.url_encode(\"FILE_NAME.txt\")}"
         }
       ]
     }
@@ -31,7 +31,7 @@
       "args": {
         "bucket": "${bucket_name}",
         "uploadType": "media",
-        "name": "${object_name}",
+        "name": "${encoded_object_name}",
         "body": "hello world"
       }
     }
@@ -41,7 +41,7 @@
       "call": "googleapis.storage.v1.objects.get",
       "args": {
         "bucket": "${bucket_name}",
-        "object": "${object_name}",
+        "object": "${encoded_object_name}",
         "alt": "media"
       },
       "result": "object_data"
@@ -52,7 +52,7 @@
       "call": "googleapis.storage.v1.objects.get",
       "args": {
         "bucket": "${bucket_name}",
-        "object": "${object_name}"
+        "object": "${encoded_object_name}"
       },
       "result": "object_metadata"
     }
@@ -70,7 +70,7 @@
       "call": "googleapis.storage.v1.objects.delete",
       "args": {
         "bucket": "${bucket_name}",
-        "object": "${object_name}"
+        "object": "${encoded_object_name}"
       }
     }
   },
