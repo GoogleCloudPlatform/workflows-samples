@@ -21,7 +21,7 @@
     assign:
       - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
       - bucket_name: "BUCKET_NAME"  # replace BUCKET_NAME and FILE_NAME placeholders
-      - object_name: ${text.url_encode("FILE_NAME.txt")}  # URL-encode object names to be path safe
+      - encoded_object_name: ${text.url_encode("FILE_NAME.txt")}  # URL-encode object names to be path safe
 - create_bucket:
     call: googleapis.storage.v1.buckets.insert
     args:
@@ -33,13 +33,13 @@
     args:
       bucket: ${bucket_name}
       uploadType: "media"  # uploads object data
-      name: ${object_name}
+      name: ${encoded_object_name}
       body: "hello world"
 - download_object_media:
     call: googleapis.storage.v1.objects.get
     args:
       bucket: ${bucket_name}
-      object: ${object_name}
+      object: ${encoded_object_name}
       alt: "media"  # gets object data
     result: object_data
 # If `alt` is not set, get metadata
@@ -47,7 +47,7 @@
     call: googleapis.storage.v1.objects.get
     args:
       bucket: ${bucket_name}
-      object: ${object_name}
+      object: ${encoded_object_name}
     result: object_metadata
 - get_bucket:
     call: googleapis.storage.v1.buckets.get
@@ -57,7 +57,7 @@
     call: googleapis.storage.v1.objects.delete
     args:
       bucket: ${bucket_name}
-      object: ${object_name}
+      object: ${encoded_object_name}
 - delete_bucket:
     call: googleapis.storage.v1.buckets.delete
     args:
