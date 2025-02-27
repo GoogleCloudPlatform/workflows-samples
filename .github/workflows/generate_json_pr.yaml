@@ -22,7 +22,7 @@ jobs:
         run: ./tools/tojson.sh
 
       - name: Create pull request for changes
-        uses: googleapis/code-suggester@v4
+        uses: googleapis/code-suggester@v5
         env:
           ACCESS_TOKEN: ${{ secrets.YOSHI_CODE_BOT_TOKEN }} # manually created and added as repo secret
         with:
