@@ -13,7 +13,7 @@ jobs:
       matrix: ${{ steps.get-files.outputs.result }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Get source files
         uses: actions/github-script@v8
@@ -41,7 +41,7 @@ jobs:
         sample: ${{ fromJSON(needs.get-all-files.outputs.matrix) }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
