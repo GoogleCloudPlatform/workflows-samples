@@ -14,7 +14,7 @@
 
 # [START workflows_manual_bq_poll]
 # This workflow demonstrates how to manually poll for the completion of
-# a BigQuery job by using the `getQueryResults` method. 
+# a BigQuery job by using the `getQueryResults` method.
 main:
   steps:
     - init:
