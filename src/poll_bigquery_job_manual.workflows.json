@@ -1,0 +1,73 @@
+{
+  "main": {
+    "steps": [
+      {
+        "init": {
+          "assign": [
+            {
+              "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+            }
+          ]
+        }
+      },
+      {
+        "startQuery": {
+          "call": "googleapis.bigquery.v2.jobs.query",
+          "args": {
+            "projectId": "${project_id}",
+            "body": {
+              "useLegacySql": false,
+              "query": "SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 10"
+            }
+          },
+          "result": "queryResponse"
+        }
+      },
+      {
+        "getJobId": {
+          "assign": [
+            {
+              "jobId": "${queryResponse.jobReference.jobId}"
+            }
+          ]
+        }
+      },
+      {
+        "pollingLoop": {
+          "steps": [
+            {
+              "checkStatus": {
+                "call": "googleapis.bigquery.v2.jobs.getQueryResults",
+                "args": {
+                  "projectId": "${project_id}",
+                  "jobId": "${jobId}",
+                  "timeoutMs": 10000
+                },
+                "result": "jobStatus"
+              }
+            },
+            {
+              "checkIfDone": {
+                "switch": [
+                  {
+                    "condition": "${jobStatus.jobComplete}",
+                    "return": "${jobStatus}"
+                  }
+                ]
+              }
+            },
+            {
+              "wait": {
+                "call": "sys.sleep",
+                "args": {
+                  "seconds": 5
+                },
+                "next": "checkStatus"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
