@@ -1,0 +1,48 @@
+{
+  "main": {
+    "steps": [
+      {
+        "init": {
+          "assign": [
+            {
+              "project_id": "${sys.get_env(\"GOOGLE_CLOUD_PROJECT_ID\")}"
+            },
+            {
+              "query": "SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 10"
+            }
+          ]
+        }
+      },
+      {
+        "run_bigquery_job": {
+          "call": "googleapis.bigquery.v2.jobs.insert",
+          "args": {
+            "projectId": "${project_id}",
+            "body": {
+              "configuration": {
+                "query": {
+                  "query": "${query}",
+                  "useLegacySql": false
+                }
+              }
+            },
+            "connector_params": {
+              "timeout": 3600,
+              "polling_policy": {
+                "initial_delay": 2,
+                "multiplier": 1.5,
+                "max_delay": 60
+              }
+            }
+          },
+          "result": "job_status"
+        }
+      },
+      {
+        "finish": {
+          "return": "${job_status}"
+        }
+      }
+    ]
+  }
+}
