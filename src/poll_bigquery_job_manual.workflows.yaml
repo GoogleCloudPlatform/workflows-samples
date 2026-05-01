@@ -38,15 +38,15 @@ main:
               args:
                 projectId: ${project_id}
                 jobId: ${jobId}
-                timeoutMs: 10000 # Default wait time per call
+                timeoutMs: 10000  # Default wait time per call
               result: jobStatus
           - checkIfDone:
               switch:
                 - condition: ${jobStatus.jobComplete}
-                  return: ${jobStatus} # Job is finished
+                  return: ${jobStatus}  # Job is finished
           - wait:
               call: sys.sleep
               args:
                 seconds: 5
-              next: checkStatus # Repeat check
+              next: checkStatus  # Repeat check
 # [END workflows_manual_bq_poll]
