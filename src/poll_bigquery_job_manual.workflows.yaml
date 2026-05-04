@@ -1,0 +1,52 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START workflows_manual_bq_poll]
+# This workflow demonstrates how to manually poll for the completion of
+# a BigQuery job by using the `getQueryResults` method.
+main:
+  steps:
+    - init:
+        assign:
+          - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+    - startQuery:
+        call: googleapis.bigquery.v2.jobs.query
+        args:
+          projectId: ${project_id}
+          body:
+            useLegacySql: false
+            query: "SELECT * FROM `bigquery-public-data.usa_names.usa_1910_2013` LIMIT 10"
+        result: queryResponse
+    - getJobId:
+        assign:
+          - jobId: ${queryResponse.jobReference.jobId}
+    - pollingLoop:
+        steps:
+          - checkStatus:
+              call: googleapis.bigquery.v2.jobs.getQueryResults
+              args:
+                projectId: ${project_id}
+                jobId: ${jobId}
+                timeoutMs: 10000  # Default wait time per call
+              result: jobStatus
+          - checkIfDone:
+              switch:
+                - condition: ${jobStatus.jobComplete}
+                  return: ${jobStatus}  # Job is finished
+          - wait:
+              call: sys.sleep
+              args:
+                seconds: 5
+              next: checkStatus  # Repeat check
+# [END workflows_manual_bq_poll]
