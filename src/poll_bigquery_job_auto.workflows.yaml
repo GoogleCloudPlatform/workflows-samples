@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_auto_bq_poll]
+# [START workflows_poll_bigquery_job_auto]
 # This workflow demonstrates how to automatically poll for the completion of
 # a BigQuery job when using a connector method that return an LRO resource.
 main:
@@ -39,4 +39,4 @@ main:
         result: job_status
     - finish:
         return: ${job_status}
-# [END workflows_auto_bq_poll]
+# [END workflows_poll_bigquery_job_auto]
