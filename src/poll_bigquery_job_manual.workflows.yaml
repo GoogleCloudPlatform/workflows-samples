@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START workflows_manual_bq_poll]
+# [START workflows_poll_bigquery_job_manual]
 # This workflow demonstrates how to manually poll for the completion of
 # a BigQuery job by using the `getQueryResults` method.
 main:
@@ -49,4 +49,4 @@ main:
               args:
                 seconds: 5
               next: checkStatus  # Repeat check
-# [END workflows_manual_bq_poll]
+# [END workflows_poll_bigquery_job_manual]
