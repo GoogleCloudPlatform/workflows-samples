@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 steps:
   - id: "Get Changed Files"
     name: "gcr.io/cloud-builders/gcloud:latest"
@@ -23,11 +24,13 @@ steps:
         apt-get update
         apt-get install jq -y
 
+
         curl -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
           https://api.github.com/repos/GoogleCloudPlatform/workflows-samples/pulls/$_PR_NUMBER/files \
           | jq -r '.[].filename' > /workspace/changed.txt
         echo "Changed files: "
         cat /workspace/changed.txt
+
 
   - id: "Deploy Workflows"
     name: "gcr.io/cloud-builders/gcloud:latest"
@@ -36,30 +39,40 @@ steps:
     args:
       - "-c"
       - |
-        for src in $(cat /workspace/changed.txt | grep "\.workflows\."); do
+        regex='^src/(connectors/)?[A-Za-z0-9_][A-Za-z0-9_-]*\.workflows\.(yaml|json)$'
+        while IFS= read -r src; do
+          [[ -z "$src" ]] && continue
+          if [[ ! "$src" =~ $regex ]]; then
+            echo "Skipping invalid or untrusted file path: $src"
+            continue
+          fi
           if [[ -f "$src" ]]; then
-            tmp_name=${src:4}  # remove src/
-            tmp_name=${tmp_name/connectors\//}  # remove connectors/ if present
-            workflow_name=${tmp_name//./-}-$SHORT_SHA  # convert . to -
+            tmp_name="${src#src/}"  # remove src/
+            tmp_name="${tmp_name#connectors/}"  # remove connectors/ if present
+            workflow_name="${tmp_name//./-}-$SHORT_SHA"  # convert . to -
+
 
             echo "Deploying $workflow_name with source: $src"
 
-            test="$(gcloud workflows deploy $workflow_name \
-              --source $src \
-              --location $_REGION \
+
+            test="$(gcloud workflows deploy -- "$workflow_name" \
+              --source="$src" \
+              --location="$_REGION" \
               --quiet 2>&1)"
             
             if [[ $? -ne 0 ]]; then
               echo "$workflow_name (src: $src) failed!" | tee -a /workspace/failures.txt
-              echo $test | tee -a /workspace/failures.txt
+              echo "$test" | tee -a /workspace/failures.txt
               echo ""
             fi
 
-            gcloud workflows delete $workflow_name \
-              --location $_REGION \
+
+            gcloud workflows delete -- "$workflow_name" \
+              --location="$_REGION" \
               --quiet
           fi
-        done
+        done < <(grep "\.workflows\." /workspace/changed.txt || true)
+
 
   - id: "Check for Errors"
     name: "ubuntu:latest"
@@ -73,6 +86,7 @@ steps:
         else 
             echo "Tests PASSED!"
         fi
+
 
 substitutions:
   _REGION: us-central1
